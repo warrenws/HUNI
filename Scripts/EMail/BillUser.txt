@@ -1,0 +1,6 @@
+<p>This is an automated email from the inventory system.</p>
+
+<p>#USERURL# has been added to the system as owing $#PRICE# for #ITEM#.  Please semd them an invoice.</p>
+
+<p>Thank you <br />
+Please do not respond to this message...</p>

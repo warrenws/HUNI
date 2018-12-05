@@ -1,0 +1,7 @@
+#RECIPIENT#,
+
+An attempt to change a property of #FIRSTNAME# #LASTNAME# in Active Directory failed.  View the log for more inforation.
+
+#STUDENTURLADMIN#
+
+Thank you

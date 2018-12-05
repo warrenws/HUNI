@@ -1,0 +1,8 @@
+To the parents of #FIRSTNAME# #LASTNAME#,
+
+Money is owed for the following items:
+
+#ITEMLIST#
+The total amount owed is $#TOTAL#.
+
+Thank you

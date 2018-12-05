@@ -1,0 +1,7 @@
+Good morning #RECIPIENT#,
+
+A new account has been detected and is waiting for a password.  The student's name is #FIRSTNAME# #LASTNAME#.
+
+#ADDURL#
+
+Thank you

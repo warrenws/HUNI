@@ -1,0 +1,61 @@
+<Script Language=VBScript RunAt=Server>
+Sub Application_OnStart
+
+   strInventoryDB = "C:\Shared Data\Dev Inventory\Database\Inventory.mdb"
+   Application("SiteName") = "Lake George Inventory - Dev"
+   Application("Domain") = "lkgeorge.org"
+   Application("DomainController") = "hsdc01.lkgeorge.org"
+   Application("DomainGroupUsers") = "Inventory Site Users"
+   Application("DomainGroupAdmins") = "Inventory Site Admins"
+   Application("EMailNotifications") = "inventory@lkgeorge.org"
+   Application("LogInDays") = 14
+   Application("ForceSSL") = True
+   Application("PhotoLocation") = "C:\Shared Data\Photo Import\Site"
+   Application("Version") = "0.060"
+   Application("Copyright") = "Copyright &copy; 2014-2018 Matt Hull<br />All Rights Reserved"
+   Application("HelpDeskURL") = "https://helpdesk.lkgeorge.org"
+   Application("ShowPasswords") = True
+   Application("MultiColumn") = False
+   Application("DefaultView") = "Table" 'Card or Table
+   Application("DefaultViewMobile") = "Card" 'Card or Table
+   Application("CardThreshold") = 10
+   Application("UseLeadingZeros") = False
+   Application("PasswordsExpire") = 90 'Days
+   Application("CountdownTimerTitle") = "Countdown to the Start of School"
+   Application("CountdownTimerDate") = "September 6, 2018 07:30:00"
+   Application("MunkiReportServer") = "https://updates.lkgeorge.org/public"
+   Application("LostDeviceNotify") = "hullm@lkgeorge.org;davisd@lkgeorge.org"
+   Application("BusinessOfficeEMail") = "hullm@lkgeorge.org"
+   Application("HomeroomName") = "Guide"
+   Application("HomeroomNameLong") = "Guide Room"
+   Application("LibreNMSServer") = "https://librenms.lkgeorge.org"
+   Application("LibreNMSToken") = "698642d7a7d8182305a29eac5a598f68"
+   Application("BandwidthPort") = "154"
+   Application("IndexCards") = "Warning,Search,StudentsPerGradeWithMissing,OpenEvents,SpareMacBooksFlipiPads,AccessHistory,EventStats,BandwidthWide"
+
+   'Create the connection to the Inventory Database
+   Set Application("Connection") = CreateObject("ADODB.Connection")
+   strConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & strInventoryDB & ";"
+   Application("Connection").Open strConnection
+
+End Sub
+</Script>
+
+<!--
+
+	Available index cards:
+		Warning - Only shows when a user with a device is disabled in the inventory
+		Search - Allows you to search by Tag, Event number, or name
+		StudentsPerGrade - Shows you the numbers of students per grade
+		StudentsPerGradeWithMissing - Shows you the number of students per grade and who does and does not have devices.
+		OpenEvents - Shows you the number of open events per event type
+		SpareMacBooksFlipiPads - A card that shows the number of spare MacBooks on one side and iPads on the other
+		SpareiPadsFlipMacBooks - A card that shows the number of spare iPads on one side and MacBooks on the other
+		AccessHistory - Shows who has used the computers outside the district on one side and inside on the other, per grade level
+		EventStats - Shows the number of events per event type on the front, and category on the back.  Total counts for current school year.
+		SpareMacBooks - Shows the number of spare MacBooks sorted by graduation year
+		SpareiPadsByType - Shows the number of spare iPads sorted by model.
+		SpareiPadsByGrade - Shows the number of spare iPads sorted by grade.
+    Bandwidth - Shows the bandwidth for the past 24 hours if a LibreNMS server is set.
+    BandwidthWide - Shows a wide version of the bandwidth for the past 24 hours.
+-->

@@ -1,0 +1,7 @@
+Good morning #RECIPIENT#,
+
+#FIRSTNAME# #LASTNAME# has left the district.  Their account has been disabled.
+
+#STUDENTURL#
+
+Thank you

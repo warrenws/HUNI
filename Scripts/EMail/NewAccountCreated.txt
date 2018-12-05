@@ -1,0 +1,7 @@
+Good morning #RECIPIENT#,
+
+A new account has been created for #FIRSTNAME# #LASTNAME#.
+
+#STUDENTURLADMIN#
+
+Thank you

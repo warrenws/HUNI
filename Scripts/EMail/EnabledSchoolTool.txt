@@ -1,0 +1,10 @@
+Good morning #RECIPIENT#,
+
+#FIRSTNAME# #LASTNAME# has returned to the district.  Their user account has been enabled.
+
+Username: #USERNAME#
+Password: #PASSWORD#
+
+#STUDENTURL#
+
+Thank you

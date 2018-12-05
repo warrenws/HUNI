@@ -1,0 +1,6 @@
+<p>This is an automated email from the inventory system.</p>
+
+<p>#USERURL# has returned #ITEM# so now they don't owe $#PRICE#.  Please update your records.</p>
+
+<p>Thank you <br />
+Please do not respond to this message...</p>

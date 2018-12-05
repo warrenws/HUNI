@@ -1,0 +1,7 @@
+Good morning #RECIPIENT#,
+
+#FIRSTNAME# #LASTNAME# has turned in their AUP.  Their account has been enabled.
+
+#STUDENTURL#
+
+Thank you

@@ -1,0 +1,7 @@
+#RECIPIENT#,
+
+Something is out of sync between the Inventory site and Active Directory with the user #FIRSTNAME# #LASTNAME#.
+
+#STUDENTURLADMIN#
+
+Thank you

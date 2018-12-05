@@ -1,0 +1,672 @@
+body.Full {
+   text-align: center; 
+	background-color: #484848 ;
+	font-family:"Helvetica";
+	color: white;
+   width: 95%;
+   margin-left: auto;
+   margin-right: auto;
+   background-image: url("images/background.png");
+   background-attachment: fixed;
+   background-position: center center;
+   background-repeat: no-repeat;
+   background-size: cover;
+   overflow:auto;
+   /* overflow-x: hidden; */
+} 
+
+body.Mobile {
+   text-align: center; 
+	background-color: #484848 ;
+	font-family:"Helvetica";
+	color: white;
+   width: 95%;
+   margin-left: auto;
+   margin-right: auto;
+   background-image: url("images/background.png");
+   background-attachment: fixed;
+   background-position: center center;
+   background-repeat: no-repeat;
+   background-size: cover;
+   overflow:auto;
+}
+
+a:link, a:visited {
+	color: white;
+}
+
+.MultiColumn {
+   -webkit-column-width: 350px;
+   -moz-column-width: 350px;
+   -column-width: 350px;
+   -webkit-column-count: 5; 
+   -moz-column-count: 5; 
+   column-count: 5;
+   -moz-column-gap: 1em;
+   -webkit-column-gap: 1em;
+   column-gap: 1em;
+   -moz-column-fill: initial; 
+   column-fill: initial;
+}
+
+/* NavBar Properties */
+.NavBar {
+   display:inline-block;
+   list-style-type: none;
+   margin: 0 auto;
+   padding: 0;
+}
+.NavBar li {
+   float: left;
+}
+.NavBar a { 
+   display: block;
+   padding: 3px;
+   text-decoration: none;
+}
+/* End NavBar */
+
+.Error {
+	color:red;
+	display:inline-block;
+	vertical-align: center;
+}
+.Information {
+	color:green;
+	display:inline-block;
+	vertical-align: center;
+}
+.Bold {
+   font-weight:bold;
+}
+
+.Center {
+   text-align: center;
+}
+.Button {
+   float: right;
+   margin-left:5px;
+}
+
+.SaveButton {
+	float: right;
+   margin-left:5px;
+   background:url("images/save.png");
+   background-size: cover;
+}
+
+.ButtonLeft {
+   float: Left;
+   padding-right: 5px;
+}
+	
+.ButtonLeftAssignment {
+	position:relative;
+	top:-5px;
+}
+
+.ButtonLeftDevices {
+	display:table;
+	position:relative;
+	left:-105px;
+	margin-top:-40px;
+	width: 50px;
+}
+
+.ButtonText {
+	display:inline-block;
+	position:relative;
+	float: Left;
+	right: 5px;
+	font-size: 12px;
+	padding-right: 3px;
+}
+
+.ViewButton {
+	display:inline-block;
+   position:relative;
+	right:-155px;
+	top:-80px;
+	height: 0px;
+}
+.ViewButtonMobile {
+	display:inline-block;
+   position:relative;
+	right:-155px;
+	top:-83px;
+	height: 0px;
+}
+.ViewButtonUser {
+	display:inline-block;
+   position:relative;
+	right:-100px;
+	top:-55px;
+	height: 0px;
+}
+.ChartBottomBar {
+	position: relative;
+	width: 330px;
+	height: 0;
+}
+.ChartBackLink {
+	position:relative;
+	top:-20px;
+}
+
+.InputWidthFull {
+	width: 100%;
+}
+
+.InputWidthLarge {
+	width: 180px;
+}
+
+.InputWidthSmall {
+	width: 80px;
+}
+
+.InputWidthMedium {
+	width: 140px;
+}
+
+.InputWidthDate {
+	width: 70px;
+}
+
+.Header {
+	display:inline-block;
+	text-align:center;
+	font-size:1.25em;	
+	margin-left:auto; 
+	margin-right:auto;
+	margin-bottom:0px;
+	width:350px;
+	white-space: nowrap;  
+   overflow: visible;
+}
+.Version {
+	margin-left:auto; 
+	margin-right:auto; 
+	width:300px;
+	position:relative;
+	font-size:1em;
+	white-space: nowrap;  
+   overflow: visible;
+   margin-top: 10px;
+}
+.CopyRight {
+	margin-left:auto; 
+	margin-right:auto; 
+	width:300px;
+	position:relative;
+	font-size:1em;
+	white-space: nowrap;  
+  overflow: visible;
+  margin-top: 10px;
+}
+.your-clock {
+	zoom: 0.5;
+   -moz-transform: scale(0.5);
+}
+.ButtonOne {
+   position: relative;
+   left: 300px;
+   bottom: 20px;
+   width: 25px;
+   height: 0px;
+}
+
+.ButtonTwo {
+   position: relative;
+   left: 275px;
+   bottom: 20px;
+   width: 25px; 
+   height: 0px;
+}
+
+.ButtonThree {
+   position: relative;
+   left: 250px;
+   bottom: 20px;
+   width: 25px; 
+   height: 0px;
+}
+
+.ButtonThree {
+   position: relative;
+   left: 225px;
+   bottom: 20px;
+   width: 25px; 
+   height: 0px;
+}
+
+/* Header card properties */
+div.HeaderCard {
+   background-color: white;
+   color: black;
+   width: 275px;
+   border: 1px solid black;
+   margin: 5px;
+   display: block;
+   border-radius: 10px;
+   box-shadow: 4px 4px 8px 0 #BFBFBF;
+   transition: 0.3s;
+   text-align: left;
+   padding: 7px;
+   vertical-align: top;
+   margin-left: auto;
+   margin-right: auto;
+   overflow: hidden;
+}
+/* End header card */
+
+/* Site Error card properties */
+div.SiteErrorCard {
+   background-color: #8C1C1C;
+   color: white;
+   width: 330px;
+   border: 1px solid black;
+   margin: 5px;
+   display: block;
+   border-radius: 10px;
+   box-shadow: 4px 4px 8px 0 #BFBFBF;
+   transition: 0.3s;
+   text-align: left;
+   padding: 7px;
+   vertical-align: top;
+   margin-left: auto;
+   margin-right: auto;
+   overflow: hidden;
+}
+/* End Site error card */
+
+/* Generic card properties */
+div.Card {
+   width: 330px;
+   border: 1px solid black;
+   margin: 5px;
+   display:inline-block;
+   border-radius: 10px;
+   box-shadow: 4px 4px 8px 0 #BFBFBF;
+   transition: 0.3s;
+   text-align: left;
+   padding: 7px;
+   vertical-align: top;
+}
+
+img, img.scale-with-grid { outline: 0; max-width: 100%; height: auto; }
+/* 3 Column Wide card properties */
+div.Col3Card {
+   width: 990px;
+   border: 1px solid black;
+   margin: 5px;
+   display:inline-block;
+   border-radius: 10px;
+   box-shadow: 4px 4px 8px 0 #BFBFBF;
+   transition: 0.3s;
+   text-align: left;
+   padding: 7px;
+   vertical-align: top;
+}
+div.Col3CardTitle {
+	width: 1004px;
+	text-align:center;
+   background-color: #0B0B61; /* 0B0B61 461B7E */
+   color: white;
+   border: 1px solid black;
+   border-radius: 10px 10px 0px 0px;
+   padding-bottom: 5px;
+   padding-top: 5px;
+   transition: 0.3s;
+   position: relative;
+   left: -8px;
+   top: -8px;
+}
+.flip {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.front {
+	
+}
+
+.back {
+	
+}
+
+div.Card:hover, div.SiteErrorCard:hover, div.HeaderCard:hover, div.IconBar:hover, div.Col3Card:hover {
+	box-shadow: 6px 6px 12px 0 #E8E8E8;
+}
+
+div.CardTitle {
+   text-align:center;
+   background-color: #0B0B61; /* 0B0B61 461B7E */
+   color: white;
+   border: 1px solid black;
+   border-radius: 10px 10px 0px 0px;
+   padding-bottom: 5px;
+   padding-top: 5px;
+   width: 344px;
+   position: relative;
+   left: -8px;
+   top: -8px;
+}
+
+.CardTitle a:link, .CardTitle a:visited {
+   color:White !important;
+}
+.Card a:link, .Card a:visited   {
+   color:black;
+}
+input.Card {
+   background-color : #E8E8E8;
+}
+textarea.Card {
+   background-color : #E8E8E8;
+}
+select.Card {
+   background-color : #E8E8E8;
+}
+/* End Generic card properties */
+
+.Chart {
+	overflow : hidden;
+}
+
+/* Two column card properties */
+div.CardColumn1 {
+   display:inline-block;
+   width: 125px;
+   margin-bottom: .5em;
+   vertical-align: top;
+}
+div.CardColumn2 {
+   display:inline-block;
+   white-space: nowrap; 
+   width: 195px; 
+   overflow: hidden;
+   text-overflow: ellipsis; 
+   vertical-align: middle;
+}
+div.CardMerged {
+   margin-bottom: .5em;
+   white-space: nowrap; 
+   overflow: hidden;
+   text-overflow: ellipsis; 
+}
+/* End two column card */
+
+/* Card with photo  */
+div.ImageSectionInCard {
+	height: 130px;
+	width: 100px;
+	display:inline-block;
+	vertical-align: text-top;
+}
+div.RightOfImageInCard {
+	width: 210px;
+	display:inline-block; 
+	vertical-align: text-top;
+}
+div.ImageSectionInAssignmentCard {
+	height: 120px;
+	width: 100px;
+	display:inline-block;
+	vertical-align: text-top;
+}
+div.RightOfImageInAssignmentCard {
+	height: 130px;
+	width: 225px;
+	display:inline-block; 
+	vertical-align: text-top;
+}
+div.PhotoCardColumn1 { 
+   display:inline-block;
+   width: 50px;
+   margin-bottom: .5em;
+   vertical-align: top;
+}
+div.PhotoCardColumn2 {
+   white-space: nowrap; 
+   display:inline-block; 
+   width: 150px; 
+   overflow: hidden;
+   text-overflow: ellipsis; 
+}
+div.PhotoCardColumn2Long { 
+   display:inline-block;
+   white-space: nowrap;  
+   overflow: hidden;
+   text-overflow: ellipsis; 
+   width: 150px; 
+}
+/* End card with photo */
+
+/* Settings for colored cards */
+div.NormalCard {
+   background-color: white;
+   color: black;
+}
+div.DisabledCard {
+   background-color: #8C1C1C;
+   color: white;
+}
+.DisabledCard a:link, .DisabledCard a:visited   {
+   color: white;
+}
+div.OldAssignmentCard {
+   background-color: gray;
+   color: black;
+}
+div.WarningCard {
+   background-color: yellow;
+   color: black;
+}
+div.LoanedCard {
+   background-color: #B45F04;
+   color: white;
+}
+.LoanedCard a:link, .LoanedCard a:visited   {
+   color: white;
+}
+div.DisabledSectionInCard {
+   background-color: #8C1C1C;
+   color: white;
+   margin: -7px;
+   padding: 7px;
+}
+.DisabledSectionInCard a:link, .DisabledSectionInCard a:visited   {
+   color: white;
+}
+div.WarningSectionInCard {
+   background-color: yellow;
+   color: black;
+   margin: -7px;
+   padding: 7px;
+}
+.WarningSectionInCard a:link, .WarningSectionInCard a:visited   {
+   color: black;
+}
+
+/* End colored cards */
+
+/* List view table  */
+table.ListView {
+   width:100%;
+   height:100%;
+   margin:0px;padding:0px;
+}
+.ListView th {
+   vertical-align:middle;
+   border:1px solid #000000;
+   border-width:0px 1px 1px 0px;
+   text-align:center;
+   vertical-align:middle;
+   color: black;
+   padding: 5px;
+}
+.ListView td {
+   vertical-align:middle;
+   border:1px solid #000000;
+   border-width:0px 1px 1px 0px;
+   text-align:left;
+   color: black;
+   padding: 5px;
+}
+
+.ListView td#center{
+   vertical-align:middle;
+   border:1px solid #000000;
+   border-width:0px 1px 1px 0px;
+   text-align:center;
+   color: black;
+   padding: 5px;
+}
+.ListView a:link, .ListView a:visited {
+   color:black;
+}
+.Warning {
+   background-color:yellow !important;
+}
+.Loaned {
+   background-color:#B45F04 !important;
+}
+.Disabled {
+   background-color:#8C1C1C !important;
+   color: white !important;
+}
+.Disabled a:link, .Disabled a:visited   {
+   color: white;
+}
+.ListView th {
+	background-color:#ffffff;
+}
+.ListView tr:nth-child(odd) { 
+   background-color:#D3D3D3;
+}
+.ListView tr:nth-child(even) { 
+   background-color:#ffffff; 
+}
+
+.ListView tbody tr:nth-child(odd):hover {
+	background-color:#ACCEE6;
+}
+
+.ListView tbody tr:nth-child(even):hover {
+	background-color:#ACCEE6;
+}
+
+.dataTables_filter label {
+   color: white;
+}
+.dataTables_info {
+   color: white;
+}
+/* End list view table */
+
+.ui-autocomplete.ui-widget {
+	font-family: "Helvetica";
+	font-size: 14px;
+	text-align: left;
+}
+
+.ui-tooltip-content {
+	font-size:12pt;
+   font-family:"Helvetica";
+   white-space: pre-line;
+   text-align: left;
+}
+
+.ui-tooltip {
+    white-space: pre-line;
+}
+
+div.google-visualization-tooltip { 
+	pointer-events: none 
+}
+svg > g > g:last-child { 
+	pointer-events: none 
+}
+
+.Icon {
+   position : relative;
+   width: 20px;
+   height: 20px;
+   top: 3px
+}
+
+/* The overlay (background) */
+.overlay {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 99999; /* Sit on top */
+    padding-top: 200px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+}
+
+/* Overlay Content */
+.overlay-content {
+    position: relative;
+    background-color: #fefefe;
+    color: black; 
+    margin: auto;
+    padding: 7px;
+    border: 1px solid black;
+    width: 330px;
+    border-radius: 10px;
+    box-shadow: 6px 6px 10px 0 #BFBFBF;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    padding-right: 10px;
+}
+
+.close:hover,
+.close:focus {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.overlay-header {
+    padding: 2px 16px;
+    background-color: #461B7E;
+    color: white;
+    border-radius: 10px;
+}
+
+.overlay-body {
+	text-align: left;
+	display: inline-block;
+}
+
+.overlay-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+    border-radius: 10px;
+}

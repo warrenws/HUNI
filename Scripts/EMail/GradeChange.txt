@@ -1,0 +1,10 @@
+Good morning #RECIPIENT#,
+
+#FIRSTNAME# #LASTNAME# has changed grades.  Their user account has been updated to reflect this change.
+
+Username: #USERNAME#
+Password: #PASSWORD#
+
+#STUDENTURL#
+
+Thank you
