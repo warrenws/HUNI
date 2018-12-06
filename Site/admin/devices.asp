@@ -12,13 +12,13 @@ Option Explicit
 Dim strSiteVersion, bolShowLogout, strUser
 Dim objDeviceList, strSite, intDeviceCount, strView, intDeviceYear, strModel, strTags, strRoom
 Dim strAssigned, intTagCount, strStatus, strSearchMessage, strBackLink, strCardType, strColumns
-Dim strNotes, strMake, strDeviceType, objLastNames, objUserList
+Dim strNotes, strMake, strDeviceType, objLastNames, objUserList, strInternalIP, strExternalIP
 
 'See if the user has the rights to visit this page
 If AccessGranted Then
-   ProcessSubmissions 
+	ProcessSubmissions 
 Else
-   DenyAccess
+	DenyAccess
 End If %>
 
 <%Sub ProcessSubmissions  
@@ -37,84 +37,95 @@ End If %>
 	strAssigned = Request.QueryString("Assigned")
 	strNotes = Request.QueryString("DeviceNotes")
 	strStatus = Request.QueryString("DeviceStatus")
+	strInternalIP = Request.QueryString("InternalIP")
+	strExternalIP = Request.QueryString("ExternalIP")
+	
 	strBackLink = BackLink
 	strCurrentPage = LCase(Right(Request.ServerVariables("URL"),Len(Request.ServerVariables("URL")) - InStrRev(Request.ServerVariables("URL"),"/")))
 	
 	'If nothing was submitted send them back to the index page
-   If strSite = "" And intDeviceYear = "" And strMake = "" And strModel = "" And strRoom = "" And strTags = "" And strAssigned = "" And strStatus = "" And strNotes = "" And strDeviceType = "" Then
-   	If Request.QueryString("Source") <> "" Then
-   		Response.Redirect("search.asp?Error=NoDevicesFound")
-   	ElseIf strCurrentPage = "devices.asp" Then
-   		Response.Redirect("index.asp?Error=NoDevicesFound")
-   	Else
-   		Response.Redirect(Request.QueryString("Source") & "?Error=NoDevicesFound")
-   	End If
-   End If
+	If strSite = "" And intDeviceYear = "" And strMake = "" And strModel = "" And strRoom = "" And strTags = "" And strAssigned = "" And strStatus = "" And strNotes = "" And strDeviceType = "" And strInternalIP = "" And strExternalIP = "" Then
+		If Request.QueryString("Source") <> "" Then
+			Response.Redirect("search.asp?Error=NoDevicesFound")
+		ElseIf strCurrentPage = "devices.asp" Then
+			Response.Redirect("index.asp?Error=NoDevicesFound")
+		Else
+			Response.Redirect(Request.QueryString("Source") & "?Error=NoDevicesFound")
+		End If
+	End If
 
-   'Check and see if anything was submitted to the site
-   Select Case Request.Form("Submit")
-      Case "Save"
-      	SaveSearch
-         
-   End Select
-   
-   'Get the list of devices
+	'Check and see if anything was submitted to the site
+	Select Case Request.Form("Submit")
+		Case "Save"
+			SaveSearch
+			
+	End Select
+	
+	'Get the list of devices
 	strSQLWhere = "WHERE "
 	
 	If strDeviceType <> "" Then
-   	strSQLWhere = strSQLWhere & "Devices.DeviceType='" & Replace(strDeviceType,"'","''") & "' AND "
-   End If
+		strSQLWhere = strSQLWhere & "Devices.DeviceType='" & Replace(strDeviceType,"'","''") & "' AND "
+	End If
 	
 	If strMake <> "" Then
-   	strSQLWhere = strSQLWhere & "Devices.Manufacturer Like '%" & Replace(strMake,"'","''") & "%' AND "
-   End If
+		strSQLWhere = strSQLWhere & "Devices.Manufacturer Like '%" & Replace(strMake,"'","''") & "%' AND "
+	End If
 	
 	If strModel <> "" Then
-   	strSQLWhere = strSQLWhere & "Devices.Model Like '%" & Replace(strModel,"'","''") & "%' AND "
-   End If
-   
-   If strRoom <> "" Then
-   	strSQLWhere = strSQLWhere & "Devices.Room='" & Replace(strRoom,"'","''") & "' AND "
+		strSQLWhere = strSQLWhere & "Devices.Model Like '%" & Replace(strModel,"'","''") & "%' AND "
+	End If
+	
+	If strRoom <> "" Then
+		strSQLWhere = strSQLWhere & "Devices.Room='" & Replace(strRoom,"'","''") & "' AND "
 		
 		strSQL = "SELECT ID,FirstName,LastName,UserName,StudentID,ClassOf,HomeRoom,Role,DeviceCount,Active,Warning,Loaned,PWord,AUP,Site,Notes,PWordLastSet,PhoneNumber,RoomNumber,Description " & _
-   		"FROM People WHERE Active=True AND RoomNumber='" & Replace(strRoom,"'","''") & "'"
+		"FROM People WHERE Active=True AND RoomNumber='" & Replace(strRoom,"'","''") & "'"
 
 		If strSite <> "" Then
 			strSQL = strSQL & " AND Site='" & Replace(strSite,"'","''") & "'"
-		End If    	
-   	
-   	Set objUserList = Application("Connection").Execute(strSQL)
-   
-   Else
-   
-   	strSQL = "SELECT ID,FirstName,LastName,UserName,StudentID,ClassOf,HomeRoom,Role,DeviceCount,Active,Warning,Loaned,PWord,AUP,Site,Notes,PWordLastSet,PhoneNumber,RoomNumber,Description " & _
-   		"FROM People WHERE RoomNumber='NO ROOM NUMBER GIVEN'"
-   	Set objUserList = Application("Connection").Execute(strSQL)
-   
-   End If
+		End If	
+		
+		Set objUserList = Application("Connection").Execute(strSQL)
+	
+	Else
+	
+		strSQL = "SELECT ID,FirstName,LastName,UserName,StudentID,ClassOf,HomeRoom,Role,DeviceCount,Active,Warning,Loaned,PWord,AUP,Site,Notes,PWordLastSet,PhoneNumber,RoomNumber,Description " & _
+			"FROM People WHERE RoomNumber='NO ROOM NUMBER GIVEN'"
+		Set objUserList = Application("Connection").Execute(strSQL)
+	
+	End If
 	
 	If strSite <> "" Then
-      strSQLWhere = strSQLWhere & "Devices.Site = '" & strSite & "' AND "
-   End If
-   
-   If strNotes <> "" Then
-   	strSQLWhere = strSQLWhere & "Devices.Notes Like '%" & Replace(strNotes,"'","''") & "%' AND "
-   End If
-   
-   If intDeviceYear <> "" Then
+		strSQLWhere = strSQLWhere & "Devices.Site = '" & strSite & "' AND "
+	End If
+	
+	If strInternalIP <> "" Then
+		strSQLWhere = strSQLWhere & "Devices.InternalIP Like '%" & Replace(strInternalIP,"'","''") & "%' AND "
+	End If
+	
+	If strExternalIP <> "" Then
+		strSQLWhere = strSQLWhere & "Devices.ExternalIP Like '%" & Replace(strExternalIP,"'","''") & "%' AND "
+	End If
+	
+	If strNotes <> "" Then
+		strSQLWhere = strSQLWhere & "Devices.Notes Like '%" & Replace(strNotes,"'","''") & "%' AND "
+	End If
+	
+	If intDeviceYear <> "" Then
 		strSQLWhere = strSQLWhere & _
 		"Devices.DatePurchased>=#" & DateAdd("yyyy",intDeviceYear * -1,Date) & "# AND " & _
 		"Devices.DatePurchased<=#" & DateAdd("yyyy",(intDeviceYear -1) * -1,Date) & "# AND "
-   End If
-   
-   Select Case strAssigned
+	End If
+	
+	Select Case strAssigned
 		Case "Yes"
 			strSQLWhere = strSQLWhere & "Assigned=True AND "
 		Case "No"
 			strSQLWhere = strSQLWhere & "Assigned=False AND "
-   End Select
-   
-   Select Case strStatus
+	End Select
+	
+	Select Case strStatus
 		Case "Enabled"
 			strSQLWhere = strSQLWhere & "Devices.Active=True AND "
 		Case "Disabled"
@@ -122,10 +133,10 @@ End If %>
 		Case "All"
 		Case Else
 			strSQLWhere = strSQLWhere & "Devices.Active=True AND "
-   End Select
-   
-   strSQLWhere = strSQLWhere & "Devices.Deleted=False AND "
-   
+	End Select
+	
+	strSQLWhere = strSQLWhere & "Devices.Deleted=False AND "
+	
 	If strSQLWhere <> "WHERE " Then
 		strSQLWhere = Left(strSQLWhere,Len(strSQLWhere) - 5)
 	Else
@@ -137,7 +148,7 @@ End If %>
 		strSQL = "SELECT ID,LGTag,Manufacturer,Model,SerialNumber,Room,DatePurchased,Site,Active,FirstName,LastName,UserName,BOCESTag," & _
 			"HasInsurance,MACAddress,AppleID,Notes,DeviceType,InternalIP,ExternalIP,LastUser,OSVersion,ComputerName,LastCheckInDate,LastCheckInTime,HasEvent  FROM Devices "
 			strSQL = strSQL & strSQLWhere & " ORDER BY Devices.LGTag"
-   Else
+	Else
 		strSQL = "SELECT Devices.ID,Devices.LGTag,Devices.Manufacturer,Devices.Model,Devices.SerialNumber,Devices.Room," & _
 			"Devices.DatePurchased,Devices.Site,Devices.Active,Tags.Tag,FirstName,LastName,UserName,BOCESTag,HasInsurance," & _
 			"MACAddress,AppleID,Devices.Notes,DeviceType,InternalIP,ExternalIP,LastUser,OSVersion,ComputerName,LastCheckInDate,LastCheckInTime,HasEvent FROM Tags INNER JOIN " & _
@@ -153,30 +164,29 @@ End If %>
 
 		For intIndex = 0 to UBound(arrTags)
 			strSQL = strSQL & "Tags.Tag='" & Trim(Replace(arrTags(intIndex),"'","''")) & "' OR "
-		Next     
+		Next
 		strSQL = Left(strSQL,Len(strSQL) - 4)
 		strSQL = strSQL & " GROUP BY Devices.LGTag,Devices.Manufacturer,Devices.Model,Devices.SerialNumber,Devices.Room," & _
 			"Devices.DatePurchased,Devices.Site,Devices.Active,FirstName,LastName,UserName,BOCESTag,HasInsurance," & _
 			"MACAddress,AppleID,Devices.Notes,DeviceType,InternalIP,ExternalIP,LastUser,OSVersion,ComputerName,LastCheckInDate,LastCheckInTime,HasEvent ORDER BY Devices.LGTag"
-			  
 	End If
 
 	Set objDeviceList = Application("Connection").Execute(strSQL)
 
-   'If no user is found send them back to the index page.
-   If objDeviceList.EOF Then
-   	If Request.QueryString("Source") = "" Then
-   		Response.Redirect("search.asp?Error=NoDevicesFound")
-   	Else
-   		Response.Redirect(Request.QueryString("Source") & "?Error=NoDevicesFound")
-   	End If
+	'If no user is found send them back to the index page.
+	If objDeviceList.EOF Then
+		If Request.QueryString("Source") = "" Then
+			Response.Redirect("search.asp?Error=NoDevicesFound")
+		Else
+			Response.Redirect(Request.QueryString("Source") & "?Error=NoDevicesFound")
+		End If
 	Else
 		Do Until objDeviceList.EOF
 			If intTagCount > 0 Then
 				If objDeviceList(0) = intTagCount Then
 					intDeviceCount = intDeviceCount + 1
 				End If
-			Else   
+			Else
 				intDeviceCount = intDeviceCount + 1
 			End If
 			objDeviceList.MoveNext
@@ -185,31 +195,31 @@ End If %>
 	End If
 
 	'Get the list of lastnames for the auto complete
-   strSQL = "SELECT DISTINCT LastName FROM People WHERE Active=True"
-   Set objLastNames = Application("Connection").Execute(strSQL)
+	strSQL = "SELECT DISTINCT LastName FROM People WHERE Active=True"
+	Set objLastNames = Application("Connection").Execute(strSQL)
 
-   'Set up the variables needed for the site then load it
-   SetupSite
-   If LCase(strView) = "table" Then
-   	strSiteVersion = "Full"
-   End If
-   DisplaySite
-   
+	'Set up the variables needed for the site then load it
+	SetupSite
+	If LCase(strView) = "table" Then
+		strSiteVersion = "Full"
+	End If
+	DisplaySite
+	
 End Sub%>
 
 <%Sub DisplaySite %>
 
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-   <html>
-   <head>
-      <title><%=Application("SiteName")%></title> 
-      <link rel="stylesheet" type="text/css" href="../style.css" /> 
-      <link rel="apple-touch-icon" href="../images/inventory.png" /> 
-      <link rel="shortcut icon" href="../images/inventory.ico" />
-      <meta name="viewport" content="width=device-width,user-scalable=0" />
-      <meta name="theme-color" content="#333333">
-      <link rel="stylesheet" href="../assets/css/jquery-ui.css">
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+	<head>
+		<title><%=Application("SiteName")%></title> 
+		<link rel="stylesheet" type="text/css" href="../style.css" /> 
+		<link rel="apple-touch-icon" href="../images/inventory.png" /> 
+		<link rel="shortcut icon" href="../images/inventory.ico" />
+		<meta name="viewport" content="width=device-width,user-scalable=0" />
+		<meta name="theme-color" content="#333333">
+		<link rel="stylesheet" href="../assets/css/jquery-ui.css">
 		<script src="../assets/js/jquery.js"></script>
 		<script src="../assets/js/jquery-ui.js"></script>
 		<link rel="stylesheet" href="../assets/css/jquery.dataTables.min.css">
@@ -224,35 +234,35 @@ End Sub%>
 			
 			<%	If Not IsMobile And Not IsiPad Then%>
 					$( document ).tooltip({track: true});
-			<% End If %>	
+			<%	End If %>	
 				
-    			var table = $('#ListView').DataTable( {
-    				paging: false,
-    				"info": false,
-    				"autoWidth": false,
-    				"order": [[ 1, "asc" ]],
-    				dom: 'Bfrtip',
-    				// stateSave: true,
-    				buttons: [
+				var table = $('#ListView').DataTable( {
+					paging: false,
+					"info": false,
+					"autoWidth": false,
+					"order": [[ 1, "asc" ]],
+					dom: 'Bfrtip',
+					// stateSave: true,
+					buttons: [
 						{
 							extend: 'colvis',
 							text: 'Show/Hide Columns'
 						}
-				<% If Not IsMobile Then %>		
+				<%	If Not IsMobile Then %>		
 						,
 						{
 							extend: 'csvHtml5',
 							text: 'Download CSV',
 							title: 'Inventory - Devices'
 						}
-				<% End If %>
-        			]
-        		
-    			});
-    			
-    			<% If Not objLastNames.EOF Then %>
+				<%	End If %>
+					]
+				
+				});
+				
+				<%	If Not objLastNames.EOF Then %>
 						var possibleLastNames = [
-					<% Do Until objLastNames.EOF %>	
+					<%	Do Until objLastNames.EOF %>	
 							"<%=objLastNames(0)%>",
 						<%	objLastNames.MoveNext
 						Loop %>
@@ -260,35 +270,35 @@ End Sub%>
 						$( "#LastNames" ).autocomplete({
 							source: possibleLastNames
 						});
-				<% End If %>
-    			
-    	<% If IsMobile Then %>	
-    			table.columns([0,2,3,4,5,8,9,10,11,12,13,14,15,16,17]).visible(false);	
-    	<% Else %>		
+				<%	End If %>
+				
+		<%	If IsMobile Then %>	
+				table.columns([0,2,3,4,5,8,9,10,11,12,13,14,15,16,17]).visible(false);	
+		<%	Else %>		
 				table.columns([0,2,3,4,8,10,12,13,14,16,17]).visible(false);
-		<% End If %>
+		<%	End If %>
 				$('#body').show();
 
-    		} );
-    	</script>
-   </head>
+			} );
+		</script>
+	</head>
 
-   <body class="<%=strSiteVersion%>" id="body" style="display:none;">
-   
-      <div class="Header"><%=Application("SiteName")%> (<%=intDeviceCount%>)</div>
-      <div>
-         <ul class="NavBar" align="center">
-            <li><a href="index.asp"><img src="../images/home.png" title="Home" height="32" width="32"/></a></li>
-            <li><a href="search.asp"><img src="../images/search.png" title="Search" height="32" width="32"/></a></li>
-            <li><a href="stats.asp"><img src="../images/stats.png" title="Stats" height="32" width="32"/></a></li>
-            <li><a href="log.asp"><img src="../images/log.png" title="System Log" height="32" width="32"/></a></li>
-            <li><a href="add.asp"><img src="../images/add.png" title="Add Person or Device" height="32" width="32"/></a></li>
-            <li><a href="login.asp?action=logout"><img src="../images/logout.png" title="Log Out" height="32" width="32"/></a></li>
-         </ul>
-      </div>  
-      <%JumpToDevice%>
+	<body class="<%=strSiteVersion%>" id="body" style="display:none;">
+	
+		<div class="Header"><%=Application("SiteName")%> (<%=intDeviceCount%>)</div>
+		<div>
+			<ul class="NavBar" align="center">
+				<li><a href="index.asp"><img src="../images/home.png" title="Home" height="32" width="32"/></a></li>
+				<li><a href="search.asp"><img src="../images/search.png" title="Search" height="32" width="32"/></a></li>
+				<li><a href="stats.asp"><img src="../images/stats.png" title="Stats" height="32" width="32"/></a></li>
+				<li><a href="log.asp"><img src="../images/log.png" title="System Log" height="32" width="32"/></a></li>
+				<li><a href="add.asp"><img src="../images/add.png" title="Add Person or Device" height="32" width="32"/></a></li>
+				<li><a href="login.asp?action=logout"><img src="../images/logout.png" title="Log Out" height="32" width="32"/></a></li>
+			</ul>
+		</div>  
+		<%JumpToDevice%>
 
-<% If Not objDeviceList.EOF Then
+<%	If Not objDeviceList.EOF Then
 	
 		Select Case LCase(strView)
 			Case "table"
@@ -322,13 +332,13 @@ End Sub%>
 				End If
 		End Select
 		ShowChart
-      SaveAsSearch
-   End If %>
+		SaveAsSearch
+	End If %>
 	<div class="Version">Version <%=Application("Version")%></div>
 		<div class="CopyRight"><%=Application("Copyright")%></div>
-   </body>
+	</body>
 
-   </html>
+	</html>
 
 <%End Sub%>
 
@@ -336,9 +346,9 @@ End Sub%>
 
 	If IsMobile Then %>
 		<div class="ViewButtonMobile">
-<% Else %>
+<%	Else %>
 		<div class="ViewButton">
-<% End If %>
+<%	End If %>
 		<a href="<%=SwitchView("Table")%>"><img src="../images/table.png" title="Table View" height="32" width="32"/></a>
 	</div>
 	
@@ -346,7 +356,7 @@ End Sub%>
 
 <%	If Not objUserList.EOF Then
 		ShowUserCards
-   Else %>
+	Else %>
 		<div Class="<%=strColumns%>">
 <%	End If %>	
 	
@@ -359,13 +369,15 @@ End Sub%>
 			DrawCard
 		End If
 		objDeviceList.MoveNext
-   Loop  %>
+	Loop  %>
 	</div>
 <%End Sub%>
 
 <%Sub DrawCard
 
-	Dim objFSO, objUserList, strSQL, objTagList, strDeviceInfo
+	Dim objFSO, objUserList, strSQL, objTagList, strDeviceInfo, intRowCount
+	
+	intRowCount = 3
 	
 	Set objFSO = CreateObject("Scripting.FileSystemObject") 
 	
@@ -376,7 +388,7 @@ End Sub%>
 	
 	%>
 
-<% If objDeviceList(25) Then
+<%	If objDeviceList(25) Then
 		strCardType = "WarningCard"
 	ElseIf objDeviceList(8) Then
 		strCardType = "NormalCard"
@@ -386,31 +398,31 @@ End Sub%>
 	<div class="Card <%=strCardType%>">
 		<div class="CardTitle">
 
-		<% If objDeviceList(22) <> "" Then %>
-			<% If Application("MunkiReportServer") = "" Then %>
+		<%	If objDeviceList(22) <> "" Then %>
+			<%	If Application("MunkiReportServer") = "" Then %>
 					<div class="Button"><image src="../images/info.png" width="20" height="20" title="<%=strDeviceInfo%>"  />&nbsp;</div>
-			<% Else %>
+			<%	Else %>
 					<a href="<%=Application("MunkiReportServer")%>/index.php?/clients/detail/<%=objDeviceList(4)%>" target="_blank">
 						<div class="Button"><image src="../images/info.png" width="20" height="20" title="<%=strDeviceInfo%>"  />&nbsp;</div>
 					</a>
-			<% End If %>
-		<% End If %>
+			<%	End If %>
+		<%	End If %>
 		
-		<% If objDeviceList(13) Then %>
+		<%	If objDeviceList(13) Then %>
 				<image src="../images/yes.png" width="15" height="15" title="Insured" />
-		<% End If %>
+		<%	End If %>
 			<a href="device.asp?Tag=<%=objDeviceList(1)%><%=strBackLink%>">Asset Tag <%=objDeviceList(1)%></a>
 		</div>
 		<div Class="ImageSectionInCard">		
-		<% If objFSO.FileExists(Request.ServerVariables("APPL_PHYSICAL_PATH") & "images\devices\" & Replace(objDeviceList(3)," ","") & ".png") Then %>      
+		<%	If objFSO.FileExists(Request.ServerVariables("APPL_PHYSICAL_PATH") & "images\devices\" & Replace(objDeviceList(3)," ","") & ".png") Then %>      
 				<a href="device.asp?Tag=<%=objDeviceList(1)%><%=strBackLink%>"> 
 					<img class="PhotoCard" src="../images/devices/<%=Replace(objDeviceList(3)," ","")%>.png" width="96" />
 				</a>
-		<% Else %>
+		<%	Else %>
 				<a href="device.asp?Tag=<%=objDeviceList(1)%><%=strBackLink%>"> 
 					<img class="PhotoCard" src="../images/devices/missing.png" width="96" />
 				</a>
-		<% End If %>
+		<%	End If %>
 		
 	</div>		
 		<div Class="RightOfImageInCard">
@@ -425,62 +437,93 @@ End Sub%>
 			<div>
 				<div Class="PhotoCardColumn1">Serial: </div>
 				<div Class="PhotoCardColumn2">
-			<% Select Case objDeviceList(2)
+			<%	Select Case objDeviceList(2)
 					Case "Apple" %>
 						<a href="https://checkcoverage.apple.com/us/en/?sn=<%=objDeviceList(4)%>" target="_blank"><%=objDeviceList(4)%></a>
-				<% Case "Dell" %>
+				<%	Case "Dell" %>
 						<a href="http://www.dell.com/support/home/us/en/19/product-support/servicetag/<%=objDeviceList(4)%>" target="_blank"><%=objDeviceList(4)%></a>
-				<% Case Else %>
+				<%	Case Else %>
 						<%=objDeviceList(4)%>
-			 <% End Select %> 	
+			 <%	End Select %> 	
 				</div>
 			</div>
-		<% If objDeviceList(6) <> "" Then %>
+		<%	If objDeviceList(6) <> "" Then %>
 				<div>
 					<div Class="CardMerged">
 						Purchased: <%=ShortenDate(objDeviceList(6))%> - <a href="devices.asp?Year=<%=GetAge(objDeviceList(6))%>">Year <%=GetAge(objDeviceList(6))%></a>
 					</div>
 				</div>
-		<% End If %>
-		<% If objDeviceList(5) <> "" Then %>
+			<%	intRowCount = intRowCount + 1
+			End If %>
+		<%	If objDeviceList(5) <> "" Then %>
 			<div>
 				<div Class="PhotoCardColumn1">Room: </div>
 				<div Class="PhotoCardColumn2">
 					<a href="devices.asp?Room=<%=objDeviceList(5)%>&DeviceSite=<%=objDeviceList(7)%>&View=Card"><%=objDeviceList(5)%></a>
 				</div>
-			</div>
-		<% End If %>
-		<% strSQL = "SELECT Tag FROM Tags WHERE LGTag='" & objDeviceList(1) & "' ORDER BY Tag"
+			</div>			
+			<%	intRowCount = intRowCount + 1
+			End If %>
+		<%	strSQL = "SELECT Tag FROM Tags WHERE LGTag='" & objDeviceList(1) & "' ORDER BY Tag"
 			Set objTagList = Application("Connection").Execute(strSQL)
 		
 			If Not objTagList.EOF Then %>
 				<div>
 					<div Class="PhotoCardColumn1">Tags: </div>
 					<div Class="PhotoCardColumn2">
-			<% Do Until objTagList.EOF %>	
+			<%	Do Until objTagList.EOF %>	
 					<a href="devices.asp?Tags=<%=objTagList(0)%>"><%=objTagList(0)%></a>
-			<% 	objTagList.MoveNext
+			<%	objTagList.MoveNext
 				Loop %>
 					</div>
 				</div>
-		<% End If %>
+			<%	intRowCount = intRowCount + 1
+			End If %>
 
-		<% If objDeviceList(11) <> "" Then %>
+		<%	If objDeviceList(11) <> "" Then %>
 				<div>
 					<div Class="CardMerged">Assigned To: 
 						<a href="user.asp?UserName=<%=objDeviceList(11)%><%=strBackLink%>"><%=objDeviceList(9)%>&nbsp;<%=objDeviceList(10)%></a>
 					</div>
 				</div>
-		<%	End If %>
+			<%	intRowCount = intRowCount + 1
+			End If %>
 	
-		<% If objDeviceList(16) <> "" Then %>
-				<div>Device Notes: <%=Replace(objDeviceList(16),vbCRLF,"<br />")%> </div>
-		<% End If %>
+		<%	If objDeviceList(16) <> "" Then %>
+				<div>
+					<div Class="PhotoCardNotes">Device Notes: <%=Replace(objDeviceList(16),vbCRLF,"<br />")%> </div>
+				</div>
+			<%	intRowCount = intRowCount + 1
+			End If %>
+			
+		<%	Select Case intRowCount
+				Case 3 %>
+					<div>
+						<div Class="PhotoCardColumn1">&nbsp; </div>
+						<div Class="PhotoCardColumn2">
+							&nbsp;
+						</div>
+					</div>
+					<div>
+						<div Class="PhotoCardColumn1">&nbsp; </div>
+						<div Class="PhotoCardColumn2">
+							&nbsp;
+						</div>
+					</div>
+				
+			<%	Case 4 %>	
+					<div>
+						<div Class="PhotoCardColumn1">&nbsp; </div>
+						<div Class="PhotoCardColumn2">
+							&nbsp;
+						</div>
+					</div>
+		<%	End Select %>
 		
 		<%	If objDeviceList(18) <> "" Then %>
 			<br />
 		
-			<% DrawIcon "Remote",0,""
+			<%	DrawIcon "Remote",0,""
 			End If %>
 		</div>
 	</div>
@@ -491,9 +534,9 @@ End Sub%>
 
 		If IsMobile Then %>
 		<div class="ViewButtonMobile">
-<% Else %>
+<%	Else %>
 		<div class="ViewButton">
-<% End If %>
+<%	End If %>
 		<a href="<%=SwitchView("Card")%>"><img src="../images/card.png" title="Card View" height="32" width="32"/></a>
 	</div>
 	
@@ -522,7 +565,7 @@ End Sub%>
 			<th>Last Check In</th>
 			</thead>
 			<tbody>
-	<% Do Until objDeviceList.EOF 
+	<%	Do Until objDeviceList.EOF 
 		If intTagCount > 0 Then
 			If objDeviceList(0) = intTagCount Then
 				DrawRow
@@ -531,9 +574,9 @@ End Sub%>
 			DrawRow
 		End If
 		objDeviceList.MoveNext
-   Loop  %> 
+	Loop  %> 
 			</tbody>
-  	 	</table>	
+		</table>	
 	</div>
 <%End Sub %>
 
@@ -553,74 +596,74 @@ End Sub%>
 	
 	<tr<%=strRowClass%>>
 	
-	<% If objFSO.FileExists(Request.ServerVariables("APPL_PHYSICAL_PATH") & "images\devices\" & Replace(objDeviceList(3)," ","") & ".png") Then %>      
+	<%	If objFSO.FileExists(Request.ServerVariables("APPL_PHYSICAL_PATH") & "images\devices\" & Replace(objDeviceList(3)," ","") & ".png") Then %>      
 			<td <%=strRowClass%> id="center" width="1px">
 				<a href="device.asp?Tag=<%=objDeviceList(1)%><%=strBackLink%>"> 
-			<% If InStr(LCase(objDeviceList(3)),"ipad") Then %>
+			<%	If InStr(LCase(objDeviceList(3)),"ipad") Then %>
 					<img src="../images/devices/<%=Replace(objDeviceList(3)," ","")%>.png" width="52" />
-			<% Else %>
+			<%	Else %>
 					<img src="../images/devices/<%=Replace(objDeviceList(3)," ","")%>.png" width="72" />
-			<% End If %>
+			<%	End If %>
 				</a>
 			</td>
-	<% Else %>
+	<%	Else %>
 			<td <%=strRowClass%> id="center" width="1px">
 				<a href="device.asp?Tag=<%=objDeviceList(1)%><%=strBackLink%>"> 
 					<img class="PhotoCard" src="../images/devices/missing.png" width="72" />
 				</a>
 			</td>
-	<% End If %>
+	<%	End If %>
 	
 		<td <%=strRowClass%> id="center"><a href="device.asp?Tag=<%=objDeviceList(1)%><%=strBackLink%>"><%=objDeviceList(1)%></a></td>
 		<td <%=strRowClass%>><%=objDeviceList(12)%></td>
-		<% Select Case objDeviceList(2)
+		<%	Select Case objDeviceList(2)
 				Case "Apple" %>
 					<td <%=strRowClass%>><a href="https://checkcoverage.apple.com/us/en/?sn=<%=objDeviceList(4)%>" target="_blank"><%=objDeviceList(4)%></a></td>
-			<% Case "Dell" %>
+			<%	Case "Dell" %>
 					<td <%=strRowClass%>><a href="http://www.dell.com/support/home/us/en/19/product-support/servicetag/<%=objDeviceList(4)%>" target="_blank"><%=objDeviceList(4)%></a></td>
-			<% Case Else %>
+			<%	Case Else %>
 					<td <%=strRowClass%>><%=objDeviceList(4)%></td>
-		 <% End Select %> 
+		 <%	End Select %> 
 		<td <%=strRowClass%>><%=objDeviceList(17)%></td>
 		<td <%=strRowClass%>><%=objDeviceList(2)%></td>
 		<td <%=strRowClass%>><%=objDeviceList(3)%></td>
 		
-<% If objDeviceList(11) <> "" Then %>
+<%	If objDeviceList(11) <> "" Then %>
 		<td <%=strRowClass%>><a href="user.asp?UserName=<%=objDeviceList(11)%><%=strBackLink%>"><%=objDeviceList(10)%>, <%=objDeviceList(9)%></a></td>
-<% Else %>
+<%	Else %>
 		<td <%=strRowClass%>></td>
-<% End If %>	
+<%	End If %>	
 		<td <%=strRowClass%> id="center"><%=objDeviceList(7)%></td>
 		<td <%=strRowClass%>><a href="devices.asp?Room=<%=objDeviceList(5)%>&View=Table"><%=objDeviceList(5)%></a></td>
 		<td <%=strRowClass%> id="center"><%=objDeviceList(6)%></td>
-<% If objDeviceList(6) <> "" Then %>	
+<%	If objDeviceList(6) <> "" Then %>	
 		<td id="center"><a href="devices.asp?Year=<%=GetAge(objDeviceList(6))%>&View=Table"><%=GetAge(objDeviceList(6))%></a></td>
-<% Else %>
+<%	Else %>
 		<td <%=strRowClass%>>N/A</td>
-<% End If %>
-<% If objDeviceList(13) Then %>
+<%	End If %>
+<%	If objDeviceList(13) Then %>
 		<td <%=strRowClass%> id="center">Yes</td>
-<% Else %>
+<%	Else %>
 		<td <%=strRowClass%> id="center">No</td>
-<% End If %>
+<%	End If %>
 		<td <%=strRowClass%>><%=objDeviceList(14)%></td>
 		<td <%=strRowClass%>><%=objDeviceList(15)%></td>
 		<td <%=strRowClass%>>
-	<% strSQL = "SELECT Tag FROM Tags WHERE LGTag='" & objDeviceList(1) & "' ORDER BY Tag"
+	<%	strSQL = "SELECT Tag FROM Tags WHERE LGTag='" & objDeviceList(1) & "' ORDER BY Tag"
 		Set objTagList = Application("Connection").Execute(strSQL)
 	
 		If Not objTagList.EOF Then %>
-		<% Do Until objTagList.EOF %>	
+		<%	Do Until objTagList.EOF %>	
 				<a href="devices.asp?Tags=<%=objTagList(0)%>&View=Table"><%=objTagList(0)%></a>
-		<% 	objTagList.MoveNext
+		<%	objTagList.MoveNext
 			Loop %>
 	<%	End If %>	
 		</td>
-	<% If NOT IsNull(objDeviceList(16)) Then %>
+	<%	If NOT IsNull(objDeviceList(16)) Then %>
 			<td <%=strRowClass%>><%=Replace(objDeviceList(16),vbCRLF,"<br />")%></td>
-	<% Else %>
+	<%	Else %>
 			<td <%=strRowClass%>><%=objDeviceList(16)%></td>
-	<% End If%>	
+	<%	End If%>	
 		<td <%=strRowClass%> id="center"><%=objDeviceList(23)%></td>
 	</tr>
 
@@ -653,37 +696,37 @@ End Sub%>
 		
 			If objUserList(10) Then 
 				strCardType = "WarningCard"
-		 	ElseIf objUserList(11) Then 
+			ElseIf objUserList(11) Then 
 				strCardType = "LoanedCard"
 			ElseIf objUserList(9) Then 
 				strCardType = "NormalCard"
-		 	Else 
+			Else
 				strCardType = "DisabledCard"
 			End If %>
 			
 			<div class="Card <%=strCardType%>">
 				<div class="CardTitle">
-				<% If objUserList(7) = "Student" Then %>
-					<% If Application("ShowPasswords") Then %>
-						<% If objUserList(13) Then %>
+				<%	If objUserList(7) = "Student" Then %>
+					<%	If Application("ShowPasswords") Then %>
+						<%	If objUserList(13) Then %>
 								<image src="../images/yes.png" width="15" height="15" title="AUP Signed" />
-						<% Else %>
+						<%	Else %>
 								<image src="../images/no.png" width="15" height="15" title="AUP Not Signed" />
-						<% End If %>
-					<% End If %>
-				<% End If %>
+						<%	End If %>
+					<%	End If %>
+				<%	End If %>
 					<a href="user.asp?UserName=<%=objUserList(3)%><%=strBackLink%>"><%=objUserList(1) & " " & objUserList(2)%></a>
 				</div>
 				<div Class="ImageSectionInCard">
-				<% If objFSO.FileExists(Application("PhotoLocation") & "\" & objUserList(7) & "s\" & objUserList(4) & ".jpg") Then %>   
+				<%	If objFSO.FileExists(Application("PhotoLocation") & "\" & objUserList(7) & "s\" & objUserList(4) & ".jpg") Then %>   
 						<a href="user.asp?UserName=<%=objUserList(3)%><%=strBackLink%>">   
 							<img class="PhotoCard" src="/photos/<%=objUserList(7)%>s/<%=objUserList(4)%>.jpg" title="<%=objUserList(4)%>" width="96" />
 						</a>
-				<% Else %>
+				<%	Else %>
 						<a href="user.asp?UserName=<%=objUserList(3)%><%=strBackLink%>">
 							<img class="PhotoCard" src="/photos/<%=objUserList(7)%>s/missing.png" title="<%=objUserList(4)%>" width="96" />
 						</a>
-				<% End If %>
+				<%	End If %>
 			
 				</div>
 				<div Class="RightOfImageInCard">
@@ -693,7 +736,7 @@ End Sub%>
 						<a href="users.asp?Role=<%=objUserList(5)%>"><%=GetRole(objUserList(5))%></a>
 					</div>
 				</div>
-			<% If objUserList(7) = "Student" Then %>	
+			<%	If objUserList(7) = "Student" Then %>	
 					<div>
 						<div Class="PhotoCardColumn1">Guide: </div>
 						<div Class="PhotoCardColumn2Long">
@@ -701,13 +744,13 @@ End Sub%>
 						</div>
 					</div>
 				<%	If Application("ShowPasswords") Then %>
-				   <div>
+					<div>
 						<div Class="CardMerged">Username: <%=objUserList(3)%></div>
 					</div>
-				   <div>
+					<div>
 						<div Class="CardMerged">Password: <%=objUserList(12)%></div>
 					</div>
-				<% End If
+				<%	End If
 				Else 
 					
 					If Not IsNull(objUserList(16)) Then
@@ -718,11 +761,11 @@ End Sub%>
 					
 							<div Class="CardMerged">Password Changed: <%=ShortenDate(arrPWordLastSet(0))%></div>
 						
-						<% If intDaysRemaining > 10 Then %>
+						<%	If intDaysRemaining > 10 Then %>
 								<div Class="CardMerged">Days Remaining: <%=intDaysRemaining%></div>
-						<% ElseIf intDaysRemaining >= -500 Then %>
+						<%	ElseIf intDaysRemaining >= -500 Then %>
 								<div Class="CardMerged Error">Days Remaining: <%=intDaysRemaining%></div>
-						<% End If 
+						<%	End If 
 						
 						Else %>
 						
@@ -734,11 +777,11 @@ End Sub%>
 				<%	End If
 				End If %>
 				
-			<% If objUserList(17) <> "" Then %>
+			<%	If objUserList(17) <> "" Then %>
 				<div Class="CardMerged">Phone: <%=objUserList(17)%></div>
-			<% End If %>
+			<%	End If %>
 			
-			<% If objUserList(8) > 0 Then
+			<%	If objUserList(8) > 0 Then
 					
 					strSQL = "SELECT Assignments.LGTag,Devices.Model" & vbCRLF
 					strSQL = strSQL & "FROM Devices INNER JOIN Assignments ON Devices.LGTag = Assignments.LGTag" & vbCRLF
@@ -758,19 +801,18 @@ End Sub%>
 						<%=strDeviceList%>
 						</div>
 				<%	End If
-			   End If %>
-			   	</div>
-			<% If objUserList(15) <> "" Then %>
+				End If %>
+				</div>
+			<%	If objUserList(15) <> "" Then %>
 					<div>User Notes: <%=Replace(objUserList(15),vbCRLF,"<br />")%> </div>
-			<% End If %>
+			<%	End If %>
 			</div>
-			
-   
-      <% objUserList.MoveNext
-      Loop %>
 
-<% End If 
-   
+		<%	objUserList.MoveNext
+		Loop %>
+
+<%	End If 
+
 End Sub%>
 
 <%Sub ShowChart
@@ -793,12 +835,12 @@ End Sub%>
 						<div class="Col3CardTitle">24 Hour AP Usage</div>
 						<img src="<%=Application("LibreNMSServer")%>/graph.php?id=<%=objChartList(0)%>&type=port_bits&width=650&height=150&from=end-24h">
 					</div>
-			<% Else %>
+			<%	Else %>
 				<div class="Card NormalCard">
 					<div class="CardTitle">24 Hour AP Usage</div>
 					<img src="<%=Application("LibreNMSServer")%>/graph.php?id=<%=objChartList(0)%>&type=port_bits&width=300&height=150&from=end-24h">
 				</div>
-			<% End If 
+			<%	End If 
 				objChartList.MoveNext
 			Loop
 		End If
@@ -808,50 +850,58 @@ End Sub%>
 End Sub%>
 
 <%Function FilterBar
-   
-   If strSite <> "" Then
-   	FilterBar = FilterBar & "Site = <a href=""devices.asp?DeviceSite=" & strSite & """>" & strSite & "</a> | "
-   End If
-   
-   If intDeviceYear <> "" Then
-   	FilterBar = FilterBar & "Year = <a href=""devices.asp?Year=" & intDeviceYear & """>" & intDeviceYear & "</a> | "
-   End If
-   
-   If strDeviceType <> "" Then
-   	FilterBar = FilterBar & "Device Type = <a href=""devices.asp?DeviceType=" & strDeviceType & """>" & strDeviceType & "</a> | "
-   End If
-   
-   If strMake <> "" Then
-   	FilterBar = FilterBar & "Make = <a href=""devices.asp?Make=" & strMake & """>" & strMake & "</a> | "
-   End If
-   
-   If strModel <> "" Then
-   	FilterBar = FilterBar & "Model = <a href=""devices.asp?Model=" & strModel & """>" & strModel & "</a> | "
-   End If
-   
-   If strTags <> "" Then
-   	FilterBar = FilterBar & "Tags = <a href=""devices.asp?Tags=" & strTags & """>" & strTags & "</a> | "
-   End If
-   
-   If strRoom <> "" Then
-   	FilterBar = FilterBar & "Room = <a href=""devices.asp?Room=" & strRoom & """>" & strRoom & "</a> | "
-   End If
-   
-   If strAssigned <> "" Then
-   	FilterBar = FilterBar & "Assigned = <a href=""devices.asp?Assigned=" & strAssigned & """>" & strAssigned & "</a> | "
-   End If
-   
-   If strStatus <> "" Then
-   	FilterBar = FilterBar & "Status = <a href=""devices.asp?DeviceStatus=" & strStatus & """>" & strStatus & "</a> | "
-   End If
-   
-   If strNotes <> "" Then
-   	FilterBar = FilterBar & "Notes = <a href=""devices.asp?DeviceNotes=" & strNotes & """>" & strNotes & "</a> | "
-   End If
-   
-   If FilterBar <> "" Then
-   	FilterBar = Left(FilterBar,Len(FilterBar) - 3)
-   End If
+	
+	If strSite <> "" Then
+		FilterBar = FilterBar & "Site = <a href=""devices.asp?DeviceSite=" & strSite & """>" & strSite & "</a> | "
+	End If
+	
+	If intDeviceYear <> "" Then
+		FilterBar = FilterBar & "Year = <a href=""devices.asp?Year=" & intDeviceYear & """>" & intDeviceYear & "</a> | "
+	End If
+	
+	If strDeviceType <> "" Then
+		FilterBar = FilterBar & "Device Type = <a href=""devices.asp?DeviceType=" & strDeviceType & """>" & strDeviceType & "</a> | "
+	End If
+	
+	If strMake <> "" Then
+		FilterBar = FilterBar & "Make = <a href=""devices.asp?Make=" & strMake & """>" & strMake & "</a> | "
+	End If
+	
+	If strModel <> "" Then
+		FilterBar = FilterBar & "Model = <a href=""devices.asp?Model=" & strModel & """>" & strModel & "</a> | "
+	End If
+	
+	If strTags <> "" Then
+		FilterBar = FilterBar & "Tags = <a href=""devices.asp?Tags=" & strTags & """>" & strTags & "</a> | "
+	End If
+	
+	If strRoom <> "" Then
+		FilterBar = FilterBar & "Room = <a href=""devices.asp?Room=" & strRoom & """>" & strRoom & "</a> | "
+	End If
+	
+	If strAssigned <> "" Then
+		FilterBar = FilterBar & "Assigned = <a href=""devices.asp?Assigned=" & strAssigned & """>" & strAssigned & "</a> | "
+	End If
+	
+	If strStatus <> "" Then
+		FilterBar = FilterBar & "Status = <a href=""devices.asp?DeviceStatus=" & strStatus & """>" & strStatus & "</a> | "
+	End If
+	
+	If strInternalIP <> "" Then
+		FilterBar = FilterBar & "Internal IP = <a href=""devices.asp?InternalIP=" & strInternalIP & """>" & strInternalIP & "</a> | "
+	End If
+	
+	If strExternalIP <> "" Then
+		FilterBar = FilterBar & "External IP = <a href=""devices.asp?ExternalIP=" & strExternalIP & """>" & strExternalIP & "</a> | "
+	End If
+	
+	If strNotes <> "" Then
+		FilterBar = FilterBar & "Notes = <a href=""devices.asp?DeviceNotes=" & strNotes & """>" & strNotes & "</a> | "
+	End If
+	
+	If FilterBar <> "" Then
+		FilterBar = Left(FilterBar,Len(FilterBar) - 3)
+	End If
 
 End Function %>
 
@@ -866,7 +916,7 @@ End Function %>
 	Else
 		BackLink = "&Back=" & Server.UrlEncode(Request.QueryString("Back")) & "&Page=" & Request.QueryString("Page")
 	End If
-	 
+	
 End Function%>
 
 <%Sub DrawIcon(strIconType,intPosition,strURLData)
@@ -895,27 +945,27 @@ End Function%>
 			<a href="<%=Request.QueryString("Page")%>?<%=Request.QueryString("Back")%>" class="Button<%=strPosition%>">
 				<image src="../images/back.png" width="20" height="20" title="Return to Search Results"/>
 			</a>
-	<% Case "Log" %>
+	<%	Case "Log" %>
 			<a href="" class="Button<%=strPosition%>" id="logToggle">
 				<image src="../images/log.png" height="20" width="20" title="View Log">
 			</a>
 			
-	<% Case "Assignments" %>	
+	<%	Case "Assignments" %>	
 			<a href="" class="Button<%=strPosition%>" id="assignmentsToggle">
 				<image src="../images/assignment.png" height="20" width="20" title="View Old Assignments">
 			</a>
 	
-	<% Case "Events" %>
+	<%	Case "Events" %>
 			<a href="" class="Button<%=strPosition%>" id="eventsToggle">
 				<image src="../images/event.png" height="20" width="20" title="View Events">
 			</a>
 			
-	<% Case "ViewAll" %>
+	<%	Case "ViewAll" %>
 			<a href="" class="Button<%=strPosition%>" id="viewAllToggle">
 				<image src="../images/viewall.png" height="20" width="20" title="View All">
 			</a>
 	
-	<% Case "Remote" %>
+	<%	Case "Remote" %>
 			<div class="ButtonLeftDevices">
 			<a href="vnc://<%=objDeviceList(18)%>:5900" class="ButtonLeft" >
 				<image src="../images/remote.png" height="20" width="20" title="Remote Control">
@@ -939,22 +989,22 @@ End Sub %>
 	<br />
 	
 	<div class="Card NormalCard">
-      <form method="POST" action="<%=strPage%>">
-     	 	<div class="CardTitle">Save Search</div>
-      	<div Class="CardColumn1">Search Name:</div>
-         <div Class="CardColumn2">
-				<input class="Card InputWidthLarge" type="text" name="SearchName""/>
+		<form method="POST" action="<%=strPage%>">
+			<div class="CardTitle">Save Search</div>
+		<div Class="CardColumn1">Search Name:</div>
+		<div Class="CardColumn2">
+			<input class="Card InputWidthLarge" type="text" name="SearchName""/>
 			</div>
-         <div>
-            <div class="Button"><input type="submit" value="Save" name="Submit" /></div>
-         </div>
-      <% If strSearchMessage <> "" Then %>
-   		<div>
-   			<%=strSearchMessage%>
-   		</div>
-   <% End If %> 
-      </form>
-      </div>
+		<div>
+			<div class="Button"><input type="submit" value="Save" name="Submit" /></div>
+		</div>
+		<%	If strSearchMessage <> "" Then %>
+		<div>
+			<%=strSearchMessage%>
+		</div>
+		<%	End If %> 
+		</form>
+	</div>
 
 <%End Sub%>
 
@@ -1003,29 +1053,29 @@ End Function%>
 
 <%Function GetRole(intYear)
 
-   Dim datToday, intMonth, intCurrentYear, intGrade, strSQL, objRole
-   
-   'If they're an adult then get their role from the database
-   If intYear <= 1000 Then
-   	strSQL = "SELECT Role FROM Roles WHERE RoleID=" & intYear
-   	Set objRole = Application("Connection").Execute(strSQL)
-   	
-   	If Not objRole.EOF Then
-   		GetRole = objRole(0)
-   	End If
-   End If 
-      
-   'Convert the graduating year to a grade
-   datToday = Date
-   intMonth = DatePart("m",datToday)
-   intCurrentYear = Right(DatePart("yyyy",datToday),2)
-   intYear = Right(intYear,2)
+	Dim datToday, intMonth, intCurrentYear, intGrade, strSQL, objRole
+	
+	'If they're an adult then get their role from the database
+	If intYear <= 1000 Then
+		strSQL = "SELECT Role FROM Roles WHERE RoleID=" & intYear
+		Set objRole = Application("Connection").Execute(strSQL)
+		
+		If Not objRole.EOF Then
+			GetRole = objRole(0)
+		End If
+	End If 
+		
+	'Convert the graduating year to a grade
+	datToday = Date
+	intMonth = DatePart("m",datToday)
+	intCurrentYear = Right(DatePart("yyyy",datToday),2)
+	intYear = Right(intYear,2)
 
-   If intMonth >= 7 And intMonth <= 12 Then
-      intCurrentYear = intCurrentYear + 1
-   End If
+	If intMonth >= 7 And intMonth <= 12 Then
+		intCurrentYear = intCurrentYear + 1
+	End If
 
-   intGrade = 12 - (intYear - intCurrentYear)
+	intGrade = 12 - (intYear - intCurrentYear)
 
 	If GetRole = "" Then
 	
@@ -1067,22 +1117,22 @@ End Function%>
 
 <%Function GetAge(strDate)
 
-   Dim strMonth, strDay, strYear, intIndex, datStartofYear, datEndofYear
-   
-   strMonth = Month(Date)
-   strDay = Day(Date)
-   strYear = Year(Date)
-   
-   For intIndex = 0 to 100 
-   
-      datStartofYear = strMonth & "/" & strDay & "/" & strYear - intIndex - 1
-      datEndofYear = strMonth & "/" & strDay & "/" & strYear - intIndex
-      If CDate(strDate) >= CDate(datStartofYear) And CDate(strDate) <= CDate(datEndofYear)  Then
-         GetAge = intIndex + 1
-         Exit For
-      End If
-      
-   Next
+	Dim strMonth, strDay, strYear, intIndex, datStartofYear, datEndofYear
+	
+	strMonth = Month(Date)
+	strDay = Day(Date)
+	strYear = Year(Date)
+	
+	For intIndex = 0 to 100 
+	
+		datStartofYear = strMonth & "/" & strDay & "/" & strYear - intIndex - 1
+		datEndofYear = strMonth & "/" & strDay & "/" & strYear - intIndex
+		If CDate(strDate) >= CDate(datStartofYear) And CDate(strDate) <= CDate(datEndofYear)  Then
+			GetAge = intIndex + 1
+			Exit For
+		End If
+		
+	Next
 	
 End Function %>
 
@@ -1204,183 +1254,183 @@ End Sub%>
 
 <%Sub DenyAccess 
 
-   'If we're not using basic authentication then send them to the login screen
-   If bolShowLogout Then
-      Response.Redirect("login.asp?action=logout")
-   Else
-   
-   SetupSite
-   
-   %>
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-   <html>
-   <head>
-      <title><%=Application("SiteName")%></title>
-      <link rel="stylesheet" type="text/css" href="../style.css" /> 
-      <link rel="apple-touch-icon" href="../images/inventory.png" /> 
-      <link rel="shortcut icon" href="../images/inventory.ico" />
-      <meta name="viewport" content="width=device-width" />
-   </head>
-   <body>
-      <center><b>Access Denied</b></center>
-   </body>
-   </html>
-   
-<% End If
+	'If we're not using basic authentication then send them to the login screen
+	If bolShowLogout Then
+		Response.Redirect("login.asp?action=logout")
+	Else
+	
+	SetupSite
+	
+	%>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+	<head>
+		<title><%=Application("SiteName")%></title>
+		<link rel="stylesheet" type="text/css" href="../style.css" /> 
+		<link rel="apple-touch-icon" href="../images/inventory.png" /> 
+		<link rel="shortcut icon" href="../images/inventory.ico" />
+		<meta name="viewport" content="width=device-width" />
+	</head>
+	<body>
+		<center><b>Access Denied</b></center>
+	</body>
+	</html>
+	
+<%End If
 
 End Sub%>
 
 <%Function AccessGranted
 
-   Dim objNetwork, strUserAgent, strSQL, strRole, objNameCheckSet
+	Dim objNetwork, strUserAgent, strSQL, strRole, objNameCheckSet
 
-   'Redirect the user the SSL version if required
-   If Application("ForceSSL") Then
-      If Request.ServerVariables("SERVER_PORT")=80 Then
-         If Request.ServerVariables("QUERY_STRING") = "" Then
-            Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL")
-         Else
-            Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL") & "?" & Request.ServerVariables("QUERY_STRING")
-         End If
-      End If
-   End If
+	'Redirect the user the SSL version if required
+	If Application("ForceSSL") Then
+		If Request.ServerVariables("SERVER_PORT")=80 Then
+			If Request.ServerVariables("QUERY_STRING") = "" Then
+				Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL")
+			Else
+				Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL") & "?" & Request.ServerVariables("QUERY_STRING")
+			End If
+		End If
+	End If
 
-   'Get the users logon name
-   Set objNetwork = CreateObject("WSCRIPT.Network")   
-   strUser = objNetwork.UserName
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the users logon name
+	Set objNetwork = CreateObject("WSCRIPT.Network")   
+	strUser = objNetwork.UserName
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check and see if anonymous access is enabled
-   If LCase(Left(strUser,4)) = "iusr" Then
-      strUser = GetUser
-      bolShowLogout = True
-   Else
-      bolShowLogout = False
-   End If
+	'Check and see if anonymous access is enabled
+	If LCase(Left(strUser,4)) = "iusr" Then
+		strUser = GetUser
+		bolShowLogout = True
+	Else
+		bolShowLogout = False
+	End If
 
-   'Build the SQL string, this will check the userlevel of the user.
-   strSQL = "Select Role" & vbCRLF
-   strSQL = strSQL & "From Sessions" & vbCRLF
-   strSQL = strSQL & "WHERE UserName='" & strUser & "' And SessionID='" & Request.Cookies("SessionID") & "'"
-   Set objNameCheckSet = Application("Connection").Execute(strSQL)
-   strRole = objNameCheckSet(0)
+	'Build the SQL string, this will check the userlevel of the user.
+	strSQL = "Select Role" & vbCRLF
+	strSQL = strSQL & "From Sessions" & vbCRLF
+	strSQL = strSQL & "WHERE UserName='" & strUser & "' And SessionID='" & Request.Cookies("SessionID") & "'"
+	Set objNameCheckSet = Application("Connection").Execute(strSQL)
+	strRole = objNameCheckSet(0)
 
-   If strRole = "Admin" Then
-      AccessGranted = True
-   Else
-      AccessGranted = False
-   End If
+	If strRole = "Admin" Then
+		AccessGranted = True
+	Else
+		AccessGranted = False
+	End If
 
 End Function%>
 
 <%Function GetUser
 
-   Const USERNAME = 1
+	Const USERNAME = 1
 
-   Dim strUserAgent, strSessionID, objSessionLookup, strSQL
-   
-   'Get some needed data
-   strSessionID = Request.Cookies("SessionID")
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
-   
-   'Send them to the logon screen if they don't have a Session ID
-   If strSessionID = "" Then
-      SendToLogonScreen
+	Dim strUserAgent, strSessionID, objSessionLookup, strSQL
+	
+	'Get some needed data
+	strSessionID = Request.Cookies("SessionID")
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	
+	'Send them to the logon screen if they don't have a Session ID
+	If strSessionID = "" Then
+		SendToLogonScreen
 
-   'Get the username from the database
-   Else
-   
-      strSQL = "SELECT ID,UserName,SessionID,IPAddress,UserAgent,ExpirationDate FROM Sessions "
-      strSQL = strSQL & "WHERE UserAgent='" & Left(Replace(strUserAgent,"'","''"),250) & "' And SessionID='" & Replace(strSessionID,"'","''") & "'"
-      strSQL = strSQL & " And ExpirationDate > Date()"
-      Set objSessionLookup = Application("Connection").Execute(strSQL)
-      
-      'If a session isn't found for then kick them out
-      If objSessionLookup.EOF Then
-         SendToLogonScreen
-      Else
-         GetUser = objSessionLookup(USERNAME)
-      End If
-   End If  
-   
+	'Get the username from the database
+	Else
+	
+		strSQL = "SELECT ID,UserName,SessionID,IPAddress,UserAgent,ExpirationDate FROM Sessions "
+		strSQL = strSQL & "WHERE UserAgent='" & Left(Replace(strUserAgent,"'","''"),250) & "' And SessionID='" & Replace(strSessionID,"'","''") & "'"
+		strSQL = strSQL & " And ExpirationDate > Date()"
+		Set objSessionLookup = Application("Connection").Execute(strSQL)
+		
+		'If a session isn't found for then kick them out
+		If objSessionLookup.EOF Then
+			SendToLogonScreen
+		Else
+			GetUser = objSessionLookup(USERNAME)
+		End If
+	End If
+	
 End Function%>
 
 <%Function IsMobile
 
-   Dim strUserAgent
+	Dim strUserAgent
 
-   'Get the User Agent from the client so we know what browser they are using
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the User Agent from the client so we know what browser they are using
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check the user agent for signs they are on a mobile browser
-   If InStr(strUserAgent,"iPhone") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"iPad") Then
-      IsMobile = False
-   ElseIf InStr(strUserAgent,"Android") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"Windows Phone") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"BlackBerry") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"Nintendo") Then
-      IsMobile = True 
-   ElseIf InStr(strUserAgent,"PlayStation Vita") Then
-      IsMobile = True
-   Else
-      IsMobile = False
-   End If 
-   
-   If InStr(strUserAgent,"Nexus 9") Then  
-      IsMobile = False
-   End If
+	'Check the user agent for signs they are on a mobile browser
+	If InStr(strUserAgent,"iPhone") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"iPad") Then
+		IsMobile = False
+	ElseIf InStr(strUserAgent,"Android") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"Windows Phone") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"BlackBerry") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"Nintendo") Then
+		IsMobile = True 
+	ElseIf InStr(strUserAgent,"PlayStation Vita") Then
+		IsMobile = True
+	Else
+		IsMobile = False
+	End If 
+	
+	If InStr(strUserAgent,"Nexus 9") Then  
+		IsMobile = False
+	End If
 End Function %>
 
 <%Function IsiPad
 
-   Dim strUserAgent
+	Dim strUserAgent
 
-   'Get the User Agent from the client so we know what browser they are using
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the User Agent from the client so we know what browser they are using
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check the user agent for signs they are on a mobile browser
-   If InStr(strUserAgent,"iPad") Then
-      IsiPad = True
-   Else
-   	IsiPad = False
-   End If
-   
+	'Check the user agent for signs they are on a mobile browser
+	If InStr(strUserAgent,"iPad") Then
+		IsiPad = True
+	Else
+		IsiPad = False
+	End If
+	
 End Function %>
 
 <%Sub SendToLogonScreen
 
-   Dim strReturnLink, strSourcePage
-      
-   'Build the return link before sending them away.
-   strReturnLink =  "?" & Request.ServerVariables("QUERY_STRING")
-   strSourcePage = Request.ServerVariables("SCRIPT_NAME")
-   strSourcePage = Right(strSourcePage,Len(strSourcePage) - InStrRev(strSourcePage,"/"))
-   If strReturnLink = "?" Then
-      strReturnLink = "?SourcePage=" & strSourcePage
-   Else
-      strReturnLink = strReturnLink & "&SourcePage=" & strSourcePage
-   End If
-   
-   Response.Redirect("login.asp" & strReturnLink)
-   
+	Dim strReturnLink, strSourcePage
+		
+	'Build the return link before sending them away.
+	strReturnLink =  "?" & Request.ServerVariables("QUERY_STRING")
+	strSourcePage = Request.ServerVariables("SCRIPT_NAME")
+	strSourcePage = Right(strSourcePage,Len(strSourcePage) - InStrRev(strSourcePage,"/"))
+	If strReturnLink = "?" Then
+		strReturnLink = "?SourcePage=" & strSourcePage
+	Else
+		strReturnLink = strReturnLink & "&SourcePage=" & strSourcePage
+	End If
+	
+	Response.Redirect("login.asp" & strReturnLink)
+	
 End Sub %>
 
 <%Sub SetupSite
-   
-   If IsMobile Then
-      strSiteVersion = "Mobile"
-   Else
-      strSiteVersion = "Full"
-   End If
-   
-   If Application("MultiColumn") Then
-  		strColumns = "MultiColumn"
-  	End If
-   
+	
+	If IsMobile Then
+		strSiteVersion = "Mobile"
+	Else
+		strSiteVersion = "Full"
+	End If
+	
+	If Application("MultiColumn") Then
+			strColumns = "MultiColumn"
+		End If
+	
 End Sub%>
