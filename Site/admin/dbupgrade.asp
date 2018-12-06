@@ -14,72 +14,72 @@ Dim strUpgradeMessage
 
 'See if the user has the rights to visit this page
 If AccessGranted Then
-   ProcessSubmissions 
+	ProcessSubmissions 
 Else
-   DenyAccess
+	DenyAccess
 End If %>
 
-<%Sub ProcessSubmissions  
+<%Sub ProcessSubmissions
 
-   'Check and see if anything was submitted to the site
-   Select Case Request.Form("Submit")
+	'Check and see if anything was submitted to the site
+	Select Case Request.Form("Submit")
 		Case "Upgrade Database"
-         UpgradeDatabase
-         UpdateLog "DatabaseUpgraded","","","","0.060",""
-   End Select
-   
-   'Get the URL used to submit forms
-   If Request.ServerVariables("QUERY_STRING") = "" Then
-      strSubmitTo = "dbupgrade.asp"
-   Else   
-      strSubmitTo = "dbupgrade.asp?" & Request.ServerVariables("QUERY_STRING")
-   End If
-   
-   'Set up the variables needed for the site then load it
-   SetupSite
-   DisplaySite
-   
+			UpgradeDatabase
+			UpdateLog "DatabaseUpgraded","","","","0.060",""
+	End Select
+	
+	'Get the URL used to submit forms
+	If Request.ServerVariables("QUERY_STRING") = "" Then
+		strSubmitTo = "dbupgrade.asp"
+	Else
+		strSubmitTo = "dbupgrade.asp?" & Request.ServerVariables("QUERY_STRING")
+	End If
+	
+	'Set up the variables needed for the site then load it
+	SetupSite
+	DisplaySite
+	
 End Sub%>
 
 <%Sub DisplaySite %>
 
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-   <html>
-   <head>
-      <title><%=Application("SiteName")%></title> 
-      <link rel="stylesheet" type="text/css" href="../style.css" /> 
-      <link rel="apple-touch-icon" href="../images/inventory.png" /> 
-      <link rel="shortcut icon" href="../images/inventory.ico" />
-      <meta name="viewport" content="width=device-width,user-scalable=0" />
-      <meta name="theme-color" content="#333333">
-      <link rel="stylesheet" href="../assets/css/jquery-ui.css">
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+	<head>
+		<title><%=Application("SiteName")%></title> 
+		<link rel="stylesheet" type="text/css" href="../style.css" /> 
+		<link rel="apple-touch-icon" href="../images/inventory.png" /> 
+		<link rel="shortcut icon" href="../images/inventory.ico" />
+		<meta name="viewport" content="width=device-width,user-scalable=0" />
+		<meta name="theme-color" content="#333333">
+		<link rel="stylesheet" href="../assets/css/jquery-ui.css">
 		<script src="../assets/js/jquery.js"></script>
 		<script src="../assets/js/jquery-ui.js"></script>
-   
-   	<script>
-   		$(function() {
-   		
-   		<%	If Not IsMobile And Not IsiPad Then%>
+	
+		<script>
+			$(function() {
+			
+			<%	If Not IsMobile And Not IsiPad Then%>
 					$( document ).tooltip({track: true});
-			<% End If %>
+			<%	End If %>
 			})
-   	</script>
-   
-   </head>
-   <body class="<%=strSiteVersion%>">
-   
-      <div class="Header"><%=Application("SiteName")%></div>
-      <div>
-         <ul class="NavBar" align="center">
+		</script>
+	
+	</head>
+	<body class="<%=strSiteVersion%>">
+	
+		<div class="Header"><%=Application("SiteName")%></div>
+		<div>
+			<ul class="NavBar" align="center">
 				<li><a href="index.asp"><img src="../images/home.png" title="Home" height="32" width="32"/></a></li>
-            <li><a href="search.asp"><img src="../images/search.png" title="Search" height="32" width="32"/></a></li>
-            <li><a href="stats.asp"><img src="../images/stats.png" title="Stats" height="32" width="32"/></a></li>
-            <li><a href="log.asp"><img src="../images/log.png" title="System Log" height="32" width="32"/></a></li>
-            <li><a href="add.asp"><img src="../images/add.png" title="Add Person or Device" height="32" width="32"/></a></li>
-            <li><a href="login.asp?action=logout"><img src="../images/logout.png" title="Log Out" height="32" width="32"/></a></li>
-         </ul>
-      </div>   
+				<li><a href="search.asp"><img src="../images/search.png" title="Search" height="32" width="32"/></a></li>
+				<li><a href="stats.asp"><img src="../images/stats.png" title="Stats" height="32" width="32"/></a></li>
+				<li><a href="log.asp"><img src="../images/log.png" title="System Log" height="32" width="32"/></a></li>
+				<li><a href="add.asp"><img src="../images/add.png" title="Add Person or Device" height="32" width="32"/></a></li>
+				<li><a href="login.asp?action=logout"><img src="../images/logout.png" title="Log Out" height="32" width="32"/></a></li>
+			</ul>
+		</div>   
 		<div Class="<%=strColumns%>"> 
 			<form method="POST" action="<%=strSubmitTo%>">
 				<div Class="HeaderCard">
@@ -90,9 +90,9 @@ End Sub%>
 		</div> 
 		<div class="Version">Version <%=Application("Version")%></div>
 		<div class="CopyRight"><%=Application("Copyright")%></div>
-   </body>
+	</body>
 
-   </html>
+	</html>
 
 <%End Sub%>
 
@@ -103,9 +103,9 @@ End Sub%>
 	
 	'Grab the catalog from the database.
 	Set objCatalog = CreateObject("ADOX.Catalog")
-   objCatalog.ActiveConnection = Application("Connection")
-   
-   'Check in see if the new tables are present
+	objCatalog.ActiveConnection = Application("Connection")
+	
+	'Check in see if the new tables are present
 	
 	bolLogTableFound = False
 	bolPendingTasksFound = False
@@ -116,16 +116,16 @@ End Sub%>
 	bolCheckInHistoryFound = False
 	bolLibreNMSFound = False
 	bolInternetTypes = False
-   For Each Table in objCatalog.Tables
-   	Select Case LCase(Table.Name)
-   		Case "log"
-   			bolLogTableFound = True
-   		Case "pendingtasks"
-   			bolPendingTasksFound = True
-   		Case "counthistory"
-   			bolCountHistoryFound = True
-   		Case "owed"
-      		bolOwedFound = True
+	For Each Table in objCatalog.Tables
+		Select Case LCase(Table.Name)
+			Case "log"
+				bolLogTableFound = True
+			Case "pendingtasks"
+				bolPendingTasksFound = True
+			Case "counthistory"
+				bolCountHistoryFound = True
+			Case "owed"
+				bolOwedFound = True
 			Case "purchasable"
 				bolPurchasableFound = True
 			Case "groupmappings"
@@ -138,11 +138,11 @@ End Sub%>
 				bolParentsFound = True
 			Case "internettypes"
 				bolInternetTypes = True
-   	End Select
-   Next
-   
-   '***********************************************************************************
-   
+		End Select
+	Next
+	
+	'***********************************************************************************
+	
 	'Check the People table for required fields.
 	bolHomeRoomEmailFound = False
 	bolAUPFound = False
@@ -166,149 +166,149 @@ End Sub%>
 	
 	Set objPeopleTable = objCatalog.Tables("People")
 	For Each Column in objPeopleTable.Columns
-      Select Case LCase(Column.Name)
-         Case "homeroomemail"
-            bolHomeRoomEmailFound = True
-         Case "aup"
-            bolAUPFound = True
-         Case "pword"
-            bolPWordFound = True
-         Case "notes"
-            bolNotesFound = True
-         Case "deleted"
-         	bolDeleted = True
-         Case "dateadded"
-         	bolDateAdded = True
-         Case "datedisabled"
-         	bolDateDisabled = True
-         Case "datedeleted"
-         	bolDateDeleted = True
-         Case "pwordlastset"
-         	bolPWordLastSet = True
-         Case "sex"
-         	bolSexFound = True
-         Case "birthday"
-         	bolBirthdayFound = True
-         Case "pending"
-         	bolPendingFound = True
-         Case "phonenumber"
-         	bolPhoneNumberFound = True
-         Case "roomnumber"
-         	bolRoomNumberFound = True
-         Case "description"
-         	bolDescriptionFound = True
-         Case "pwordneverexpires"
-         	bolPWordNeverExpires = True
-         Case "lastexternalcheckin"
-         	bolLastExternalCheckIn = True
-         Case "lastinternalcheckin"
-         	bolLastInternalCheckIn = True
-         Case "internetaccess"
-         	bolInternetAccessFound = True
-      End Select
-   Next
+		Select Case LCase(Column.Name)
+			Case "homeroomemail"
+				bolHomeRoomEmailFound = True
+			Case "aup"
+				bolAUPFound = True
+			Case "pword"
+				bolPWordFound = True
+			Case "notes"
+				bolNotesFound = True
+			Case "deleted"
+				bolDeleted = True
+			Case "dateadded"
+				bolDateAdded = True
+			Case "datedisabled"
+				bolDateDisabled = True
+			Case "datedeleted"
+				bolDateDeleted = True
+			Case "pwordlastset"
+				bolPWordLastSet = True
+			Case "sex"
+				bolSexFound = True
+			Case "birthday"
+				bolBirthdayFound = True
+			Case "pending"
+				bolPendingFound = True
+			Case "phonenumber"
+				bolPhoneNumberFound = True
+			Case "roomnumber"
+				bolRoomNumberFound = True
+			Case "description"
+				bolDescriptionFound = True
+			Case "pwordneverexpires"
+				bolPWordNeverExpires = True
+			Case "lastexternalcheckin"
+				bolLastExternalCheckIn = True
+			Case "lastinternalcheckin"
+				bolLastInternalCheckIn = True
+			Case "internetaccess"
+				bolInternetAccessFound = True
+		End Select
+	Next
 	
 	'Add the needed columns to the database
-   If NOT bolHomeRoomEmailFound Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add HomeRoomEmail TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolAUPFound Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add AUP BIT"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolPWordFound Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add PWord TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolNotesFound Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add Notes LONGTEXT WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
+	If NOT bolHomeRoomEmailFound Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add HomeRoomEmail TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolAUPFound Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add AUP BIT"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolPWordFound Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add PWord TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolNotesFound Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add Notes LONGTEXT WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
 	If NOT bolDeleted Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add Deleted BIT"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolDateAdded Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add DateAdded DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolDateDisabled Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add DateDisabled DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolDateDeleted Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add DateDeleted DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolPWordLastSet Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add PWordLastSet DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolSexFound Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add Sex TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolBirthdayFound Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add Birthday DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolPendingFound Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add Pending BIT"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolPhoneNumberFound Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add PhoneNumber TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolRoomNumberFound Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add RoomNumber TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolDescriptionFound Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add Description TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolPWordNeverExpires Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add PWordNeverExpires BIT"
-      Application("Connection").Execute(strSQL)
-   End If
-   If Not bolLastExternalCheckIn Then
-   	strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add LastExternalCheckIn DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If Not bolLastInternalCheckIn Then
-   	strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add LastInternalCheckIn DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolInternetAccessFound Then
-      strSQL = "ALTER TABLE People" & vbCRLF
-      strSQL = strSQL & "Add InternetAccess TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   
-   
-   '***********************************************************************************
-   
-   'Check the Devices table for required fields.
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add Deleted BIT"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolDateAdded Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add DateAdded DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolDateDisabled Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add DateDisabled DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolDateDeleted Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add DateDeleted DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolPWordLastSet Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add PWordLastSet DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolSexFound Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add Sex TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolBirthdayFound Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add Birthday DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolPendingFound Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add Pending BIT"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolPhoneNumberFound Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add PhoneNumber TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolRoomNumberFound Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add RoomNumber TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolDescriptionFound Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add Description TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolPWordNeverExpires Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add PWordNeverExpires BIT"
+		Application("Connection").Execute(strSQL)
+	End If
+	If Not bolLastExternalCheckIn Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add LastExternalCheckIn DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If Not bolLastInternalCheckIn Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add LastInternalCheckIn DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolInternetAccessFound Then
+		strSQL = "ALTER TABLE People" & vbCRLF
+		strSQL = strSQL & "Add InternetAccess TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	
+	
+	'***********************************************************************************
+	
+	'Check the Devices table for required fields.
 	bolMACAddressFound = False
 	bolAppleIDFound = False
 	bolNotesFound = False
@@ -326,133 +326,133 @@ End Sub%>
 	bolHasEvent = False
 	Set objDevicesTable = objCatalog.Tables("Devices")
 	For Each Column in objDevicesTable.Columns
-      Select Case LCase(Column.Name)
-         Case "macaddress"
-            bolMACAddressFound = True
-         Case "appleid"
-            bolAppleIDFound = True
-         Case "notes"
-            bolNotesFound = True
-         Case "deleted"
-         	bolDeleted = True
-         Case "dateadded"
-         	bolDateAdded = True
-         Case "datedisabled"
-         	bolDateDisabled = True
-         Case "datedeleted"
-         	bolDateDeleted = True
-         Case "devicetype"
-         	bolDeviceType = True
-         Case "internalip"
-         	bolInternalIPFound = True
-         Case "externalip"
-         	bolExternalIPFound = True
-         Case "lastuser"
-         	bolLastUser = True
-         Case "osversion"
-         	bolOSVersion = True
-         Case "lastcheckindate"
-         	bolLastCheckInDate = True
-         Case "lastcheckintime"
-         	bolLastCheckInTime = True
-	      Case "hasevent"
-	      	bolHasEvent = True
-	      End Select
-   Next
+		Select Case LCase(Column.Name)
+			Case "macaddress"
+				bolMACAddressFound = True
+			Case "appleid"
+				bolAppleIDFound = True
+			Case "notes"
+				bolNotesFound = True
+			Case "deleted"
+				bolDeleted = True
+			Case "dateadded"
+				bolDateAdded = True
+			Case "datedisabled"
+				bolDateDisabled = True
+			Case "datedeleted"
+				bolDateDeleted = True
+			Case "devicetype"
+				bolDeviceType = True
+			Case "internalip"
+				bolInternalIPFound = True
+			Case "externalip"
+				bolExternalIPFound = True
+			Case "lastuser"
+				bolLastUser = True
+			Case "osversion"
+				bolOSVersion = True
+			Case "lastcheckindate"
+				bolLastCheckInDate = True
+			Case "lastcheckintime"
+				bolLastCheckInTime = True
+			Case "hasevent"
+				bolHasEvent = True
+			End Select
+	Next
 	
 	'Add the needed columns to the database
 	If NOT bolMACAddressFound Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add MACAddress TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolAppleIDFound Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add AppleID TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolNotesFound Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add Notes LONGTEXT WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolDeleted Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add Deleted BIT"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolDateAdded Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add DateAdded DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolDateDisabled Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add DateDisabled DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolDateDeleted Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add DateDeleted DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolDeviceType Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add DeviceType TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolInternalIPFound Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add InternalIP TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolExternalIPFound Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add ExternalIP TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolLastUser Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add LastUser TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolOSVersion Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add OSVersion TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolLastCheckInDate Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add LastCheckInDate DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolLastCheckInTime Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add LastCheckInTime DATETIME"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolHasEvent Then
-      strSQL = "ALTER TABLE Devices" & vbCRLF
-      strSQL = strSQL & "Add HasEvent BIT"
-      Application("Connection").Execute(strSQL)
-      
-      strSQL = "SELECT LGTag FROM Events WHERE Resolved=False"
-      Set objDevicesWithOpenEvents = Application("Connection").Execute(strSQL)
-      
-      If Not objDevicesWithOpenEvents.EOF Then
-      	Do Until objDevicesWithOpenEvents.EOF
-      		strSQL = "UPDATE Devices SET HasEvent=True WHERE LGTag='" & objDevicesWithOpenEvents(0) & "'"
-      		Application("Connection").Execute(strSQL)
-      		objDevicesWithOpenEvents.MoveNext
-      	Loop
-      End If
-      
-   End If
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add MACAddress TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolAppleIDFound Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add AppleID TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolNotesFound Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add Notes LONGTEXT WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolDeleted Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add Deleted BIT"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolDateAdded Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add DateAdded DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolDateDisabled Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add DateDisabled DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolDateDeleted Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add DateDeleted DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolDeviceType Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add DeviceType TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolInternalIPFound Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add InternalIP TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolExternalIPFound Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add ExternalIP TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolLastUser Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add LastUser TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolOSVersion Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add OSVersion TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolLastCheckInDate Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add LastCheckInDate DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolLastCheckInTime Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add LastCheckInTime DATETIME"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolHasEvent Then
+		strSQL = "ALTER TABLE Devices" & vbCRLF
+		strSQL = strSQL & "Add HasEvent BIT"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "SELECT LGTag FROM Events WHERE Resolved=False"
+		Set objDevicesWithOpenEvents = Application("Connection").Execute(strSQL)
+		
+		If Not objDevicesWithOpenEvents.EOF Then
+			Do Until objDevicesWithOpenEvents.EOF
+				strSQL = "UPDATE Devices SET HasEvent=True WHERE LGTag='" & objDevicesWithOpenEvents(0) & "'"
+				Application("Connection").Execute(strSQL)
+				objDevicesWithOpenEvents.MoveNext
+			Loop
+		End If
+		
+	End If
 	
 	strSQL = "UPDATE EventTypes SET Active=False WHERE EventType='Notes'"
 	Application("Connection").Execute(strSQL)
 	
-   strUpgradeMessage = "Database Upgraded"
+	strUpgradeMessage = "Database Upgraded"
 
 	'***********************************************************************************
 
@@ -463,144 +463,144 @@ End Sub%>
 	bolCompletedBy = False
 	Set objDevicesTable = objCatalog.Tables("Events")
 	For Each Column in objDevicesTable.Columns
-      Select Case LCase(Column.Name)
-         Case "enteredby"
-            bolEnteredByFound = True
-         Case "site"
-            bolSiteFound = True
-         Case "model"
-            bolModelFound = True
-         Case "completedby"
-         	bolCompletedBy = True
-      End Select
-   Next
-   
-   'Add the needed columns to the database
+		Select Case LCase(Column.Name)
+			Case "enteredby"
+				bolEnteredByFound = True
+			Case "site"
+				bolSiteFound = True
+			Case "model"
+				bolModelFound = True
+			Case "completedby"
+				bolCompletedBy = True
+		End Select
+	Next
+	
+	'Add the needed columns to the database
 	If NOT bolEnteredByFound Then
-      strSQL = "ALTER TABLE Events" & vbCRLF
-      strSQL = strSQL & "Add EnteredBy TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolSiteFound Then
-      strSQL = "ALTER TABLE Events" & vbCRLF
-      strSQL = strSQL & "Add Site TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolModelFound Then
-      strSQL = "ALTER TABLE Events" & vbCRLF
-      strSQL = strSQL & "Add Model TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   If NOT bolCompletedBy Then
-      strSQL = "ALTER TABLE Events" & vbCRLF
-      strSQL = strSQL & "Add CompletedBy TEXT(255) WITH COMPRESSION"
-      Application("Connection").Execute(strSQL)
-   End If
-   
-   '***********************************************************************************
-   
-   'Fix the Roles table
-   bolRoleIDFound = False
+		strSQL = "ALTER TABLE Events" & vbCRLF
+		strSQL = strSQL & "Add EnteredBy TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolSiteFound Then
+		strSQL = "ALTER TABLE Events" & vbCRLF
+		strSQL = strSQL & "Add Site TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolModelFound Then
+		strSQL = "ALTER TABLE Events" & vbCRLF
+		strSQL = strSQL & "Add Model TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	If NOT bolCompletedBy Then
+		strSQL = "ALTER TABLE Events" & vbCRLF
+		strSQL = strSQL & "Add CompletedBy TEXT(255) WITH COMPRESSION"
+		Application("Connection").Execute(strSQL)
+	End If
+	
+	'***********************************************************************************
+	
+	'Fix the Roles table
+	bolRoleIDFound = False
 	Set objDevicesTable = objCatalog.Tables("Roles")
 	For Each Column in objDevicesTable.Columns
-      Select Case LCase(Column.Name)
-         Case "roleid"
-            bolRoleIDFound = True
-      End Select
-   Next
-   
-   'Check and see of the roles are still split into sites.  If so rebuild the roles
-   'table and fix all the existing accounts
-   If bolRoleIDFound Then
-   	strSQL = "SELECT ID FROM Roles WHERE RoleID=110"
-   	Set objRoleTest = Application("Connection").Execute(strSQL)
-   	
-   	If Not objRoleTest.EOF Then
-   		bolRoleIDFound = False
-   		
-   		strSQL = "UPDATE People SET ClassOf=20 WHERE ClassOf=50"
-   		'Application("Connection").Execute(strSQL)
-   		
-   		strSQL = "UPDATE People SET ClassOf=30 WHERE ClassOf=60"
-   		'Application("Connection").Execute(strSQL)
-   		
-   		strSQL = "UPDATE People SET ClassOf=40 WHERE ClassOf=70"
-   		'Application("Connection").Execute(strSQL)
-   		
-   		strSQL = "UPDATE People SET ClassOf=50 WHERE ClassOf=80"
-   		'Application("Connection").Execute(strSQL)
-   		
-   		strSQL = "UPDATE People SET ClassOf=50 WHERE ClassOf=90"
-   		'Application("Connection").Execute(strSQL)
-   		
-   		strSQL = "UPDATE People SET ClassOf=60 WHERE ClassOf=100"
-   		'Application("Connection").Execute(strSQL)
-   		
-   		strSQL = "UPDATE People SET ClassOf=60 WHERE ClassOf=110"
-   		'Application("Connection").Execute(strSQL)
-   		
-   	End If
-   	Set objRoleTest = Nothing
-   End If 
-   
-   'Rebuild the Roles table
-   If Not bolRoleIDFound Then
-   	strSQL = "DROP TABLE Roles"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "CREATE TABLE Roles ("
-   	strSQL = strSQL & "ID AUTOINCREMENT PRIMARY KEY,"
-   	strSQL = strSQL & "Role TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "RoleID INTEGER,"
-   	strSQL = strSQL & "Active BIT)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Tech Staff',10,True)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Teachers',20,True)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Staff',30,True)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('TAs',40,True)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Long Term Subs',50,True)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Student Teachers',60,True)"
-   	Application("Connection").Execute(strSQL)
-   	   	
-   End If
-   
-   'Add the latest roles if needed.
-   strSQL = "SELECT ID FROM Roles WHERE RoleID=120"
-   Set objRoleCheck = Application("Connection").Execute(strSQL)
-   
-   If objRoleCheck.EOF Then
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Custodians',70,True)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Kitchen',80,True)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Board of Education',90,True)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Bus Drivers',100,True)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Coaches',110,True)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Interns',120,True)"
-   	Application("Connection").Execute(strSQL)
-   	
-   	strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Outside Vendors',130,True)"
-   	Application("Connection").Execute(strSQL)
-   End If
+		Select Case LCase(Column.Name)
+			Case "roleid"
+				bolRoleIDFound = True
+		End Select
+	Next
+	
+	'Check and see of the roles are still split into sites.  If so rebuild the roles
+	'table and fix all the existing accounts
+	If bolRoleIDFound Then
+		strSQL = "SELECT ID FROM Roles WHERE RoleID=110"
+		Set objRoleTest = Application("Connection").Execute(strSQL)
+		
+		If Not objRoleTest.EOF Then
+			bolRoleIDFound = False
+			
+			strSQL = "UPDATE People SET ClassOf=20 WHERE ClassOf=50"
+			'Application("Connection").Execute(strSQL)
+			
+			strSQL = "UPDATE People SET ClassOf=30 WHERE ClassOf=60"
+			'Application("Connection").Execute(strSQL)
+			
+			strSQL = "UPDATE People SET ClassOf=40 WHERE ClassOf=70"
+			'Application("Connection").Execute(strSQL)
+			
+			strSQL = "UPDATE People SET ClassOf=50 WHERE ClassOf=80"
+			'Application("Connection").Execute(strSQL)
+			
+			strSQL = "UPDATE People SET ClassOf=50 WHERE ClassOf=90"
+			'Application("Connection").Execute(strSQL)
+			
+			strSQL = "UPDATE People SET ClassOf=60 WHERE ClassOf=100"
+			'Application("Connection").Execute(strSQL)
+			
+			strSQL = "UPDATE People SET ClassOf=60 WHERE ClassOf=110"
+			'Application("Connection").Execute(strSQL)
+			
+		End If
+		Set objRoleTest = Nothing
+	End If 
+	
+	'Rebuild the Roles table
+	If Not bolRoleIDFound Then
+		strSQL = "DROP TABLE Roles"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "CREATE TABLE Roles ("
+		strSQL = strSQL & "ID AUTOINCREMENT PRIMARY KEY,"
+		strSQL = strSQL & "Role TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "RoleID INTEGER,"
+		strSQL = strSQL & "Active BIT)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Tech Staff',10,True)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Teachers',20,True)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Staff',30,True)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('TAs',40,True)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Long Term Subs',50,True)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Student Teachers',60,True)"
+		Application("Connection").Execute(strSQL)
+				
+	End If
+	
+	'Add the latest roles if needed.
+	strSQL = "SELECT ID FROM Roles WHERE RoleID=120"
+	Set objRoleCheck = Application("Connection").Execute(strSQL)
+	
+	If objRoleCheck.EOF Then
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Custodians',70,True)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Kitchen',80,True)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Board of Education',90,True)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Bus Drivers',100,True)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Coaches',110,True)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Interns',120,True)"
+		Application("Connection").Execute(strSQL)
+		
+		strSQL = "INSERT INTO Roles (Role,RoleID,Active) VALUES ('Outside Vendors',130,True)"
+		Application("Connection").Execute(strSQL)
+	End If
 
 	'***********************************************************************************
 
@@ -608,46 +608,46 @@ End Sub%>
 	If Not bolLogTableFound Then
 	
 		strSQL = "CREATE TABLE Log ("
-   	strSQL = strSQL & "ID AUTOINCREMENT PRIMARY KEY,"
-   	strSQL = strSQL & "LGTag TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "UserName TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "EventNumber INTEGER,"
-   	strSQL = strSQL & "Type TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "OldValue TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "NewValue TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "UpdatedBy TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "LogDate DATETIME,"
-   	strSQL = strSQL & "LogTime DATETIME,"
-   	strSQL = strSQL & "Active BIT,"
-   	strSQL = strSQL & "Deleted BIT,"
-   	strSQL = strSQL & "OldNotes LONGTEXT WITH COMPRESSION,"
-   	strSQL = strSQL & "NewNotes LONGTEXT WITH COMPRESSION)"
-   	Application("Connection").Execute(strSQL)
+		strSQL = strSQL & "ID AUTOINCREMENT PRIMARY KEY,"
+		strSQL = strSQL & "LGTag TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "UserName TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "EventNumber INTEGER,"
+		strSQL = strSQL & "Type TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "OldValue TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "NewValue TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "UpdatedBy TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "LogDate DATETIME,"
+		strSQL = strSQL & "LogTime DATETIME,"
+		strSQL = strSQL & "Active BIT,"
+		strSQL = strSQL & "Deleted BIT,"
+		strSQL = strSQL & "OldNotes LONGTEXT WITH COMPRESSION,"
+		strSQL = strSQL & "NewNotes LONGTEXT WITH COMPRESSION)"
+		Application("Connection").Execute(strSQL)
 	End If
 
 	'Build the PendingTasks table if it's missing
 	If Not bolPendingTasksFound Then
 	
 		strSQL = "CREATE TABLE PendingTasks ("
-   	strSQL = strSQL & "ID AUTOINCREMENT PRIMARY KEY,"
-   	strSQL = strSQL & "Task TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "UserName TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "NewValue TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "UpdatedBy TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "TaskDate DATETIME,"
-   	strSQL = strSQL & "TaskTime DATETIME,"
-   	strSQL = strSQL & "Active BIT)"
-   	Application("Connection").Execute(strSQL)
+		strSQL = strSQL & "ID AUTOINCREMENT PRIMARY KEY,"
+		strSQL = strSQL & "Task TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "UserName TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "NewValue TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "UpdatedBy TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "TaskDate DATETIME,"
+		strSQL = strSQL & "TaskTime DATETIME,"
+		strSQL = strSQL & "Active BIT)"
+		Application("Connection").Execute(strSQL)
 	End If
 	
 	'Build the History table if it's missing
 	If Not bolCountHistoryFound Then
 		strSQL = "CREATE TABLE CountHistory ("
-   	strSQL = strSQL & "ID AUTOINCREMENT PRIMARY KEY,"
-   	strSQL = strSQL & "Role TEXT(255) WITH COMPRESSION,"
-   	strSQL = strSQL & "StudentCount INTEGER,"
-   	strSQL = strSQL & "RecordedDate DATETIME)"
-   	Application("Connection").Execute(strSQL)
+		strSQL = strSQL & "ID AUTOINCREMENT PRIMARY KEY,"
+		strSQL = strSQL & "Role TEXT(255) WITH COMPRESSION,"
+		strSQL = strSQL & "StudentCount INTEGER,"
+		strSQL = strSQL & "RecordedDate DATETIME)"
+		Application("Connection").Execute(strSQL)
 	End If
 	
 	'Build the Owed table if it's missing
@@ -984,183 +984,183 @@ End Sub%>
 
 <%Sub DenyAccess 
 
-   'If we're not using basic authentication then send them to the login screen
-   If bolShowLogout Then
-      Response.Redirect("login.asp?action=logout")
-   Else
-   
-   SetupSite
-   
-   %>
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-   <html>
-   <head>
-      <title><%=Application("SiteName")%></title>
-      <link rel="stylesheet" type="text/css" href="../style.css" /> 
-      <link rel="apple-touch-icon" href="../images/inventory.png" /> 
-      <link rel="shortcut icon" href="../images/inventory.ico" />
-      <meta name="viewport" content="width=device-width" />
-   </head>
-   <body>
-      <center><b>Access Denied</b></center>
-   </body>
-   </html>
-   
-<% End If
+	'If we're not using basic authentication then send them to the login screen
+	If bolShowLogout Then
+		Response.Redirect("login.asp?action=logout")
+	Else
+	
+	SetupSite
+	
+	%>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+	<head>
+		<title><%=Application("SiteName")%></title>
+		<link rel="stylesheet" type="text/css" href="../style.css" /> 
+		<link rel="apple-touch-icon" href="../images/inventory.png" /> 
+		<link rel="shortcut icon" href="../images/inventory.ico" />
+		<meta name="viewport" content="width=device-width" />
+	</head>
+	<body>
+		<center><b>Access Denied</b></center>
+	</body>
+	</html>
+	
+<%End If
 
 End Sub%>
 
 <%Function AccessGranted
 
-   Dim objNetwork, strUserAgent, strSQL, strRole, objNameCheckSet
+	Dim objNetwork, strUserAgent, strSQL, strRole, objNameCheckSet
 
-   'Redirect the user the SSL version if required
-   If Application("ForceSSL") Then
-      If Request.ServerVariables("SERVER_PORT")=80 Then
-         If Request.ServerVariables("QUERY_STRING") = "" Then
-            Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL")
-         Else
-            Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL") & "?" & Request.ServerVariables("QUERY_STRING")
-         End If
-      End If
-   End If
+	'Redirect the user the SSL version if required
+	If Application("ForceSSL") Then
+		If Request.ServerVariables("SERVER_PORT")=80 Then
+			If Request.ServerVariables("QUERY_STRING") = "" Then
+				Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL")
+			Else
+				Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL") & "?" & Request.ServerVariables("QUERY_STRING")
+			End If
+		End If
+	End If
 
-   'Get the users logon name
-   Set objNetwork = CreateObject("WSCRIPT.Network")   
-   strUser = objNetwork.UserName
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the users logon name
+	Set objNetwork = CreateObject("WSCRIPT.Network")   
+	strUser = objNetwork.UserName
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check and see if anonymous access is enabled
-   If LCase(Left(strUser,4)) = "iusr" Then
-      strUser = GetUser
-      bolShowLogout = True
-   Else
-      bolShowLogout = False
-   End If
+	'Check and see if anonymous access is enabled
+	If LCase(Left(strUser,4)) = "iusr" Then
+		strUser = GetUser
+		bolShowLogout = True
+	Else
+		bolShowLogout = False
+	End If
 
-   'Build the SQL string, this will check the userlevel of the user.
-   strSQL = "Select Role" & vbCRLF
-   strSQL = strSQL & "From Sessions" & vbCRLF
-   strSQL = strSQL & "WHERE UserName='" & strUser & "' And SessionID='" & Request.Cookies("SessionID") & "'"
-   Set objNameCheckSet = Application("Connection").Execute(strSQL)
-   strRole = objNameCheckSet(0)
+	'Build the SQL string, this will check the userlevel of the user.
+	strSQL = "Select Role" & vbCRLF
+	strSQL = strSQL & "From Sessions" & vbCRLF
+	strSQL = strSQL & "WHERE UserName='" & strUser & "' And SessionID='" & Request.Cookies("SessionID") & "'"
+	Set objNameCheckSet = Application("Connection").Execute(strSQL)
+	strRole = objNameCheckSet(0)
 
-   If strRole = "Admin" Then
-      AccessGranted = True
-   Else
-      AccessGranted = False
-   End If
+	If strRole = "Admin" Then
+		AccessGranted = True
+	Else
+		AccessGranted = False
+	End If
 
 End Function%>
 
 <%Function GetUser
 
-   Const USERNAME = 1
+	Const USERNAME = 1
 
-   Dim strUserAgent, strSessionID, objSessionLookup, strSQL
-   
-   'Get some needed data
-   strSessionID = Request.Cookies("SessionID")
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
-   
-   'Send them to the logon screen if they don't have a Session ID
-   If strSessionID = "" Then
-      SendToLogonScreen
+	Dim strUserAgent, strSessionID, objSessionLookup, strSQL
+	
+	'Get some needed data
+	strSessionID = Request.Cookies("SessionID")
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	
+	'Send them to the logon screen if they don't have a Session ID
+	If strSessionID = "" Then
+		SendToLogonScreen
 
-   'Get the username from the database
-   Else
-   
-      strSQL = "SELECT ID,UserName,SessionID,IPAddress,UserAgent,ExpirationDate FROM Sessions "
-      strSQL = strSQL & "WHERE UserAgent='" & Left(Replace(strUserAgent,"'","''"),250) & "' And SessionID='" & Replace(strSessionID,"'","''") & "'"
-      strSQL = strSQL & " And ExpirationDate > Date()"
-      Set objSessionLookup = Application("Connection").Execute(strSQL)
-      
-      'If a session isn't found for then kick them out
-      If objSessionLookup.EOF Then
-         SendToLogonScreen
-      Else
-         GetUser = objSessionLookup(USERNAME)
-      End If
-   End If  
-   
+	'Get the username from the database
+	Else
+	
+		strSQL = "SELECT ID,UserName,SessionID,IPAddress,UserAgent,ExpirationDate FROM Sessions "
+		strSQL = strSQL & "WHERE UserAgent='" & Left(Replace(strUserAgent,"'","''"),250) & "' And SessionID='" & Replace(strSessionID,"'","''") & "'"
+		strSQL = strSQL & " And ExpirationDate > Date()"
+		Set objSessionLookup = Application("Connection").Execute(strSQL)
+		
+		'If a session isn't found for then kick them out
+		If objSessionLookup.EOF Then
+			SendToLogonScreen
+		Else
+			GetUser = objSessionLookup(USERNAME)
+		End If
+	End If  
+	
 End Function%>
 
 <%Function IsMobile
 
-   Dim strUserAgent
+	Dim strUserAgent
 
-   'Get the User Agent from the client so we know what browser they are using
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the User Agent from the client so we know what browser they are using
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check the user agent for signs they are on a mobile browser
-   If InStr(strUserAgent,"iPhone") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"iPad") Then
-      IsMobile = False
-   ElseIf InStr(strUserAgent,"Android") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"Windows Phone") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"BlackBerry") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"Nintendo") Then
-      IsMobile = True 
-   ElseIf InStr(strUserAgent,"PlayStation Vita") Then
-      IsMobile = True
-   Else
-      IsMobile = False
-   End If 
-   
-   If InStr(strUserAgent,"Nexus 9") Then  
-      IsMobile = False
-   End If
+	'Check the user agent for signs they are on a mobile browser
+	If InStr(strUserAgent,"iPhone") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"iPad") Then
+		IsMobile = False
+	ElseIf InStr(strUserAgent,"Android") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"Windows Phone") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"BlackBerry") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"Nintendo") Then
+		IsMobile = True 
+	ElseIf InStr(strUserAgent,"PlayStation Vita") Then
+		IsMobile = True
+	Else
+		IsMobile = False
+	End If 
+	
+	If InStr(strUserAgent,"Nexus 9") Then  
+		IsMobile = False
+	End If
 End Function %>
 
 <%Function IsiPad
 
-   Dim strUserAgent
+	Dim strUserAgent
 
-   'Get the User Agent from the client so we know what browser they are using
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the User Agent from the client so we know what browser they are using
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check the user agent for signs they are on a mobile browser
-   If InStr(strUserAgent,"iPad") Then
-      IsiPad = True
-   Else
-   	IsiPad = False
-   End If
-   
+	'Check the user agent for signs they are on a mobile browser
+	If InStr(strUserAgent,"iPad") Then
+		IsiPad = True
+	Else
+		IsiPad = False
+	End If
+	
 End Function %>
 
 <%Sub SendToLogonScreen
 
-   Dim strReturnLink, strSourcePage
-      
-   'Build the return link before sending them away.
-   strReturnLink =  "?" & Request.ServerVariables("QUERY_STRING")
-   strSourcePage = Request.ServerVariables("SCRIPT_NAME")
-   strSourcePage = Right(strSourcePage,Len(strSourcePage) - InStrRev(strSourcePage,"/"))
-   If strReturnLink = "?" Then
-      strReturnLink = "?SourcePage=" & strSourcePage
-   Else
-      strReturnLink = strReturnLink & "&SourcePage=" & strSourcePage
-   End If
-   
-   Response.Redirect("login.asp" & strReturnLink)
-   
+	Dim strReturnLink, strSourcePage
+		
+	'Build the return link before sending them away.
+	strReturnLink =  "?" & Request.ServerVariables("QUERY_STRING")
+	strSourcePage = Request.ServerVariables("SCRIPT_NAME")
+	strSourcePage = Right(strSourcePage,Len(strSourcePage) - InStrRev(strSourcePage,"/"))
+	If strReturnLink = "?" Then
+		strReturnLink = "?SourcePage=" & strSourcePage
+	Else
+		strReturnLink = strReturnLink & "&SourcePage=" & strSourcePage
+	End If
+	
+	Response.Redirect("login.asp" & strReturnLink)
+	
 End Sub %>
 
 <%Sub SetupSite
-   
-   If IsMobile Then
-      strSiteVersion = "Mobile"
-   Else
-      strSiteVersion = "Full"
-   End If
-   
-   If Application("MultiColumn") Then
-  		strColumns = "MultiColumn"
-  	End If
-   
+	
+	If IsMobile Then
+		strSiteVersion = "Mobile"
+	Else
+		strSiteVersion = "Full"
+	End If
+	
+	If Application("MultiColumn") Then
+		strColumns = "MultiColumn"
+	End If
+	
 End Sub%>

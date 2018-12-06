@@ -117,9 +117,9 @@ End Sub%>
 		<script>
 			$(function() {
 
-			<% If Not IsMobile Then %>
+			<%	If Not IsMobile Then %>
 					$( document ).tooltip({track: true});
-			<% End If %>
+			<%	End If %>
 
 				document.getElementById("Tag").focus();
 				document.getElementById("AddUserButton").disabled = true;
@@ -143,9 +143,9 @@ End Sub%>
 					}
 				});
 
-			<% If Not objDeviceTypes.EOF Then %>
+			<%	If Not objDeviceTypes.EOF Then %>
 				var possibleDeviceTypes = [
-			<% Do Until objDeviceTypes.EOF %>
+			<%	Do Until objDeviceTypes.EOF %>
 					"<%=objDeviceTypes(0)%>",
 				<%	objDeviceTypes.MoveNext
 				Loop
@@ -154,11 +154,11 @@ End Sub%>
 				$( "#DeviceTypes" ).autocomplete({
 					source: possibleDeviceTypes
 				});
-		<% End If %>
+		<%	End If %>
 
-			<% If Not objMakes.EOF Then %>
+			<%	If Not objMakes.EOF Then %>
 					var possibleMakes = [
-				<% Do Until objMakes.EOF %>
+				<%	Do Until objMakes.EOF %>
 						"<%=objMakes(0)%>",
 					<%	objMakes.MoveNext
 					Loop %>
@@ -166,11 +166,11 @@ End Sub%>
 					$( "#Makes" ).autocomplete({
 						source: possibleMakes
 					});
-			<% End If %>
+			<%	End If %>
 
-			<% If Not objModels.EOF Then %>
+			<%	If Not objModels.EOF Then %>
 					var possibleModels = [
-				<% Do Until objModels.EOF %>
+				<%	Do Until objModels.EOF %>
 						"<%=objModels(0)%>",
 					<%	objModels.MoveNext
 					Loop %>
@@ -178,11 +178,11 @@ End Sub%>
 					$( "#Models" ).autocomplete({
 						source: possibleModels
 					});
-			<% End If %>
+			<%	End If %>
 
-			<% If Not objRooms.EOF Then %>
+			<%	If Not objRooms.EOF Then %>
 					var possibleRooms = [
-				<% Do Until objRooms.EOF %>
+				<%	Do Until objRooms.EOF %>
 						"<%=objRooms(0)%>",
 					<%	objRooms.MoveNext
 					Loop %>
@@ -190,11 +190,11 @@ End Sub%>
 					$( "#Rooms" ).autocomplete({
 						source: possibleRooms
 					});
-			<% End If %>
+			<%	End If %>
 
-			<% If Not objDescriptions.EOF Then %>
+			<%	If Not objDescriptions.EOF Then %>
 					var possibleDescriptions = [
-				<% Do Until objDescriptions.EOF %>
+				<%	Do Until objDescriptions.EOF %>
 						"<%=objDescriptions(0)%>",
 					<%	objDescriptions.MoveNext
 					Loop %>
@@ -202,11 +202,11 @@ End Sub%>
 					$( "#Descriptions" ).autocomplete({
 						source: possibleDescriptions
 					});
-			<% End If %>
+			<%	End If %>
 
-			<% If Not objLastNames.EOF Then %>
+			<%	If Not objLastNames.EOF Then %>
 					var possibleLastNames = [
-				<% Do Until objLastNames.EOF %>
+				<%	Do Until objLastNames.EOF %>
 						"<%=objLastNames(0)%>",
 					<%	objLastNames.MoveNext
 					Loop %>
@@ -214,10 +214,10 @@ End Sub%>
 					$( "#LastNames" ).autocomplete({
 						source: possibleLastNames
 					});
-			<% End If %>
+			<%	End If %>
 
 		  });
-		<% If Not objPendingUsers.EOF Then
+		<%	If Not objPendingUsers.EOF Then
 				Do Until objPendingUsers.EOF %>
 
 					function check<%=objPendingUsers(3)%>Password() {
@@ -238,7 +238,7 @@ End Sub%>
 							document.getElementById("<%=objPendingUsers(3)%>Button").disabled = true;
 						}
 					};
-				<% objPendingUsers.MoveNext
+				<%	objPendingUsers.MoveNext
 				Loop
 				objPendingUsers.MoveFirst
 			End If %>
@@ -372,14 +372,14 @@ End Sub%>
 			<div Class="CardColumn2">
 				<select Class="Card" name="DeviceSite" id="DeviceSite"oninput="checkNewDeviceForm()" >
 					<option value=""></option>
-				<% Do Until objSites.EOF
+				<%	Do Until objSites.EOF
 						If strDeviceSite = objSites(0) Then
 							strSelected = "selected=""selected"""
 						Else
 							strSelected = ""
 						End If %>
 							<option <%=strSelected%> value="<%=objSites(0)%>"><%=objSites(0)%></option>
-				<%    objSites.MoveNext
+				<%		objSites.MoveNext
 					Loop
 					objSites.MoveFirst%>
 				</select>
@@ -395,11 +395,11 @@ End Sub%>
 		<div>
 			<div class="Button"><input type="submit" value="Add Device" name="Submit" id="AddDeviceButton" /></div>
 		</div>
-	<% If strNewDeviceMessage <> "" Then %>
+	<%	If strNewDeviceMessage <> "" Then %>
 		<div>
 			<%=strNewDeviceMessage%>
 		</div>
-	<% End If %>
+	<%	End If %>
 	</div>
 
 <%End Sub%>
@@ -430,7 +430,7 @@ End Sub%>
 			<div Class="CardColumn2">
 				<select Class="Card" name="Role" id="Role" oninput="checkNewUserForm()">
 					<option value=""></option>
-				<% Do Until objRoles.EOF
+				<%	Do Until objRoles.EOF
 						If intRole <> "" Then
 							If CInt(intRole) = CInt(objRoles(1)) Then
 								strSelected = "selected=""selected"""
@@ -439,7 +439,7 @@ End Sub%>
 							End If
 						End If %>
 							<option <%=strSelected%> value="<%=objRoles(1)%>"><%=objRoles(0)%></option>
-				<%    objRoles.MoveNext
+				<%	objRoles.MoveNext
 					Loop
 					objRoles.MoveFirst%>
 				</select>
@@ -450,14 +450,14 @@ End Sub%>
 			<div Class="CardColumn2">
 				<select Class="Card" name="UserSite" id="UserSite" oninput="checkNewUserForm()">
 					<option value=""></option>
-				<% Do Until objSites.EOF
+				<%	Do Until objSites.EOF
 						If strUserSite = objSites(0) Then
 							strSelected = "selected=""selected"""
 						Else
 							strSelected = ""
 						End If %>
-							<option <%=strSelected%> value="<%=objSites(0)%>"><%=objSites(0)%></option>
-				<%    objSites.MoveNext
+						<option <%=strSelected%> value="<%=objSites(0)%>"><%=objSites(0)%></option>
+					<%	objSites.MoveNext
 					Loop
 					objSites.MoveFirst%>
 				</select>
@@ -478,11 +478,11 @@ End Sub%>
 
 			<div class="Button"><input type="submit" value="Add User" name="Submit" id="AddUserButton" /></div>
 		</div>
-	<% If strNewUserMessage <> "" Then %>
+	<%	If strNewUserMessage <> "" Then %>
 		<div>
 			<%=strNewUserMessage%>
 		</div>
-	<% End If %>
+	<%	End If %>
 	</div>
 
 <%End Sub%>
@@ -509,11 +509,11 @@ End Sub%>
 				<input type="hidden" name="StudentUserName" value="<%=strUserName%>" />
 				<div class="CardTitle"><%=strFirstName%>&nbsp;<%=strLastName%></div>
 				<div Class="ImageSectionInCard">
-				<% If objFSO.FileExists(Application("PhotoLocation") & "\" & intStudentID & "s\" & intStudentID & ".jpg") Then %>
+				<%	If objFSO.FileExists(Application("PhotoLocation") & "\" & intStudentID & "s\" & intStudentID & ".jpg") Then %>
 						<img class="PhotoCard" src="/photos/students/<%=intStudentID%>.jpg" title="<%=intStudentID%>" width="96" />
-				<% Else %>
+				<%	Else %>
 						<img class="PhotoCard" src="/photos/students/missing.png" title="<%=intStudentID%>" width="96" />
-				<% End If %>
+				<%	End If %>
 				</div>
 				<div Class="RightOfImageInCard">
 					<div>
@@ -535,7 +535,7 @@ End Sub%>
 				</div>
 				</form>
 			</div>
-		<% objPendingUsers.MoveNext
+		<%	objPendingUsers.MoveNext
 		Loop
 	End If
 
@@ -1254,7 +1254,7 @@ End Sub%>
 	</body>
 	</html>
 
-<% End If
+<%End If
 
 End Sub%>
 

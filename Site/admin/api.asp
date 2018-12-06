@@ -27,5 +27,4 @@ Select Case strLookupType
 		End If
 
 End Select
-
 %>
