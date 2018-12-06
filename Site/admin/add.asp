@@ -19,28 +19,28 @@ Dim strDescription, bolRequireChange, strTags
 
 'See if the user has the rights to visit this page
 If AccessGranted Then
-   ProcessSubmissions
+	ProcessSubmissions
 Else
-   DenyAccess
+	DenyAccess
 End If %>
 
 <%Sub ProcessSubmissions
 
 	GetVariablesFromForm
 
-   'Check and see if anything was submitted to the site
-   Select Case Request.Form("Submit")
+	'Check and see if anything was submitted to the site
+	Select Case Request.Form("Submit")
 		Case "Add Device"
-         strNewDeviceMessage = GetNewDeviceMessage(AddDevice(True))
+			strNewDeviceMessage = GetNewDeviceMessage(AddDevice(True))
 
-   	Case "Add User"
-   		strNewUserMessage = GetNewUserMessage(AddUser(True),strUserName)
-   		strUsername = ""
+		Case "Add User"
+			strNewUserMessage = GetNewUserMessage(AddUser(True),strUserName)
+			strUsername = ""
 
-   	Case "Activate Student"
-   		ActivateStudent
+		Case "Activate Student"
+			ActivateStudent
 
-   End Select
+	End Select
 
 	If strNewDeviceMessage = "" Then
 		strNewDeviceMessage = "* Required"
@@ -50,68 +50,68 @@ End If %>
 '		strNewUserMessage = "* Required"
 '	End If
 
-   'Get the URL used to submit forms
-   If Request.ServerVariables("QUERY_STRING") = "" Then
-      strSubmitTo = "add.asp"
-   Else
-      strSubmitTo = "add.asp?" & Request.ServerVariables("QUERY_STRING")
-   End If
+	'Get the URL used to submit forms
+	If Request.ServerVariables("QUERY_STRING") = "" Then
+		strSubmitTo = "add.asp"
+	Else
+		strSubmitTo = "add.asp?" & Request.ServerVariables("QUERY_STRING")
+	End If
 
-   'Get the data for the sites drop down menu
-   strSQL = "SELECT Site FROM Sites WHERE Active=True ORDER BY Site"
-   Set objSites = Application("Connection").Execute(strSQL)
+	'Get the data for the sites drop down menu
+	strSQL = "SELECT Site FROM Sites WHERE Active=True ORDER BY Site"
+	Set objSites = Application("Connection").Execute(strSQL)
 
-   'Get the list of roles for the drop down menu
-   strSQL = "SELECT Role,RoleID FROM Roles WHERE Active=True ORDER BY Role"
-   Set objRoles = Application("Connection").Execute(strSQL)
+	'Get the list of roles for the drop down menu
+	strSQL = "SELECT Role,RoleID FROM Roles WHERE Active=True ORDER BY Role"
+	Set objRoles = Application("Connection").Execute(strSQL)
 
-   'Get the list of device types for the auto complete
-   strSQL = "SELECT DISTINCT DeviceType FROM Devices WHERE Active=True And DeviceType<>''"
-   Set objDeviceTypes = Application("Connection").Execute(strSQL)
+	'Get the list of device types for the auto complete
+	strSQL = "SELECT DISTINCT DeviceType FROM Devices WHERE Active=True And DeviceType<>''"
+	Set objDeviceTypes = Application("Connection").Execute(strSQL)
 
-   'Get the list of makes for the auto complete
-   strSQL = "SELECT DISTINCT Manufacturer FROM Devices WHERE Active=True And Manufacturer<>''"
-   Set objMakes = Application("Connection").Execute(strSQL)
+	'Get the list of makes for the auto complete
+	strSQL = "SELECT DISTINCT Manufacturer FROM Devices WHERE Active=True And Manufacturer<>''"
+	Set objMakes = Application("Connection").Execute(strSQL)
 
-   'Get the list of models for the auto complete
-   strSQL = "SELECT DISTINCT Model FROM Devices WHERE Active=True And Model<>''"
-   Set objModels = Application("Connection").Execute(strSQL)
+	'Get the list of models for the auto complete
+	strSQL = "SELECT DISTINCT Model FROM Devices WHERE Active=True And Model<>''"
+	Set objModels = Application("Connection").Execute(strSQL)
 
-   'Get the list of rooms for the auto complete
-   strSQL = "SELECT DISTINCT Room FROM Devices WHERE Active=True And Room<>''"
-   Set objRooms = Application("Connection").Execute(strSQL)
+	'Get the list of rooms for the auto complete
+	strSQL = "SELECT DISTINCT Room FROM Devices WHERE Active=True And Room<>''"
+	Set objRooms = Application("Connection").Execute(strSQL)
 
-   'Get the list of pending accounts
-   strSQL = "SELECT StudentID,FirstName,LastName,UserName,HomeRoom FROM People WHERE PWord='NewAccount'"
-   Set objPendingUsers = Application("Connection").Execute(strSQL)
+	'Get the list of pending accounts
+	strSQL = "SELECT StudentID,FirstName,LastName,UserName,HomeRoom FROM People WHERE PWord='NewAccount'"
+	Set objPendingUsers = Application("Connection").Execute(strSQL)
 
-   'Get the list of lastnames for the auto complete
-   strSQL = "SELECT DISTINCT LastName FROM People WHERE Active=True"
-   Set objLastNames = Application("Connection").Execute(strSQL)
+	'Get the list of lastnames for the auto complete
+	strSQL = "SELECT DISTINCT LastName FROM People WHERE Active=True"
+	Set objLastNames = Application("Connection").Execute(strSQL)
 
-   'Get the list of descriptions for the auto complete
-   strSQL = "SELECT DISTINCT Description FROM People WHERE Active=True And Description<>'' And Role='Teacher'"
-   Set objDescriptions = Application("Connection").Execute(strSQL)
+	'Get the list of descriptions for the auto complete
+	strSQL = "SELECT DISTINCT Description FROM People WHERE Active=True And Description<>'' And Role='Teacher'"
+	Set objDescriptions = Application("Connection").Execute(strSQL)
 
-   'Set up the variables needed for the site then load it
-   SetupSite
-   DisplaySite
+	'Set up the variables needed for the site then load it
+	SetupSite
+	DisplaySite
 
 End Sub%>
 
 <%Sub DisplaySite %>
 
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-   <html>
-   <head>
-      <title><%=Application("SiteName")%></title>
-      <link rel="stylesheet" type="text/css" href="../style.css" />
-      <link rel="apple-touch-icon" href="../images/inventory.png" />
-      <link rel="shortcut icon" href="../images/inventory.ico" />
-      <meta name="viewport" content="width=device-width,user-scalable=0" />
-      <meta name="theme-color" content="#333333">
-      <link rel="stylesheet" href="../assets/css/jquery-ui.css">
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+	<head>
+		<title><%=Application("SiteName")%></title>
+		<link rel="stylesheet" type="text/css" href="../style.css" />
+		<link rel="apple-touch-icon" href="../images/inventory.png" />
+		<link rel="shortcut icon" href="../images/inventory.ico" />
+		<meta name="viewport" content="width=device-width,user-scalable=0" />
+		<meta name="theme-color" content="#333333">
+		<link rel="stylesheet" href="../assets/css/jquery-ui.css">
 		<script src="../assets/js/jquery.js"></script>
 		<script src="../assets/js/jquery-ui.js"></script>
 		<script>
@@ -139,18 +139,18 @@ End Sub%>
 					showOtherMonths: true,
 					selectOtherMonths: true,
 					onClose: function( selectedDate ) {
-				   	$( "#to" ).datepicker( "option", "minDate", selectedDate );
+						$( "#to" ).datepicker( "option", "minDate", selectedDate );
 					}
 				});
 
 			<% If Not objDeviceTypes.EOF Then %>
 				var possibleDeviceTypes = [
-   		<% Do Until objDeviceTypes.EOF %>
+			<% Do Until objDeviceTypes.EOF %>
 					"<%=objDeviceTypes(0)%>",
 				<%	objDeviceTypes.MoveNext
-   			Loop
-   			objDeviceTypes.MoveFirst%>
-   		];
+				Loop
+				objDeviceTypes.MoveFirst%>
+			];
 				$( "#DeviceTypes" ).autocomplete({
 					source: possibleDeviceTypes
 				});
@@ -243,32 +243,32 @@ End Sub%>
 				objPendingUsers.MoveFirst
 			End If %>
 
-		  	function buildUserName() {
+			function buildUserName() {
 
-		  		var firstName = document.getElementById("NewFirstName");
-		  		var lastName = document.getElementById("NewLastName");
-		  		var username = document.getElementById("NewUserName");
-		  		username.value = lastName.value.toLowerCase() + firstName.value.substring(0,1).toLowerCase();
-		  		checkNewUserForm();
-		  	};
+				var firstName = document.getElementById("NewFirstName");
+				var lastName = document.getElementById("NewLastName");
+				var username = document.getElementById("NewUserName");
+				username.value = lastName.value.toLowerCase() + firstName.value.substring(0,1).toLowerCase();
+				checkNewUserForm();
+			};
 
-		  	function checkNewUserForm() {
+			function checkNewUserForm() {
 
-		  		var firstName = document.getElementById("NewFirstName");
-		  		var lastName = document.getElementById("NewLastName");
-		  		var username = document.getElementById("NewUserName");
-		  		var password = document.getElementById("NewPassword");
-		  		var confirmPassword = document.getElementById("ConfirmNewPassword");
-		  		var role = document.getElementById("Role");
-		  		var userSite = document.getElementById("UserSite");
-		  		var addUserButton = document.getElementById("AddUserButton");
-		  		var passwordValid = document.getElementById("ValidIcon");
-		  		var passwordMatch = document.getElementById("MatchIcon");
-		  		var requireChange = document.getElementById("RequireChange");
-		  		var lengthGood;
-         	var passwordsMatch;
+				var firstName = document.getElementById("NewFirstName");
+				var lastName = document.getElementById("NewLastName");
+				var username = document.getElementById("NewUserName");
+				var password = document.getElementById("NewPassword");
+				var confirmPassword = document.getElementById("ConfirmNewPassword");
+				var role = document.getElementById("Role");
+				var userSite = document.getElementById("UserSite");
+				var addUserButton = document.getElementById("AddUserButton");
+				var passwordValid = document.getElementById("ValidIcon");
+				var passwordMatch = document.getElementById("MatchIcon");
+				var requireChange = document.getElementById("RequireChange");
+				var lengthGood;
+				var passwordsMatch;
 
-         	if ((password.value.length >= 8) && (password.type == "password")) {
+				if ((password.value.length >= 8) && (password.type == "password")) {
 					passwordValid.src="../images/good.png";
 					lengthGood = true;
 				} else {
@@ -294,46 +294,46 @@ End Sub%>
 					}
 				}
 
-		  	};
+			};
 
-		  	function checkNewDeviceForm() {
+			function checkNewDeviceForm() {
 
-		  		var tag = document.getElementById("Tag");
-		  		var serial = document.getElementById("Serial");
-		  		var deviceType = document.getElementById("DeviceTypes");
-		  		var make	= document.getElementById("Makes");
-		  		var model = document.getElementById("Models");
-		  		var site = document.getElementById("DeviceSite");
-		  		var purchaseDate = document.getElementById("PurchasedDate");
-		  		var addDeviceButton = document.getElementById("AddDeviceButton");
+				var tag = document.getElementById("Tag");
+				var serial = document.getElementById("Serial");
+				var deviceType = document.getElementById("DeviceTypes");
+				var make	= document.getElementById("Makes");
+				var model = document.getElementById("Models");
+				var site = document.getElementById("DeviceSite");
+				var purchaseDate = document.getElementById("PurchasedDate");
+				var addDeviceButton = document.getElementById("AddDeviceButton");
 
-		  		if ((tag.value != "") && (serial.value != "") && (deviceType.value != "")) {
-		  			if ((make.value != "") && (model.value != "") && (site.value != "") && (purchaseDate.value != "")) {
-		  				addDeviceButton.disabled = false;
-		  			} else {
-		  				addDeviceButton.disabled = true;
-		  			}
-		  		} else {
-		  			addDeviceButton.disabled = true;
-		  		}
+				if ((tag.value != "") && (serial.value != "") && (deviceType.value != "")) {
+					if ((make.value != "") && (model.value != "") && (site.value != "") && (purchaseDate.value != "")) {
+						addDeviceButton.disabled = false;
+					} else {
+						addDeviceButton.disabled = true;
+					}
+				} else {
+					addDeviceButton.disabled = true;
+				}
 
-		  	};
+			};
 
-  		</script>
-   </head>
-   <body class="<%=strSiteVersion%>">
+		</script>
+	</head>
+	<body class="<%=strSiteVersion%>">
 
-      <div class="Header"><%=Application("SiteName")%></div>
-      <div>
-         <ul class="NavBar" align="center">
-            <li><a href="index.asp"><img src="../images/home.png" title="Home" height="32" width="32"/></a></li>
-            <li><a href="search.asp"><img src="../images/search.png" title="Search" height="32" width="32"/></a></li>
-            <li><a href="stats.asp"><img src="../images/stats.png" title="Stats" height="32" width="32"/></a></li>
-            <li><a href="log.asp"><img src="../images/log.png" title="System Log" height="32" width="32"/></a></li>
-            <li><a href="add.asp"><img src="../images/add.png" title="Add Person or Device" height="32" width="32"/></a></li>
-            <li><a href="login.asp?action=logout"><img src="../images/logout.png" title="Log Out" height="32" width="32"/></a></li>
-         </ul>
-      </div>
+		<div class="Header"><%=Application("SiteName")%></div>
+		<div>
+			<ul class="NavBar" align="center">
+				<li><a href="index.asp"><img src="../images/home.png" title="Home" height="32" width="32"/></a></li>
+				<li><a href="search.asp"><img src="../images/search.png" title="Search" height="32" width="32"/></a></li>
+				<li><a href="stats.asp"><img src="../images/stats.png" title="Stats" height="32" width="32"/></a></li>
+				<li><a href="log.asp"><img src="../images/log.png" title="System Log" height="32" width="32"/></a></li>
+				<li><a href="add.asp"><img src="../images/add.png" title="Add Person or Device" height="32" width="32"/></a></li>
+				<li><a href="login.asp?action=logout"><img src="../images/logout.png" title="Log Out" height="32" width="32"/></a></li>
+			</ul>
+		</div>
 
 	<%
 		JumpToDevice
@@ -344,30 +344,30 @@ End Sub%>
 
 		<div class="Version">Version <%=Application("Version")%></div>
 		<div class="CopyRight"><%=Application("Copyright")%></div>
-   </body>
+	</body>
 
-   </html>
+	</html>
 
 <%End Sub%>
 
 <%Sub AddDeviceCard %>
 
 	<div Class="Card NormalCard">
-      <form method="POST" action="<%=strSubmitTo%>">
-      <div Class="CardTitle">Add Device</div>
-      <div Class="CardColumn1">Asset Tag:* </div>
-      <div Class="CardColumn2"><input class="Card InputWidthSmall" type="text" name="Tag" Value="<%=intTag%>" id="Tag" oninput="checkNewDeviceForm()" /></div>
-      <div Class="CardColumn1">BOCES Tag: </div>
-      <div Class="CardColumn2"><input class="Card InputWidthSmall" type="text" name="BOCESTag" Value="<%=intBOCESTag%>" /></div>
-      <div Class="CardColumn1">Serial Number:* </div>
-      <div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="Serial" Value="<%=strSerial%>" id="Serial" oninput="checkNewDeviceForm()" /></div>
-      <div Class="CardColumn1">Device Type:* </div>
-      <div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="DeviceType" Value="<%=strDeviceType%>" id="DeviceTypes" oninput="checkNewDeviceForm()" /></div>
-      <div Class="CardColumn1">Make:* </div>
-      <div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="Make" Value="<%=strMake%>" id="Makes" oninput="checkNewDeviceForm()" /></div>
-      <div Class="CardColumn1">Model:* </div>
-      <div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="Model" Value="<%=strModel%>" id="Models" oninput="checkNewDeviceForm()" /></div>
-      <div>
+		<form method="POST" action="<%=strSubmitTo%>">
+		<div Class="CardTitle">Add Device</div>
+		<div Class="CardColumn1">Asset Tag:* </div>
+		<div Class="CardColumn2"><input class="Card InputWidthSmall" type="text" name="Tag" Value="<%=intTag%>" id="Tag" oninput="checkNewDeviceForm()" /></div>
+		<div Class="CardColumn1">BOCES Tag: </div>
+		<div Class="CardColumn2"><input class="Card InputWidthSmall" type="text" name="BOCESTag" Value="<%=intBOCESTag%>" /></div>
+		<div Class="CardColumn1">Serial Number:* </div>
+		<div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="Serial" Value="<%=strSerial%>" id="Serial" oninput="checkNewDeviceForm()" /></div>
+		<div Class="CardColumn1">Device Type:* </div>
+		<div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="DeviceType" Value="<%=strDeviceType%>" id="DeviceTypes" oninput="checkNewDeviceForm()" /></div>
+		<div Class="CardColumn1">Make:* </div>
+		<div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="Make" Value="<%=strMake%>" id="Makes" oninput="checkNewDeviceForm()" /></div>
+		<div Class="CardColumn1">Model:* </div>
+		<div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="Model" Value="<%=strModel%>" id="Models" oninput="checkNewDeviceForm()" /></div>
+		<div>
 			<div Class="CardColumn1">Site:* </div>
 			<div Class="CardColumn2">
 				<select Class="Card" name="DeviceSite" id="DeviceSite"oninput="checkNewDeviceForm()" >
@@ -386,46 +386,46 @@ End Sub%>
 			</div>
 		</div>
 		<div Class="CardColumn1">Room: </div>
-      <div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="Room" Value="<%=strRoom%>" id="Rooms" /></div>
-      <div Class="CardColumn1">Purchased:* </div>
-      <div Class="CardColumn2"><input class="Card InputWidthSmall" type="text" name="Purchased" Value="<%=datPurchased%>" id="PurchasedDate" onchange="checkNewDeviceForm()" /></div>
+		<div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="Room" Value="<%=strRoom%>" id="Rooms" /></div>
+		<div Class="CardColumn1">Purchased:* </div>
+		<div Class="CardColumn2"><input class="Card InputWidthSmall" type="text" name="Purchased" Value="<%=datPurchased%>" id="PurchasedDate" onchange="checkNewDeviceForm()" /></div>
 
-      <div Class="CardColumn1">Tag: </div>
-      <div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="GroupTag" Value="<%=strTags%>" oninput="checkNewDeviceForm()" /></div>
+		<div Class="CardColumn1">Tag: </div>
+		<div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="GroupTag" Value="<%=strTags%>" oninput="checkNewDeviceForm()" /></div>
 		<div>
-         <div class="Button"><input type="submit" value="Add Device" name="Submit" id="AddDeviceButton" /></div>
-      </div>
+			<div class="Button"><input type="submit" value="Add Device" name="Submit" id="AddDeviceButton" /></div>
+		</div>
 	<% If strNewDeviceMessage <> "" Then %>
 		<div>
 			<%=strNewDeviceMessage%>
 		</div>
 	<% End If %>
-   </div>
+	</div>
 
 <%End Sub%>
 
 <%Sub AddUserCard %>
 
 	<div Class="Card NormalCard">
-      <form method="POST" action="<%=strSubmitTo%>">
-      <div Class="CardTitle">Add User</div>
-      <div Class="CardColumn1">First Name: </div>
-      <div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="FirstName" Value="<%=strFirstName%>" id="NewFirstName" oninput="buildUserName()" /></div>
-      <div Class="CardColumn1">Last Name: </div>
-      <div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="LastName" Value="<%=strLastName%>" id="NewLastName" oninput="buildUserName()"/></div>
-      <div Class="CardColumn1">Username: </div>
-      <div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="UserName" Value="<%=strUsername%>" id="NewUserName" oninput="checkNewUserForm()" /></div>
-      <div Class="CardColumn1">Password:</div>
-      <div Class="CardColumn2">
-      	<input class="Card InputWidthSmall" type="password" name="Password" id="NewPassword" oninput="checkNewUserForm()" />
+		<form method="POST" action="<%=strSubmitTo%>">
+		<div Class="CardTitle">Add User</div>
+		<div Class="CardColumn1">First Name: </div>
+		<div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="FirstName" Value="<%=strFirstName%>" id="NewFirstName" oninput="buildUserName()" /></div>
+		<div Class="CardColumn1">Last Name: </div>
+		<div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="LastName" Value="<%=strLastName%>" id="NewLastName" oninput="buildUserName()"/></div>
+		<div Class="CardColumn1">Username: </div>
+		<div Class="CardColumn2"><input class="Card InputWidthLarge" type="text" name="UserName" Value="<%=strUsername%>" id="NewUserName" oninput="checkNewUserForm()" /></div>
+		<div Class="CardColumn1">Password:</div>
+		<div Class="CardColumn2">
+			<input class="Card InputWidthSmall" type="password" name="Password" id="NewPassword" oninput="checkNewUserForm()" />
 			<input class="Card" type="checkbox" name="RequireChange" id="RequireChange" oninput="checkNewUserForm()" /> Require
-      </div>
-      <div Class="CardColumn1">Confirm:</div>
-      <div Class="CardColumn2">
-      	<input class="Card InputWidthSmall" type="password" name="ConfirmPassword" id="ConfirmNewPassword" oninput="checkNewUserForm()" />
-      	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change
-      </div>
-      <div>
+		</div>
+		<div Class="CardColumn1">Confirm:</div>
+		<div Class="CardColumn2">
+			<input class="Card InputWidthSmall" type="password" name="ConfirmPassword" id="ConfirmNewPassword" oninput="checkNewUserForm()" />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change
+		</div>
+		<div>
 			<div Class="CardColumn1">Role: </div>
 			<div Class="CardColumn2">
 				<select Class="Card" name="Role" id="Role" oninput="checkNewUserForm()">
@@ -445,7 +445,7 @@ End Sub%>
 				</select>
 			</div>
 		</div>
-      <div>
+		<div>
 			<div Class="CardColumn1">Site: </div>
 			<div Class="CardColumn2">
 				<select Class="Card" name="UserSite" id="UserSite" oninput="checkNewUserForm()">
@@ -474,16 +474,16 @@ End Sub%>
 			<div Class="CardMerged Center">Passwords Match <image src="../images/notgood.png" class="Icon" id="MatchIcon" ></div>
 		</div>
 
-      <div>
+		<div>
 
-         <div class="Button"><input type="submit" value="Add User" name="Submit" id="AddUserButton" /></div>
-      </div>
+			<div class="Button"><input type="submit" value="Add User" name="Submit" id="AddUserButton" /></div>
+		</div>
 	<% If strNewUserMessage <> "" Then %>
 		<div>
 			<%=strNewUserMessage%>
 		</div>
 	<% End If %>
-   </div>
+	</div>
 
 <%End Sub%>
 
@@ -829,8 +829,6 @@ End Function%>
 		strSQL = strSQL & Time() & "#,True)"
 		Application("Connection").Execute(strSQL)
 
-
-
 		UpdateLog "UserAdded","",strUserName,"",GetDisplayName(strUserName),""
 
 		'Reset the unique values
@@ -879,27 +877,27 @@ End Sub%>
 
 <%Sub GetVariablesFromForm
 
-   'Get the variables from the URL or form and fix it
-   intTag = Request.Form("Tag")
-   If intTag = "" then
-      intTag = Request.QueryString("Tag")
-   End If
-   If Not Application("UseLeadingZeros") Then
-      If IsNumeric(intTag) Then
-         intTag = Int(intTag)
-      Else
-         If Left(intTag,4) = "TECH" Then
-            intTag = Replace(intTag,"TECH","")
-            If IsNumeric(intTag) Then
-               intTag = Int(intTag)
-            End If
-         End If
-      End If
-   End If
-   
-   If intTag = 0 Then
-   	intTag = ""
-   End If
+	'Get the variables from the URL or form and fix it
+	intTag = Request.Form("Tag")
+	If intTag = "" then
+		intTag = Request.QueryString("Tag")
+	End If
+	If Not Application("UseLeadingZeros") Then
+		If IsNumeric(intTag) Then
+			intTag = Int(intTag)
+		Else
+			If Left(intTag,4) = "TECH" Then
+				intTag = Replace(intTag,"TECH","")
+				If IsNumeric(intTag) Then
+					intTag = Int(intTag)
+				End If
+			End If
+		End If
+	End If
+	
+	If intTag = 0 Then
+		intTag = ""
+	End If
 
 	intBOCESTag = Request.Form("BOCESTag")
 	strSerial = Request.Form("Serial")
@@ -1022,116 +1020,116 @@ End Function%>
 
 <%Function ValidMACAddress(strMAC)
 
-   Dim intIndex, strChar, bolValidChar, strTempMAC
+	Dim intIndex, strChar, bolValidChar, strTempMAC
 
-   strTempMAC = FixMACAddress(strMAC)
+	strTempMAC = FixMACAddress(strMAC)
 
-   'Check and see if the MAC address is the correct length
-   If Len(strTempMAC) = 17 Then
+	'Check and see if the MAC address is the correct length
+	If Len(strTempMAC) = 17 Then
 
-      'Loop through each character in the MAC address
-      For intIndex = 1 to Len(strTempMAC)
-         strChar = Mid(strTempMAC,intIndex,1)
+		'Loop through each character in the MAC address
+		For intIndex = 1 to Len(strTempMAC)
+			strChar = Mid(strTempMAC,intIndex,1)
 
-         Select Case intIndex
+			Select Case intIndex
 
-            'If the separator isn't a ; then it's not right
-            Case 3,6,9,12,15
-               If strChar <> ":" Then
-                  ValidMACAddress = False
-                  Exit Function
-               End If
+				'If the separator isn't a ; then it's not right
+				Case 3,6,9,12,15
+					If strChar <> ":" Then
+						ValidMACAddress = False
+						Exit Function
+					End If
 
-            Case Else
+				Case Else
 
-               'If it's not a number make sure it's a character between a-f
-               If Not IsNumeric(strChar) Then
-                  bolValidChar = False
-                  Select Case LCase(strChar)
-                     Case "a", "b", "c", "d", "e", "f"
-                        bolValidChar = True
-                  End Select
-                  If Not bolValidChar Then
-                     ValidMACAddress = False
-                     Exit Function
-                  End If
-               End If
+					'If it's not a number make sure it's a character between a-f
+					If Not IsNumeric(strChar) Then
+						bolValidChar = False
+						Select Case LCase(strChar)
+							Case "a", "b", "c", "d", "e", "f"
+								bolValidChar = True
+						End Select
+						If Not bolValidChar Then
+							ValidMACAddress = False
+							Exit Function
+						End If
+					End If
 
-         End Select
+			End Select
 
-      Next
+		Next
 
-      ValidMACAddress = True
+		ValidMACAddress = True
 
-   Else
+	Else
 
-      ValidMACAddress = False
+		ValidMACAddress = False
 
-   End If
+	End If
 
 End Function%>
 
 <%Function FixMACAddress(strMAC)
 
-   Dim intIndex, strChar
+	Dim intIndex, strChar
 
-   'Check and see if it's the correct length with or without separator
-   If Len(strMAC) = 12 Or Len(strMAC) = 17 Then
+	'Check and see if it's the correct length with or without separator
+	If Len(strMAC) = 12 Or Len(strMAC) = 17 Then
 
-      'Loop through each character
-      For intIndex = 1 to Len(strMAC)
+		'Loop through each character
+		For intIndex = 1 to Len(strMAC)
 
-         'Add in the : to the result"
-         Select Case Len(FixMACAddress)
-            Case 2,5,8,11,14
-               FixMACAddress = FixMACAddress & ":"
-         End Select
+			'Add in the : to the result"
+			Select Case Len(FixMACAddress)
+				Case 2,5,8,11,14
+					FixMACAddress = FixMACAddress & ":"
+			End Select
 
-         'Add the characer to the result if it's a valid character
-         strChar = Mid(strMAC,intIndex,1)
-         If Not IsNumeric(strChar) Then
-            Select Case LCase(strChar)
-               Case "a", "b", "c", "d", "e", "f"
-                  FixMACAddress = FixMACAddress & LCase(strChar)
-            End Select
-         Else
-            FixMACAddress = FixMACAddress & strChar
-         End If
+			'Add the characer to the result if it's a valid character
+			strChar = Mid(strMAC,intIndex,1)
+			If Not IsNumeric(strChar) Then
+				Select Case LCase(strChar)
+					Case "a", "b", "c", "d", "e", "f"
+						FixMACAddress = FixMACAddress & LCase(strChar)
+				End Select
+			Else
+				FixMACAddress = FixMACAddress & strChar
+			End If
 
-      Next
+		Next
 
-   Else
+	Else
 
-      'Return the orignal MAC address if it can't be fixed.
-      FixMACAddress = strMAC
+		'Return the orignal MAC address if it can't be fixed.
+		FixMACAddress = strMAC
 
-   End If
+	End If
 
 End Function%>
 
 <%Function ValidEMailAddress(strEMail)
 
-   Dim strUserName, strDomain
+	Dim strUserName, strDomain
 
-   If InStr(strEMail,"@") <> 0 Then
+	If InStr(strEMail,"@") <> 0 Then
 
-      strUserName = Left(strEMail,InStr(strEMail,"@") - 1)
-      strDomain = Mid(strEMail,InStr(strEMail,"@") + 1,Len(strEMail)-InStr(strEMail,"@") + 1)
+		strUserName = Left(strEMail,InStr(strEMail,"@") - 1)
+		strDomain = Mid(strEMail,InStr(strEMail,"@") + 1,Len(strEMail)-InStr(strEMail,"@") + 1)
 
-      If InStr(strDomain,"@") <> 0 Then
-         ValidEMailAddress = False
-         Exit Function
-      End If
+		If InStr(strDomain,"@") <> 0 Then
+			ValidEMailAddress = False
+			Exit Function
+		End If
 
-      If InStr(strDomain,".") = 0 Then
-         ValidEMailAddress = False
-         Exit Function
-      End If
+		If InStr(strDomain,".") = 0 Then
+			ValidEMailAddress = False
+			Exit Function
+		End If
 
-      ValidEMailAddress = True
-   Else
-      ValidEMailAddress = False
-   End If
+		ValidEMailAddress = True
+	Else
+		ValidEMailAddress = False
+	End If
 
 End Function%>
 
@@ -1233,28 +1231,28 @@ End Sub%>
 
 <%Sub DenyAccess
 
-   'If we're not using basic authentication then send them to the login screen
-   If bolShowLogout Then
-      Response.Redirect("login.asp?action=logout")
-   Else
+	'If we're not using basic authentication then send them to the login screen
+	If bolShowLogout Then
+		Response.Redirect("login.asp?action=logout")
+	Else
 
-   SetupSite
+	SetupSite
 
-   %>
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-   <html>
-   <head>
-      <title><%=Application("SiteName")%></title>
-      <link rel="stylesheet" type="text/css" href="../style.css" />
-      <link rel="apple-touch-icon" href="../images/inventory.png" />
-      <link rel="shortcut icon" href="../images/inventory.ico" />
-      <meta name="viewport" content="width=device-width" />
-   </head>
-   <body>
-      <center><b>Access Denied</b></center>
-   </body>
-   </html>
+	%>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+	<head>
+		<title><%=Application("SiteName")%></title>
+		<link rel="stylesheet" type="text/css" href="../style.css" />
+		<link rel="apple-touch-icon" href="../images/inventory.png" />
+		<link rel="shortcut icon" href="../images/inventory.ico" />
+		<meta name="viewport" content="width=device-width" />
+	</head>
+	<body>
+		<center><b>Access Denied</b></center>
+	</body>
+	</html>
 
 <% End If
 
@@ -1262,138 +1260,138 @@ End Sub%>
 
 <%Function AccessGranted
 
-   Dim objNetwork, strUserAgent, strSQL, strRole, objNameCheckSet
+	Dim objNetwork, strUserAgent, strSQL, strRole, objNameCheckSet
 
-   'Redirect the user the SSL version if required
-   If Application("ForceSSL") Then
-      If Request.ServerVariables("SERVER_PORT")=80 Then
-         If Request.ServerVariables("QUERY_STRING") = "" Then
-            Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL")
-         Else
-            Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL") & "?" & Request.ServerVariables("QUERY_STRING")
-         End If
-      End If
-   End If
+	'Redirect the user the SSL version if required
+	If Application("ForceSSL") Then
+		If Request.ServerVariables("SERVER_PORT")=80 Then
+			If Request.ServerVariables("QUERY_STRING") = "" Then
+				Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL")
+			Else
+				Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL") & "?" & Request.ServerVariables("QUERY_STRING")
+			End If
+		End If
+	End If
 
-   'Get the users logon name
-   Set objNetwork = CreateObject("WSCRIPT.Network")
-   strUser = objNetwork.UserName
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the users logon name
+	Set objNetwork = CreateObject("WSCRIPT.Network")
+	strUser = objNetwork.UserName
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check and see if anonymous access is enabled
-   If LCase(Left(strUser,4)) = "iusr" Then
-      strUser = GetUser
-      bolShowLogout = True
-   Else
-      bolShowLogout = False
-   End If
+	'Check and see if anonymous access is enabled
+	If LCase(Left(strUser,4)) = "iusr" Then
+		strUser = GetUser
+		bolShowLogout = True
+	Else
+		bolShowLogout = False
+	End If
 
-   'Build the SQL string, this will check the userlevel of the user.
-   strSQL = "Select Role" & vbCRLF
-   strSQL = strSQL & "From Sessions" & vbCRLF
-   strSQL = strSQL & "WHERE UserName='" & strUser & "' And SessionID='" & Request.Cookies("SessionID") & "'"
-   Set objNameCheckSet = Application("Connection").Execute(strSQL)
-   strRole = objNameCheckSet(0)
+	'Build the SQL string, this will check the userlevel of the user.
+	strSQL = "Select Role" & vbCRLF
+	strSQL = strSQL & "From Sessions" & vbCRLF
+	strSQL = strSQL & "WHERE UserName='" & strUser & "' And SessionID='" & Request.Cookies("SessionID") & "'"
+	Set objNameCheckSet = Application("Connection").Execute(strSQL)
+	strRole = objNameCheckSet(0)
 
-   If strRole = "Admin" Then
-      AccessGranted = True
-   Else
-      AccessGranted = False
-   End If
+	If strRole = "Admin" Then
+		AccessGranted = True
+	Else
+		AccessGranted = False
+	End If
 
 End Function%>
 
 <%Function GetUser
 
-   Const USERNAME = 1
+	Const USERNAME = 1
 
-   Dim strUserAgent, strSessionID, objSessionLookup, strSQL
+	Dim strUserAgent, strSessionID, objSessionLookup, strSQL
 
-   'Get some needed data
-   strSessionID = Request.Cookies("SessionID")
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get some needed data
+	strSessionID = Request.Cookies("SessionID")
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Send them to the logon screen if they don't have a Session ID
-   If strSessionID = "" Then
-      SendToLogonScreen
+	'Send them to the logon screen if they don't have a Session ID
+	If strSessionID = "" Then
+		SendToLogonScreen
 
-   'Get the username from the database
-   Else
+	'Get the username from the database
+	Else
 
-      strSQL = "SELECT ID,UserName,SessionID,IPAddress,UserAgent,ExpirationDate FROM Sessions "
-      strSQL = strSQL & "WHERE UserAgent='" & Left(Replace(strUserAgent,"'","''"),250) & "' And SessionID='" & Replace(strSessionID,"'","''") & "'"
-      strSQL = strSQL & " And ExpirationDate > Date()"
-      Set objSessionLookup = Application("Connection").Execute(strSQL)
+		strSQL = "SELECT ID,UserName,SessionID,IPAddress,UserAgent,ExpirationDate FROM Sessions "
+		strSQL = strSQL & "WHERE UserAgent='" & Left(Replace(strUserAgent,"'","''"),250) & "' And SessionID='" & Replace(strSessionID,"'","''") & "'"
+		strSQL = strSQL & " And ExpirationDate > Date()"
+		Set objSessionLookup = Application("Connection").Execute(strSQL)
 
-      'If a session isn't found for then kick them out
-      If objSessionLookup.EOF Then
-         SendToLogonScreen
-      Else
-         GetUser = objSessionLookup(USERNAME)
-      End If
-   End If
+		'If a session isn't found for then kick them out
+		If objSessionLookup.EOF Then
+			SendToLogonScreen
+		Else
+			GetUser = objSessionLookup(USERNAME)
+		End If
+	End If
 
 End Function%>
 
 <%Function IsMobile
 
-   Dim strUserAgent
+	Dim strUserAgent
 
-   'Get the User Agent from the client so we know what browser they are using
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the User Agent from the client so we know what browser they are using
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check the user agent for signs they are on a mobile browser
-   If InStr(strUserAgent,"iPhone") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"iPad") Then
-      IsMobile = False
-   ElseIf InStr(strUserAgent,"Android") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"Windows Phone") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"BlackBerry") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"Nintendo") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"PlayStation Vita") Then
-      IsMobile = True
-   Else
-      IsMobile = False
-   End If
+	'Check the user agent for signs they are on a mobile browser
+	If InStr(strUserAgent,"iPhone") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"iPad") Then
+		IsMobile = False
+	ElseIf InStr(strUserAgent,"Android") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"Windows Phone") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"BlackBerry") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"Nintendo") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"PlayStation Vita") Then
+		IsMobile = True
+	Else
+		IsMobile = False
+	End If
 
-   If InStr(strUserAgent,"Nexus 9") Then
-      IsMobile = False
-   End If
+	If InStr(strUserAgent,"Nexus 9") Then
+		IsMobile = False
+	End If
 End Function %>
 
 <%Sub SendToLogonScreen
 
-   Dim strReturnLink, strSourcePage
+	Dim strReturnLink, strSourcePage
 
-   'Build the return link before sending them away.
-   strReturnLink =  "?" & Request.ServerVariables("QUERY_STRING")
-   strSourcePage = Request.ServerVariables("SCRIPT_NAME")
-   strSourcePage = Right(strSourcePage,Len(strSourcePage) - InStrRev(strSourcePage,"/"))
-   If strReturnLink = "?" Then
-      strReturnLink = "?SourcePage=" & strSourcePage
-   Else
-      strReturnLink = strReturnLink & "&SourcePage=" & strSourcePage
-   End If
+	'Build the return link before sending them away.
+	strReturnLink =  "?" & Request.ServerVariables("QUERY_STRING")
+	strSourcePage = Request.ServerVariables("SCRIPT_NAME")
+	strSourcePage = Right(strSourcePage,Len(strSourcePage) - InStrRev(strSourcePage,"/"))
+	If strReturnLink = "?" Then
+		strReturnLink = "?SourcePage=" & strSourcePage
+	Else
+		strReturnLink = strReturnLink & "&SourcePage=" & strSourcePage
+	End If
 
-   Response.Redirect("login.asp" & strReturnLink)
+	Response.Redirect("login.asp" & strReturnLink)
 
 End Sub %>
 
 <%Sub SetupSite
 
-   If IsMobile Then
-      strSiteVersion = "Mobile"
-   Else
-      strSiteVersion = "Full"
-   End If
+	If IsMobile Then
+		strSiteVersion = "Mobile"
+	Else
+		strSiteVersion = "Full"
+	End If
 
-   If Application("MultiColumn") Then
-  		strColumns = "MultiColumn"
-  	End If
+	If Application("MultiColumn") Then
+		  strColumns = "MultiColumn"
+	  End If
 
 End Sub%>
