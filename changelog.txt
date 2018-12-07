@@ -13,44 +13,44 @@ Change Log - Inventory Site
 	- Created stats place holder page.
 	- Added ability to look up computer by serial number in the admin area.
 	- Added the ability to add an event to a device.
-   
+	 
 0.003 - 7/1/15
 	- Fixed a bug that returned a computer of nothing was entered on the search page.
 	- Changed site to card interface.
 	- Added the ability to search by user or guide room.
 	- Added the ability to search by BOCES asset tag.
 	- Added a users.asp page to display a list of users if more than one is found
-	  while searching.
+		while searching.
 	- Added a user.asp page that displays information about a user, with their current
-	  and past device assignments. 
+		and past device assignments. 
 	- Changed modify.asp to device.asp since it shows information about a device.
 	- Added the ability to update device settings on the device page.  Site, Room,
-	  Insured, and Active.
+		Insured, and Active.
 	- Changed the way events work on devices.  When you add an event it stays open 
-	  until you mark it as resolved.  While the event is still open you can update the
-	  notes.
+		until you mark it as resolved.  While the event is still open you can update the
+		notes.
 	- Moved the assigning ability to the device page.  Now you can look up a device and
-	  if it's not assigned to anyone you can assign it right from there.
+		if it's not assigned to anyone you can assign it right from there.
 	- Moved the return device ability to the device page.  Now you can lookup a device
-	  and return it right from there.
+		and return it right from there.
 	- Added the ability to mark if the person returned the adapter and case when returning
-	  a device.
+		a device.
 	- Added student photos to cards.
 	- Added the ability to search for a device from the device page.  This way you can jump
-	  from device to device.
-     
+		from device to device.
+		 
 0.004 - 7/2/15
 	- Fixed a bug in the search for a user section that was causing the search to fail
-	  without an error.
+		without an error.
 	- Removed Guide Room from cards if the user isn't a student.
 	- Truncated long names on their cards.
 	- Added the ability to mark cases and power adapters as returned from the user page.
 	- Changed the stats page to reports.
 	- Added a card to the reports page as a place holder, it's not functional at this point.
-   
+	 
 0.005 - 7/3/15
 	- Moved the date issued and date returned to the same line on the old assignment card on
-	  the device page to make room for guide room information. 
+		the device page to make room for guide room information. 
 	- Added guide room information to the current and old assignment cards on the device page.
 	- Changed the way dates and times are displayed so they take up less space.
 	- Changed it so the role won't be truncated like long user names are.
@@ -58,12 +58,12 @@ Change Log - Inventory Site
 
 0.006 - 7/4/15
 	- Moved the date issued and date returned to the same line on the old assignment card on
-	  the user's page.
+		the user's page.
 	- Fixed the spacing of notes on the old assignments card on the user's page.
 	- Added device icons to the device page.
 	- Added device icons to the user's page for active and old assignments.
 	- Changed the query of the users search page so now the results will be sorted in
-	  alphabetical order.
+		alphabetical order.
 
 0.007 - 7/6/15
 	- Changed images into links.
@@ -71,48 +71,48 @@ Change Log - Inventory Site
 	- Fixed the placement of notes on the old assignment card on the device page.
 	- Removed guide room from the old assignment card for non students on the device page.
 	- Changed a resolved event card to have a date range instead of separate lines for date
-	  submitted and date completed. 
+		submitted and date completed. 
 	- Removed the link on the user's name on the user page.
 	- Fixed a bug that wouldn't redirect you back to the correct page if you weren't signed in
-	  when trying to go to it.
-     
+		when trying to go to it.
+		 
 0.008 - 7/7/15
 	- Fixed a bug that loaded all users when viewing the users page without a query.
 	- Added the ability to filter people by their role.
 	- Added the ability to display teacher photos on the site.
-   
+	 
 0.009 - 7/8/15
 	- Turned roles into links on any card with the roll listed.
 	- Added the ability to show all the devices at a site.
 	- Added a devices page that will show a list of devices if more then one is found.
 	- Added a count to the top of the users and devices pages.
 	- Added the device's year to the site.
-   
+	 
 0.01 - 7/9/15
 	- Fixed a bug that would display an error if you tried searching for a user without
-	  entering anything.
+		entering anything.
 	- Fixed a bug that caused an empty search in the user field to send you to the 
-	  users page then return to index.
+		users page then return to index.
 	- Added a table view to the devices page.
 	- Fixed a bug that would cause the devices page to crash if the purchase date was missing
-	  from a device in the inventory.
+		from a device in the inventory.
 	- Fixed a bug that would cause the device page to crash if the purchase date was missing
-	  from a device in the inventory.
+		from a device in the inventory.
 
 0.011 - 7/10/15
 	- Added support for iPad device icons.
-   
+	 
 0.012 - 7/22/15
 	- Changed the grade rollup to happen on July 1st instead of August 1st.
 	- Changed the default when adding insurance to false.  It's not used anymore, but the 
-	  setting is still in the database, now it won't set it.
+		setting is still in the database, now it won't set it.
 	- Updated the teacher page to use the new card interface.
 	- Changed the serial number to a link on the device page that brings you to the warranty 
-	  status on Apple's site.
+		status on Apple's site.
 
 0.013 - 7/23/15
 	- Changed the way the text input box is resized on different browsers and devices so it
-	  should be more consistant.
+		should be more consistant.
 	- Changed the way guide room is displayed on cards so it's like other attributes.
 	- Changed the way things are made bold on the site so I can have more granular control.
 	- Added the warranty lookup to the devices page.
@@ -123,25 +123,25 @@ Change Log - Inventory Site
 	- Added address bar coloring for Android devices that support it.
 	- Added a message to the Location card on the device page when it's updated.
 	- Added the ability to search for a device based on it's year.
-   
+	 
 0.015 - 7/28/15
 	- Added the ability to search for a device by model.
 	- Changed the serial number to a link in the table view on the devices page that brings 
-	  you to the warranty status on Apple's site.
-	  
+		you to the warranty status on Apple's site.
+		
 0.016 - 7/29/15
 	- Changed the URL to use Tag for the Lake George Tag number instead of ID.
 	- Removed the "Search for a Device" card from the device page and replaced it with a
-	  card at the top of the page that will let you jump to another device using the
-	  asset tag.
+		card at the top of the page that will let you jump to another device using the
+		asset tag.
 	- Fixed a bug that would let you add an event to a device without an event type.
 	- Moved the confirmation message about a new assignment to the assignment card.
 	- Added a confirmation message to the new event card when a new event is added.
 	- Added a confirmation message to the new assignment card when a device is returned.
 	- Added a confirmation message to the event card when updated.
 	- Fixed a bug on the Resolved Event card that would show the notes header when there
-	  were no notes to display.
-	  
+		were no notes to display.
+		
 0.017 - 7/31/15
 	- Returned the "Search for a Device" card to the device page.
 	- Cleaned up some of the SQL inputs to prevent SQL injection attacks.
@@ -153,38 +153,38 @@ Change Log - Inventory Site
 0.018 - 8/3/15
 	- Fixed a bug that wouldn't return any results if you only searched the tags field. 
 	- Adjusted the textbox sizes on the location card on the device page so they match other
-	  text boxes.
+		text boxes.
 	- Added the ability to search for more than one tag at a time.  Separate each tag with 
-	  a comma to search for more than one.
+		a comma to search for more than one.
 	- Changed the room section to a drop down menu on the index page.
 	- Added Tags to the device card on the devices page.  Turned each tag into a link you can
-	  click to see all the devices with the tag.
+		click to see all the devices with the tag.
 	- Activated the Missing Adapters and Cases report on the reports page.
 	
 0.019 - 8/6/15
 	- Made the room textbox larger on the device page.
 	- Changed the main page to remember what was in the form if no results are found.
 	- Added the ability to search for assigned devices, when you do this it will show the 
-	  current user on the devices page.
-	  
+		current user on the devices page.
+		
 0.02 - 8/7/15
 	- Added a field to the devices table  in the database to keep track of whether or not
-	  a device is assigned.
+		a device is assigned.
 	- Updated the assign and return code so it updates the assigned field in the database.
 	- Added the ability to show devices that are assigned, or not assigned.
 	
 0.021 - 8/10/15
 	- Moved the error messages into the cards on the index page.
 	- Added the ability to display users based on whether or not they have an assigned
-	  device.
+		device.
 	- Changed the way devices and users are queried in the database to make it more
-	  efficient and easier to modify.
+		efficient and easier to modify.
 	- Added a couter to keep track of how many devices a user has.  This will help make sure
-	  a user with multiple devices isn't displayed as not having a device if they return
-	  one of their devices.
+		a user with multiple devices isn't displayed as not having a device if they return
+		one of their devices.
 	- Added the list of assigned devices to the user card when looking up people.
 	- Fixed a bug that would prevent the page from loading if you were trying to open a link
-	  that was filtered by role when you weren't logged into the site.
+		that was filtered by role when you weren't logged into the site.
 	- Modified the devices page so it will always display who the device is assigned to.
 	- Removed BOCES Tag from the device card on the devices page.
 	- Added Room to the device card on the devices page.
@@ -199,29 +199,29 @@ Change Log - Inventory Site
 	
 0.023 - 8/14/15
 	- Fixed a bug that would prevent the page from loading properly if you were trying to 
-	  open a link filtered by disabled status when you weren't logged into the site.
+		open a link filtered by disabled status when you weren't logged into the site.
 	- Added a site field to the people table in the database.
 	- Added the ability to filter users based on site.
 	- Added the ability to filter users based on the more generic role of student or teacher.
 	- Fixed a bug that would display two blank entries in the Guide Room drop down list on 
-	  the index page.
+		the index page.
 	- Fixed a bug that would cause searches from the index page to fail if the word contained 
-	  an apostrophe. 
+		an apostrophe. 
 	- Changed the Disabled drop down box to a Status drop down box when searching for a user
-	  on the index page.
+		on the index page.
 	- Created a list of all the tags in the system on the index page.
 	
 0.024 - 8/18/15
 	- Fixed a bug that wouldn't display an error message properly on the main page if
-	  you were returned by the devices page.
+		you were returned by the devices page.
 	- Moved tags to a separate table for a proper one to many relationship.
 	
 0.025 - 8/21/15
 	- Removed guide rooms from the drop down menu if the only students in the class 
-	  are disabled on the index page.
+		are disabled on the index page.
 	- Fixed a bug on the teachers page that prevented searching for devices.
 	- Cards will now turn yellow for students who haven't turned in the power supply or
-	  laptop case.
+		laptop case.
 	- Changed the links to buttons for switching between table and card view.
 	- Added table view to mobile devices.
 	- Added the ability to display all unassigned devices.
@@ -232,13 +232,13 @@ Change Log - Inventory Site
 	
 0.026 - 8/24/15
 	- Fixed a bug in the buttons for switching between card and table view that caused
-	  the buttons to act like toggle switches.
+		the buttons to act like toggle switches.
 	- Fixed a bug that prevented searching for both enabled and disabled users.
 	- Fixed a bug that would show graduated students as an option when assigning devices.
 	- Fixed a bug that would prevent you from deleting a tag if it was similar to
-	  another tag.
+		another tag.
 	- Fixed a bug that would cause the drop down menu for assigning devices to 
-	  have two grades listed at once and not reset when no role was selected.
+		have two grades listed at once and not reset when no role was selected.
 	- Added the ability to search for users who are missing items.
 	- Added the ability to search for devices that are either active or disabled.
 	- Added a table view to the users page.
@@ -254,16 +254,16 @@ Change Log - Inventory Site
 	
 0.027 - 8/26/15
 	- When you select Decommissioned Device from the event search card it will 
-	  automatically set Complete to yes so results are returned.
+		automatically set Complete to yes so results are returned.
 	- Changed the default icons for users and devices when we don't have an image.
 	- Changed the way users are looked up when listing devices to make it more
-	  efficient.
+		efficient.
 	- Added support for checking warranty information on Dell devices.
 	- Added an EMail Teachers button to the Active Assignment card.
 	
 0.028 - 8/28/15
 	- Fixed a bug that would prevent cards from loading if they were not an
-	  Apple or Dell product.
+		Apple or Dell product.
 	- Fixed a bug that broke the user page on the non admin version.
 	- Changed Teacher to Adult in the role dropdown menu.
 	- Changed the order of ES and HS staff in the role dropdown menu.
@@ -285,30 +285,30 @@ Change Log - Inventory Site
 	
 0.031 - 9/7/15
 	- Fixed a bug that caused new assignments to fail if the user had an apostrophe
-	  in their name.
+		in their name.
 	- Fixed the placement of the "Assigned" message in relation to the password page
-	  link in the Active Assignment card when assigning devices.
+		link in the Active Assignment card when assigning devices.
 	- Fixed the placement of the password page icon on old assignments so it doesn't
-	  run into the notes field. 
+		run into the notes field. 
 	- When you create an event it will keep track of the user who was assigned the
-	  device during the event.
+		device during the event.
 	- Added the ability to save searches.
 	- On the stats page, in the "Gradelevel Statistics" card, if the difference
-	  column is a negative number is will show the correct devices when clicked.
+		column is a negative number is will show the correct devices when clicked.
 	- Built in a back arrow that will return you to the search results.
 	- Changed the way return links are generated when you open a link and aren't
-	  signed in.
+		signed in.
 	- Added the ability to select either card or table view when performing a search.
 	- Added a checkbox on active assignments for returning equipments that's damaged.
-	  The device will be tagged as "Returned Damaged" so we can easily pull up a list
-	  of all devices that need attention.
-	  
+		The device will be tagged as "Returned Damaged" so we can easily pull up a list
+		of all devices that need attention.
+		
 0.032 - 9/18/15
 	- Changed the Old Assignment cards gray.
 	
 0.033 - 10/28/15
 	- Added links to the help desk on user cards.  When you click the link it will
-	  bring you to the screen where you can enter a help desk ticket for them.
+		bring you to the screen where you can enter a help desk ticket for them.
 	- Added a user id popup on user images.
 	
 0.034 - 1/6/16
@@ -317,39 +317,39 @@ Change Log - Inventory Site
 	
 0.035 - 1/20/16
 	- Made the links to the password site and help desk modular so you can enable them
-	  or disable them in the global.asa file.
+		or disable them in the global.asa file.
 	- Added the password link to the assignment cards on the device page.
 	- Added whats borrowed or missing to the active assignment card on the device page.
 	- Changed the colors of the rows on people who are borrowing items so it matches 
-	  their card.
+		their card.
 	- Added AppleID to the devices page for iPads.
 	- Moved the loaned items to a separate card on the user page.
 	- Changed the design of the cards so they have uniformly colored title bars.
 	- Changed the navigation buttons to icons so I can fit more across the top later.
 	- Reduced redundancies in the CSS file related to drawing cards.
 	- Changed LGCSD Tag to Asset Tag on the main page for teachers to make it more
-	  universal. 
+		universal. 
 	- Added location to the device page for teachers when looking up devices.
 	- Fixed a bug that wouldn't populate the Loaned drop down when loading a 
-	  saved search.
+		saved search.
 	- Changed the background of the site.
 	- Fixed a bug that prevented looking up devices by site using the Search for a
-	  Device card on the device page.
-	  
+		Device card on the device page.
+		
 0.036 - 2/5/16
 	- Fixed a bug that caused the password link to show up instead of the inventory 
-	  link on teachers active assignment card on the device page.
+		link on teachers active assignment card on the device page.
 	- Moved the version information to the bottom of the page so it appears on the
-	  mobile site as well.
+		mobile site as well.
 	- Changed the width of the page to auto so it will create more columns when you're
-	  viewing it on a wider screen.
+		viewing it on a wider screen.
 	- Removed the search for device card on the device page.
 	- Added student passwords, and AUP status to the database.
 	- Added a green check mark to student cards if they've turned in their AUP.
 	- Added a field to the global.asa file that let's you chose the default view, either
-	  card or table.
+		card or table.
 	- Added a field to the global.asa file that let's you specific the number of cards 
-	  it will show before switching to table view if you are set to table view by default.
+		it will show before switching to table view if you are set to table view by default.
 	
 0.037 - 2/9/16
 	- Added the ability to show and hide columns in table view.  
@@ -358,7 +358,7 @@ Change Log - Inventory Site
 	- Added hover highlighting to table view.
 	- Added a green check mark to device cards if they're insured.
 	- Reduced the default number of visible columns in a table when viewing from a mobile
-	  device.
+		device.
 	- Added the ability to search for a student's AUP status from the site.
 	
 0.038 - 2/16/16
@@ -369,23 +369,23 @@ Change Log - Inventory Site
 	- Combined the device card and location card into one card on the device page.
 	- Changed the way events work.  Now a device can only have one open event at a time.
 	- Added device notes to the device page so now you can keep notes about a device
-	  without creating an event.
+		without creating an event.
 	- Added AUP icon to the Active Assignment card on the device page.
 	- Added when a device was assigned and who assigned it to the active assignment 
-	  card on the device page.
+		card on the device page.
 	- Added who assigned and returned a device to the old assignments table on the 
-	  device page.
+		device page.
 	- Added username and password information to the active assignment card on the
-	  device page.
+		device page.
 	- Added username information to the user card on the users page.
 	- Removed links to the help desk and password site on the users page.
 	- Added the device lookup card to the top of the user page so it matches the
-	  device page.
+		device page.
 	- Redesigned the user page.  Now old assignment will appear in a table.
 	- Created a new Equipment card on the user page that allows you to loan out 
-	  equipment and keep track of what they're borrowing.  It also let's you
-	  mark cases and power adapters returned if not returned when they turned
-	  in their device.  This merges three cards into on.
+		equipment and keep track of what they're borrowing.  It also let's you
+		mark cases and power adapters returned if not returned when they turned
+		in their device.  This merges three cards into on.
 	- Added user notes to the user page so now you can keep notes about a user.
 	- Added the notes field to the search cards for users and devices on the main page.
 	- Fixed a bug that would let you loan out a blank item.
@@ -396,17 +396,17 @@ Change Log - Inventory Site
 	- Added support for tags with leading zeros.
 	- Fixed version placement on the user's side of the site.
 	- Fixed a bug on the user's side of the site that would display error messages in
-	  the wrong spot.
+		the wrong spot.
 	- Added a warning card to the main page if a device is assigned to a disabled user.
 	- Split the Events card into to on the stats page so it fits better.
 	- On the stats page if there's a negative number in the difference column on the 
-	  Grade Level Statistics card it will be colored red now.
+		Grade Level Statistics card it will be colored red now.
 	- Changed the text color to white on red rows.
 	- Updated the user's side so it matches the changes done to the admin side.
 	
 0.039 - 2/23/16
 	- Fixed a bug in table view on the devices page that would display an error if 
-	  the device doesn't have an image.
+		the device doesn't have an image.
 	- Added file names to the download CSV option.  Now they have more meaningful names.
 	- Changes all user's names in tables to last name comma first name format.
 	- Removed the add event card from decommissioned devices.
@@ -424,19 +424,19 @@ Change Log - Inventory Site
 	
 0.041 - 2/26/16
 	- Added an autocomplete drop down to the search for user and device cards on the
-	  main page.  It will autocomplete the model field.
+		main page.  It will autocomplete the model field.
 	- Added an autocomplete drop down to the room field on the device page.
 	- Fixed a bug in the subroutines that shorten dates and times.  Before if a null value
-	  was passed they would crash.
+		was passed they would crash.
 
 0.042	- 3/9/16
 	- Changed a settings so user images aren't forced to a certain height.  They will be
-	  restricted to 96px width.
+		restricted to 96px width.
 	- Fixed a bug that caused the wrong missing item to display on the Active Assignment card.
 	
 0.043 - 3/14/16
 	- Added the ability to import when a user's password was last changed.  A companion script
-	  can be scheduled to run to populate the data automatically.
+		can be scheduled to run to populate the data automatically.
 	- Merged roles so they are no longer based on site.  HS Staff and ES Staff changed to Staff.
 	- Changned high school students to number grade levels instead of names. Senior to 12th Grade.
 	- Added an email address and MAC Address validator to the device page.
@@ -446,36 +446,36 @@ Change Log - Inventory Site
 	
 0.044 - 3/30/16
 	- Fixed a bug that would prevent a change to device information from being logged if it 
-	  started out as a null value.
+		started out as a null value.
 	- Fixed a bug that would let you assign devices and loan out items to a disabled user.
 	- Fixed a bug that recorded a zero for the username in the log if it didn't have a username
-	  to use.
+		to use.
 	- Fixed a bug that would allow you to enter additional events for a device if you reloaded
-	  the page.
+		the page.
 	- Fixed a bug that would create a log entry when you updated a user even if nothing was changed.
 	- Added the ability to change AUP status from the admin page.
 	- Added the ability to auto create accounts in the Inventory and Active directory using an 
-	  export from SchoolTool.  A companion script can be scheduled to run that will automate the
-	  processes.
+		export from SchoolTool.  A companion script can be scheduled to run that will automate the
+		processes.
 	- Added a reduced log to the users section.
 	- Removed links to the password site.
 	
 0.045 - 4/1/16
 	- Added email notifications to the Inventory Site Update script for when passwords are about
-	  to expire. 
+		to expire. 
 	- Fixed address bar coloring for supported Android devices on the user portion of the page.
 	- Changed the global string variable PasswordURL to a boolean ShowPasswords since we've 
-	  dropped the password site.
+		dropped the password site.
 	- Removed AUP checkbox on a student's card if passwords are set to hidden.
 	- Fixed a bug that would put an unknown character in the Class Of column of the Users export
-	  when the user was an adult.
+		when the user was an adult.
 	- Changed the default column headers displayed on the users page.  They will change depending
-	  on the type of user you're looking up.
+		on the type of user you're looking up.
 	- Added a nag email that will be sent out at the end of the school year to remind people to 
-	  change their password before summer.
+		change their password before summer.
 	- Added room and phone number to the database for adults.  If a value is present it will show
-	  on the user page.
-	  
+		on the user page.
+		
 0.046 - 4/6/16
 	- Added a check mark next to an assigned device if it has insurance on the user page.
 	- Added a log of user activity to the user page.
@@ -493,37 +493,37 @@ Change Log - Inventory Site
 	- Changed the Devices Year Statistics card on the stats page to three separate pie charts.
 	- Added a Grade to Graduation Year card on the Stats page for easy reference.
 	- Changed the default focus of the add page to the Asset Tag field to make it easier to add
-	  multiple devices.
+		multiple devices.
 	- Fixed a bug in the add page so it will handle leading zero's properly.
 	- On the add page if you're scanning the serial number from the box of an Apple product it
-	  will drop the leading "S".
+		will drop the leading "S".
 	- Changed the way the log is ordered by default on the different pages where it shows, now 
-	  the latest entry will be on top.
+		the latest entry will be on top.
 	- Fixed a bug that would cause a crash if you searched for students with missing laptop cases.
 	- Limited the log page to only show the last 100 items.
 	- Fixed a bug that would record zeros for the user in the log if an event was created for
-	  a device that wasn't assigned to anyone.
+		a device that wasn't assigned to anyone.
 	- Fixed a bug that would prevent you from returning a missing or borrowed item if the user
-	  account was disabled.
+		account was disabled.
 	- Fixed a bug that would make question marks appear in the notes fields of devices when 
-	  searching based on tags.
+		searching based on tags.
 	- Fixed a bug in the logon page that would cause the page to not load if you were 
-	  automatically logged out.
+		automatically logged out.
 	- Added the ability to change an event type on an open event.
 	- Added the ability to search for a device based on make.
 	
 0.048 - 6/9/16
 	- JQuery, JQueryUI, and Datatables now run locally.
 	- Added the ability to dig deeper into the event categories.  You can see the categories
-	  based on the device, then device year.  Look for the shovel to dig deeper.
+		based on the device, then device year.  Look for the shovel to dig deeper.
 	- Added the ability to search for events by device year.
 	- Added a configurable countdown timer to the main page.
 	- Added an autocomplete when searching for first or last name.
 	- Added device type to the database so you can now look up devices based on their type.
 	- Fixed a bug that would redirect you to the index page instead of the search page if you 
-	  tried to use a saved search that had no results.
+		tried to use a saved search that had no results.
 	- Fixed a bug in the users portion that would cause an error when searching for a user
-	  with an apostrophe in their name. 
+		with an apostrophe in their name. 
 	- Converted CrLF's to <br />'s when displaying notes fields. 
 	- Added serial numbers to the table view when searching for events.
 	
@@ -548,21 +548,21 @@ Change Log - Inventory Site
 	- Changed the name of graduated in the role drop down to "Graduated - year".
 	- Changed expired passwords to display "Expired" instead of -151722 days remaining.
 	- Fixed a bug that would cause charts to fail to load on the eventstats page if the model
-	  had a period or apostrophe in the name.
+		had a period or apostrophe in the name.
 	- Fixed a bug that caused the page to crash if you tried to loan out an item with an apostrophe.
 	- Fixed a bug that caused two blank items in the guid room drop down in the user section of
-	  the site.
+		the site.
 	- Fixed a bug that caused the quick search on the top of the add page not to work.
 	- Fixed a bug that caused the sort icons not to load on the data tables.
 	
 0.051 - 10/31/16
-   - Changed the events card on the main page to show event types instead of categories.
-   - Added the ability to view both event category and types when viewing event information.
-   - Added the ability to dig deeper to the stats page on the events cards.
-   - Added support for the 12.9in and 9.7in iPad Pros on the spare iPad card on the main page.
+	 - Changed the events card on the main page to show event types instead of categories.
+	 - Added the ability to view both event category and types when viewing event information.
+	 - Added the ability to dig deeper to the stats page on the events cards.
+	 - Added support for the 12.9in and 9.7in iPad Pros on the spare iPad card on the main page.
 	- Fixed a bug that caused the table/card icons not to show properly in the user site.
 	- Fixed a bug on the event stats page that would cause it to fail to load if the model
-	  contained a dash.
+		contained a dash.
 	- Fixed a bug that caused searching for events by date range not to work properly.
 	- Fixed a bug in the eventstats page that prevented the dig deeper option to appear.
 	- Fixed a formatting error on the device page if the device doesn't have a BOCES tag.
@@ -580,9 +580,9 @@ Change Log - Inventory Site
 	- Fixed the way spare devices are displayed when we run out of spares.
 	- Fixed the date picker card when viewing event information on an iPad.
 	- Changed the Students Per Grade card to show you the graduating year when you hover 
-	  over a class.
+		over a class.
 	- Fixed a bug that caused an error to appear if someone visited the devices or users pages
-	  without a valid query string in the URL.
+		without a valid query string in the URL.
 	- Improved the way tools tips display on the site.
 	- Removed the labels on the spare cards on the main page if the values are 1.
 	- Modified the viewport settings so it does auto zoom when a control is selected in iOS.
@@ -597,34 +597,34 @@ Change Log - Inventory Site
 	- When you view the log of a user or device new value is displayed be default.
 	- Added a link to remotely control a device an the devices page.
 	- Added an edit mode to the device page that adds the ability to modify a devices 
-	  Make, Model, Serial, BOCES Tag, Date Purchased, and Asset Tag.
+		Make, Model, Serial, BOCES Tag, Date Purchased, and Asset Tag.
 	- Changed the way spare devices are displayed on the main page.  Before they would
-	  display devices based on their year, now they will display based on the grade.
+		display devices based on their year, now they will display based on the grade.
 	- Added the ability to restore a disabled device.
 	- Changed the behavior of the search when searching for an asset tag, now when you
-	  search for a device using the asset tag it will show both enabled and disabled devices.
+		search for a device using the asset tag it will show both enabled and disabled devices.
 	- Added the ability to change a student's Active Directory password from the site.
 	- Added the ability to change a user's first name, last name, username, role, site, photo ID,
-	  room, phone and description.  The first name, last name, username, phone, and description
-	  are also updated in Active Directory when changed.
+		room, phone and description.  The first name, last name, username, phone, and description
+		are also updated in Active Directory when changed.
 	- Added an information icon to the top of a device if we know when it last checked in.  If
-	  a Munki Report URL is specified in global.asa the icon will be a link to the device in Munki
-	  Report.
-	  
+		a Munki Report URL is specified in global.asa the icon will be a link to the device in Munki
+		Report.
+		
 0.055 - 8/9/17
-   - Fixed a bug on the user page that would cause cascading cards if the password last change
-     field was blank.
-   - Fixed a bug that would cause the DataTables plugin to crash on the users page if the password
-     last set field was blank for a user in the list.
-   - Updated the update device page.  Now if a device is tagged as Missing, or has an open event 
-     for lost device it will send an email when it checks in.
-   - If a legacy username or email address is used for the username when adding a new user to the
-     database it will change it to username.
-   - Added an information icon to the Students Per Grade card on the main page that will break down
-     the counts.
-   - Fixed a display issue on the devices card view when notes and the remote icon were displayed.
-   - Added the device information icon to devices on the devices page as well as the assignments card.
-   
+	 - Fixed a bug on the user page that would cause cascading cards if the password last change
+		 field was blank.
+	 - Fixed a bug that would cause the DataTables plugin to crash on the users page if the password
+		 last set field was blank for a user in the list.
+	 - Updated the update device page.  Now if a device is tagged as Missing, or has an open event 
+		 for lost device it will send an email when it checks in.
+	 - If a legacy username or email address is used for the username when adding a new user to the
+		 database it will change it to username.
+	 - Added an information icon to the Students Per Grade card on the main page that will break down
+		 the counts.
+	 - Fixed a display issue on the devices card view when notes and the remote icon were displayed.
+	 - Added the device information icon to devices on the devices page as well as the assignments card.
+	 
 0.056 - 8/22/17
 	- Added the ability to reassign devices using the Old Assignments list on the users page.
 	- Added the ability to reassign devices using the Old Assignments list on the device page.
@@ -636,19 +636,19 @@ Change Log - Inventory Site
 	- Fixed a bug that displayed old billable items when listing out users.
 	- Fixed a bug in the user's section that prevented a student's page from loading.
 	- Changed the Students Per Grade card on the main page to show students with and without devices
-	  separately as a stacked chart.
+		separately as a stacked chart.
 	- Added the percent assigned to the tooltip on the Student's Per Grade card.
 	- Added users to the results when looking up rooms.
 	- Added a link for room on both the user and device cards.
 	- Fixed a bug that caused an empty Equipment card to display on a disabled user who didn't owe 
-	  money and wasn't borrowing anything.
+		money and wasn't borrowing anything.
 	- When you add a billable item an email is now sent to the business office letting them know.
 	- When a billable item is returned an email is now sent to the business office letting them know.
 	- When you add an insurance event it will automatically bill them $100 and send an email to the
-	  business office.
+		business office.
 	- If you create an insurance event on a device that isn't assigned to anyone it will automatically
-	  change it to the previous person who used it.
-     
+		change it to the previous person who used it.
+		 
 0.058 - 1/14/18
 	- Fixed a bug that when a device was disabled it didn't record the date.
 	- Fixed a bug on the device page that caused javascript to crash if a device didn't have a purchase date.
@@ -670,21 +670,21 @@ Change Log - Inventory Site
 	- Added the ability to close an event when you add it.
 	- Added a information popup to user cards to show when they last logged in, and age information.
 	- Added a new card to the stats page that shows the number of each user type.  It also shows now many 
-	  devices each user type has.  Feature added by Dane Davis.
+		devices each user type has.  Feature added by Dane Davis.
 	- Added a new card to the stats page that shows the number of each device type.  Feature added by 
-	  Dane Davis.
-   
+		Dane Davis.
+	 
 0.059 - 5/29/18
-   - Fixed a bug in the spare iPads link when showing the spare iPads by model.
-   - Added a check to see if a device has an open event before assign it.  If so it can't be assigned.
-   - Add the ability to tag a device when adding it.
-   - Fixed a bug that would cause the site to crash if a user had an apostrophe in their name.
-   - Fixed the warranty lookup not keeping serial numbers when looking up apple devices.
-   - TECH is now removed from asset tags when looking up devices.
-   - Added the ability to notify parents about money owed
-   - Fixed a bug that let you assign disabled devices to users.
-   - Added a red background to assigned devices that are disabled.
-   
+	 - Fixed a bug in the spare iPads link when showing the spare iPads by model.
+	 - Added a check to see if a device has an open event before assign it.  If so it can't be assigned.
+	 - Add the ability to tag a device when adding it.
+	 - Fixed a bug that would cause the site to crash if a user had an apostrophe in their name.
+	 - Fixed the warranty lookup not keeping serial numbers when looking up apple devices.
+	 - TECH is now removed from asset tags when looking up devices.
+	 - Added the ability to notify parents about money owed
+	 - Fixed a bug that let you assign disabled devices to users.
+	 - Added a red background to assigned devices that are disabled.
+	 
 0.060 - 9/5/18
 	- Fixed a bug that would put in a zero in asset tag if you searched for a user that wasn't found.
 	- Added the ability to ssh to devices with an IP address.
