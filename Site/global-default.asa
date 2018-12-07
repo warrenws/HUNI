@@ -2,18 +2,18 @@
 Sub Application_OnStart
 
    strInventoryDB = "C:\Shared Data\Dev Inventory\Database\Inventory.mdb"
-   Application("SiteName") = "Lake George Inventory - Dev"
-   Application("Domain") = "lkgeorge.org"
-   Application("DomainController") = "hsdc01.lkgeorge.org"
+   Application("SiteName") = "Inventory"
+   Application("Domain") = "yourdomain.com"
+   Application("DomainController") = "dc.yourdomain.com"
    Application("DomainGroupUsers") = "Inventory Site Users"
    Application("DomainGroupAdmins") = "Inventory Site Admins"
-   Application("EMailNotifications") = "inventory@lkgeorge.org"
+   Application("EMailNotifications") = "inventory@yourdomain.com"
    Application("LogInDays") = 14
    Application("ForceSSL") = True
    Application("PhotoLocation") = "C:\Shared Data\Photo Import\Site"
    Application("Version") = "0.060"
    Application("Copyright") = "Copyright &copy; 2014-2018 Matt Hull<br />All Rights Reserved"
-   Application("HelpDeskURL") = "https://helpdesk.lkgeorge.org"
+   Application("HelpDeskURL") = "https://helpdesk.yourdomain.com"
    Application("ShowPasswords") = True
    Application("MultiColumn") = False
    Application("DefaultView") = "Table" 'Card or Table
@@ -23,13 +23,13 @@ Sub Application_OnStart
    Application("PasswordsExpire") = 90 'Days
    Application("CountdownTimerTitle") = "Countdown to the Start of School"
    Application("CountdownTimerDate") = "September 6, 2018 07:30:00"
-   Application("MunkiReportServer") = "https://updates.lkgeorge.org/public"
-   Application("LostDeviceNotify") = "hullm@lkgeorge.org;davisd@lkgeorge.org"
-   Application("BusinessOfficeEMail") = "hullm@lkgeorge.org"
-   Application("HomeroomName") = "Guide"
-   Application("HomeroomNameLong") = "Guide Room"
-   Application("LibreNMSServer") = "https://librenms.lkgeorge.org"
-   Application("LibreNMSToken") = "698642d7a7d8182305a29eac5a598f68"
+   Application("MunkiReportServer") = "https://updates.yourdomain.com/public"
+   Application("LostDeviceNotify") = "tech1@yourdomain.com;tech2@yourdomain.com"
+   Application("BusinessOfficeEMail") = "person@yourdomain.com"
+   Application("HomeroomName") = "Home"
+   Application("HomeroomNameLong") = "Home Room"
+   Application("LibreNMSServer") = "https://librenms.yourdomain.com"
+   Application("LibreNMSToken") = ""
    Application("BandwidthPort") = "154"
    Application("IndexCards") = "Warning,Search,StudentsPerGradeWithMissing,OpenEvents,SpareMacBooksFlipiPads,AccessHistory,EventStats,BandwidthWide"
 
@@ -56,6 +56,6 @@ End Sub
 		SpareMacBooks - Shows the number of spare MacBooks sorted by graduation year
 		SpareiPadsByType - Shows the number of spare iPads sorted by model.
 		SpareiPadsByGrade - Shows the number of spare iPads sorted by grade.
-    Bandwidth - Shows the bandwidth for the past 24 hours if a LibreNMS server is set.
-    BandwidthWide - Shows a wide version of the bandwidth for the past 24 hours.
+		Bandwidth - Shows the bandwidth for the past 24 hours if a LibreNMS server is set.
+		BandwidthWide - Shows a wide version of the bandwidth for the past 24 hours.
 -->
