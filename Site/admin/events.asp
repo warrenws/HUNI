@@ -17,12 +17,12 @@ Dim strModel, strSite, intDeviceYear, objLastNames
 
 'See if the user has the rights to visit this page
 If AccessGranted Then
-   ProcessSubmissions 
+	ProcessSubmissions 
 Else
-   DenyAccess
+	DenyAccess
 End If %>
 
-<%Sub ProcessSubmissions  
+<%Sub ProcessSubmissions
 
 	Dim strSQL, strSQLWhere
 	
@@ -31,15 +31,15 @@ End If %>
 	strEventType = Request.QueryString("EventType")
 	strCategory = Request.QueryString("Category")
 	strModel = Request.QueryString("EventModel")
-   strSite = Request.QueryString("EventSite")
-   intDeviceYear = Request.QueryString("Year")
+	strSite = Request.QueryString("EventSite")
+	intDeviceYear = Request.QueryString("Year")
 	strNotes = Request.QueryString("EventNotes")
 	strView = Request.QueryString("View")
 	datStartDate = Request.QueryString("StartDate")
-   datEndDate = Request.QueryString("EndDate")
-   strBackLink = BackLink
-   
-   If datStartDate <> "" Then
+	datEndDate = Request.QueryString("EndDate")
+	strBackLink = BackLink
+	
+	If datStartDate <> "" Then
 		If Not IsDate(datStartDate) Then
 			datStartDate = GetStartOfFiscalYear(Date)
 		End If
@@ -52,37 +52,37 @@ End If %>
 	End If
 	
 	Select Case Request.QueryString("Warranty")
-      Case "Yes"
-         strWarranty = "Yes"
-      Case "No"
-         strWarranty = "No"
-   End Select
-   
-   Select Case Request.QueryString("Complete")
-      Case "Yes"
-         strComplete = "Yes"
-      Case "No"
-         strComplete = "No"
-      Case "All"
-      	strComplete = "All"
-   End Select
+		Case "Yes"
+			strWarranty = "Yes"
+		Case "No"
+			strWarranty = "No"
+	End Select
+	
+	Select Case Request.QueryString("Complete")
+		Case "Yes"
+			strComplete = "Yes"
+		Case "No"
+			strComplete = "No"
+		Case "All"
+			strComplete = "All"
+	End Select
 
-   'Check and see if anything was submitted to the site
-   Select Case Request.Form("Submit")
-      Case "Update Event"
-      	UpdateEvent
-      Case "Save"
-      	SaveSearch
-         
-   End Select
-   
-   'Get the list of devices
+	'Check and see if anything was submitted to the site
+	Select Case Request.Form("Submit")
+		Case "Update Event"
+			UpdateEvent
+		Case "Save"
+			SaveSearch
+			
+	End Select
+	
+	'Get the list of devices
 	strSQLWhere = "WHERE "
 	If intEventNumber <> "" Then
-   	If IsNumeric(intEventNumber) Then
+		If IsNumeric(intEventNumber) Then
 			strSQLWhere = strSQLWhere & "Events.ID=" & intEventNumber & " AND "
 		End If
-   End If
+	End If
 	If strEventType <> "" Then
 		strSQLWhere = strSQLWhere & "Events.Type='" & Replace(strEventType,"'","''") & "' AND "
 	End If
@@ -95,14 +95,14 @@ End If %>
 	If strModel <> "" Then
 		strSQLWhere = strSQLWhere & "Events.Model Like '%" & Replace(strModel,"'","''") & "%' AND "
 	End If
-   If strSite <> "" Then
+	If strSite <> "" Then
 		strSQLWhere = strSQLWhere & "Events.Site='" & Replace(strSite,"'","''") & "' AND "
 	End If
 	If intDeviceYear <> "" Then
 		strSQLWhere = strSQLWhere & _
 		"Devices.DatePurchased>=#" & DateAdd("yyyy",intDeviceYear * -1,Date) & "# AND " & _
 		"Devices.DatePurchased<=#" & DateAdd("yyyy",(intDeviceYear -1) * -1,Date) & "# AND "
-   End If
+	End If
 	
 	Select Case strWarranty
 		Case "Yes"
@@ -119,17 +119,17 @@ End If %>
 		Case "All"
 		Case Else
 			If intEventNumber = "" Then
-         	strSQLWhere = strSQLWhere & "Events.Resolved=False AND "
-         End If
+				strSQLWhere = strSQLWhere & "Events.Resolved=False AND "
+			End If
 	End Select
 	
 	If datStartDate <> "" Then
-   	strSQLWhere = strSQLWhere & "Events.EventDate>=#" & datStartDate & "# AND "
-   End If
+		strSQLWhere = strSQLWhere & "Events.EventDate>=#" & datStartDate & "# AND "
+	End If
 
-   If datEndDate <> "" Then
-   	strSQLWhere = strSQLWhere & "Events.EventDate<=#" & datEndDate & "# AND "
-   End If
+	If datEndDate <> "" Then
+		strSQLWhere = strSQLWhere & "Events.EventDate<=#" & datEndDate & "# AND "
+	End If
 	
 	If strSQLWhere <> "WHERE " Then
 		strSQLWhere = Left(strSQLWhere,Len(strSQLWhere) - 5)
@@ -142,9 +142,9 @@ End If %>
 	strSQL = strSQL & "FROM Devices INNER JOIN Events ON Devices.LGTag = Events.LGTag " & strSQLWhere
 	Set objEvents = Application("Connection").Execute(strSQL)
 
-   'If no user is found send them back to the index page.
-   If objEvents.EOF Then
-   	Response.Redirect("index.asp?Error=NoEventsFound")
+	'If no user is found send them back to the index page.
+	If objEvents.EOF Then
+		Response.Redirect("index.asp?Error=NoEventsFound")
 	Else
 		intEventCount = 0
 		Do Until objEvents.EOF 
@@ -155,46 +155,46 @@ End If %>
 	End If
 
 	'Get the URL used to submit forms
-   If Request.ServerVariables("QUERY_STRING") = "" Then
-      strSubmitTo = "events.asp"
-   Else   
-      strSubmitTo = "events.asp?" & Request.ServerVariables("QUERY_STRING")
-   End If
+	If Request.ServerVariables("QUERY_STRING") = "" Then
+		strSubmitTo = "events.asp"
+	Else   
+		strSubmitTo = "events.asp?" & Request.ServerVariables("QUERY_STRING")
+	End If
 
 	'Get the list of event types for the event types drop down menu
-   strSQL = "SELECT EventType FROM EventTypes WHERE Active=True ORDER BY EventType"
-   Set objEventTypes = Application("Connection").Execute(strSQL)
-   
-   'Get the list of categories from the category drop down menu
-   strSQL = "SELECT Category FROM Categories WHERE Active=True ORDER BY Category"
-   Set objCategories = Application("Connection").Execute(strSQL)
+	strSQL = "SELECT EventType FROM EventTypes WHERE Active=True ORDER BY EventType"
+	Set objEventTypes = Application("Connection").Execute(strSQL)
+	
+	'Get the list of categories from the category drop down menu
+	strSQL = "SELECT Category FROM Categories WHERE Active=True ORDER BY Category"
+	Set objCategories = Application("Connection").Execute(strSQL)
 
 	'Get the list of lastnames for the auto complete
-   strSQL = "SELECT DISTINCT LastName FROM People WHERE Active=True"
-   Set objLastNames = Application("Connection").Execute(strSQL)
+	strSQL = "SELECT DISTINCT LastName FROM People WHERE Active=True"
+	Set objLastNames = Application("Connection").Execute(strSQL)
 
-   'Set up the variables needed for the site then load it
-   SetupSite
-   If LCase(strView) = "table" Then
-   	strSiteVersion = "Full"
-   End If
-   DisplaySite
-   
+	'Set up the variables needed for the site then load it
+	SetupSite
+	If LCase(strView) = "table" Then
+		strSiteVersion = "Full"
+	End If
+	DisplaySite
+	
 End Sub%>
 
 <%Sub DisplaySite %>
 
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-   <html>
-   <head>
-      <title><%=Application("SiteName")%></title> 
-      <link rel="stylesheet" type="text/css" href="../style.css" /> 
-      <link rel="apple-touch-icon" href="../images/inventory.png" /> 
-      <link rel="shortcut icon" href="../images/inventory.ico" />
-      <meta name="viewport" content="width=device-width,user-scalable=0" />
-      <meta name="theme-color" content="#333333">
-      <link rel="stylesheet" href="../assets/css/jquery-ui.css">
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+	<head>
+		<title><%=Application("SiteName")%></title> 
+		<link rel="stylesheet" type="text/css" href="../style.css" /> 
+		<link rel="apple-touch-icon" href="../images/inventory.png" /> 
+		<link rel="shortcut icon" href="../images/inventory.ico" />
+		<meta name="viewport" content="width=device-width,user-scalable=0" />
+		<meta name="theme-color" content="#333333">
+		<link rel="stylesheet" href="../assets/css/jquery-ui.css">
 		<script src="../assets/js/jquery.js"></script>
 		<script src="../assets/js/jquery-ui.js"></script>
 		<link rel="stylesheet" href="../assets/css/jquery.dataTables.min.css">
@@ -209,33 +209,33 @@ End Sub%>
 			
 			<%	If Not IsMobile And Not IsiPad Then%>
 					$( document ).tooltip({track: true});
-			<% End If %>	
+				End If %>	
 			
-    			var table = $('#ListView').DataTable( {
-    				paging: false,
-    				"info": false,
-    				"autoWidth": false,
-    				dom: 'Bfrtip',
-    				// stateSave: true,
-    				buttons: [
+				var table = $('#ListView').DataTable( {
+					paging: false,
+					"info": false,
+					"autoWidth": false,
+					dom: 'Bfrtip',
+					// stateSave: true,
+					buttons: [
 						{
 							extend: 'colvis',
 							text: 'Show/Hide Columns'
 						}
-				<% If Not IsMobile Then %>		
+				<%	If Not IsMobile Then %>		
 						,
 						{
 							extend: 'csvHtml5',
 							text: 'Download CSV'
 						}
-				<% End If %>
-        			]
-        		
-    			});
-    			
-    			<% If Not objLastNames.EOF Then %>
+				<%	End If %>
+					]
+				
+				});
+				
+				<%	If Not objLastNames.EOF Then %>
 						var possibleLastNames = [
-					<% Do Until objLastNames.EOF %>	
+					<%	Do Until objLastNames.EOF %>	
 							"<%=objLastNames(0)%>",
 						<%	objLastNames.MoveNext
 						Loop %>
@@ -243,33 +243,33 @@ End Sub%>
 						$( "#LastNames" ).autocomplete({
 							source: possibleLastNames
 						});
-				<% End If %>
-    			
-    	<% If IsMobile Then %>	
-    			table.columns([3,4,5,6,7,8,9,10,11,12,13]).visible(false);	
-    	<% Else %>		
+				<%	End If %>
+				
+		<%	If IsMobile Then %>	
+				table.columns([3,4,5,6,7,8,9,10,11,12,13]).visible(false);	
+		<%	Else %>		
 				table.columns([4,5,6,8,10,11,12]).visible(false);
-		<% End If %>
+		<%	End If %>
 
-    		} );
-    	</script>
-   </head>
+			} );
+		</script>
+	</head>
 
-   <body class="<%=strSiteVersion%>">
-   
-      <div class="Header"><%=Application("SiteName")%> (<%=intEventCount%>)</div>
-      <div>
-         <ul class="NavBar" align="center">
-            <li><a href="index.asp"><img src="../images/home.png" title="Home" height="32" width="32"/></a></li>
-            <li><a href="search.asp"><img src="../images/search.png" title="Search" height="32" width="32"/></a></li>
-            <li><a href="stats.asp"><img src="../images/stats.png" title="Stats" height="32" width="32"/></a></li>
-            <li><a href="log.asp"><img src="../images/log.png" title="System Log" height="32" width="32"/></a></li>
-            <li><a href="add.asp"><img src="../images/add.png" title="Add Person or Device" height="32" width="32"/></a></li>
-            <li><a href="login.asp?action=logout"><img src="../images/logout.png" title="Log Out" height="32" width="32"/></a></li>
-         </ul>
-      </div>  
+	<body class="<%=strSiteVersion%>">
+	
+		<div class="Header"><%=Application("SiteName")%> (<%=intEventCount%>)</div>
+		<div>
+			<ul class="NavBar" align="center">
+				<li><a href="index.asp"><img src="../images/home.png" title="Home" height="32" width="32"/></a></li>
+				<li><a href="search.asp"><img src="../images/search.png" title="Search" height="32" width="32"/></a></li>
+				<li><a href="stats.asp"><img src="../images/stats.png" title="Stats" height="32" width="32"/></a></li>
+				<li><a href="log.asp"><img src="../images/log.png" title="System Log" height="32" width="32"/></a></li>
+				<li><a href="add.asp"><img src="../images/add.png" title="Add Person or Device" height="32" width="32"/></a></li>
+				<li><a href="login.asp?action=logout"><img src="../images/logout.png" title="Log Out" height="32" width="32"/></a></li>
+			</ul>
+		</div>
 		<%JumpToDevice%>
-<% If Not objEvents.EOF Then
+<%	If Not objEvents.EOF Then
 	
 		Select Case LCase(strView)
 			Case "table"
@@ -304,20 +304,20 @@ End Sub%>
 					
 				End If
 		End Select
-      SaveAsSearch
-   End If %>
+		SaveAsSearch
+	End If %>
 		<div class="Version">Version <%=Application("Version")%></div>
 		<div class="CopyRight"><%=Application("Copyright")%></div>
-   </body>
+	</body>
 
-   </html>
+	</html>
 
 <%End Sub%>
 
 <%Sub ShowEventCards 
 
 	Dim strSelected, strWarrantyChecked%>
-	  
+	
 	<div class="ViewButton">
 		<a href="<%=SwitchView("Table")%>"><img src="../images/table.png" title="Table View" height="32" width="32"/></a>
 	</div>
@@ -325,15 +325,15 @@ End Sub%>
 	<div Class="<%=strColumns%>">
 <%	If Not objEvents.EOF Then 
 
-   	Do Until objEvents.EOF 
-      
-   		If objEvents(9) Then
+		Do Until objEvents.EOF 
+		
+			If objEvents(9) Then
 				strWarrantyChecked = "checked=""checked"""
 			Else
 				strWarrantyChecked = ""
 			End If
-   
-   		If objEvents(5) Then %> 
+	
+			If objEvents(5) Then %> 
 
 				<div class="Card NormalCard">
 					<div class="CardTitle">Event <%=objEvents(0)%></div>
@@ -349,11 +349,11 @@ End Sub%>
 					</div>
 					<div>
 						<div Class="CardColumn1">Date: </div>
-				<% If ShortenDate(objEvents(3)) = ShortenDate(objEvents(6)) Then %>
+				<%	If ShortenDate(objEvents(3)) = ShortenDate(objEvents(6)) Then %>
 						<div Class="CardColumn2"><%=ShortenDate(objEvents(3))%></div>
-				<% Else %>
+				<%	Else %>
 						<div Class="CardColumn2"><%=ShortenDate(objEvents(3)) & " - " & ShortenDate(objEvents(6))%></div>
-				<% End If %>
+				<%	End If %>
 					</div>
 					<div>
 						<div Class="CardColumn1">Category: </div>
@@ -363,13 +363,13 @@ End Sub%>
 						<div Class="CardColumn1">Warranty: </div>
 						<div Class="CardColumn2"><input type="checkbox" name="Warranty" value="True" <%=strWarrantyChecked%> /></div>
 					</div>
-				<% If objEvents(2) <> "" And Not IsNull(objEvents(2)) Then %> 
+				<%	If objEvents(2) <> "" And Not IsNull(objEvents(2)) Then %> 
 						<div>Notes: </div>
 						<div><%=objEvents(2)%></div>
-				<% End If %>
+				<%	End If %>
 				</div>
 				
-		<% Else %>
+		<%	Else %>
 		
 				<div class="Card NormalCard">
 					<form method="POST" action="<%=strSubmitTo%>">
@@ -386,7 +386,7 @@ End Sub%>
 						<div Class="CardColumn2">
 							<select Class="Card" name="EventType">
 								<option value=""></option>
-						<% If Not objEventTypes.EOF Then
+						<%	If Not objEventTypes.EOF Then
 								Do Until objEventTypes.EOF 
 									If objEvents(1) = objEventTypes(0) Then
 										strSelected = "selected=""selected"""
@@ -394,7 +394,7 @@ End Sub%>
 										strSelected = ""
 									End If %>
 									<option value="<%=objEventTypes(0)%>" <%=strSelected%>><%=objEventTypes(0)%></option>
-								<% objEventTypes.MoveNext
+								<%	objEventTypes.MoveNext
 								Loop 
 							End If 
 							objEventTypes.MoveFirst %>
@@ -410,7 +410,7 @@ End Sub%>
 					<div Class="CardColumn2">
 						<select Class="Card" name="Category">
 							<option value=""></option>
-					<% If Not objCategories.EOF Then
+					<%	If Not objCategories.EOF Then
 							Do Until objCategories.EOF 
 								If objCategories(0) = objEvents(8) Then
 									strSelected = "selected=""selected"""
@@ -418,7 +418,7 @@ End Sub%>
 									strSelected = "" 
 								End If %>
 								<option value="<%=objCategories(0)%>" <%=strSelected%>><%=objCategories(0)%></option>
-							<% objCategories.MoveNext
+							<%	objCategories.MoveNext
 							Loop
 							objCategories.MoveFirst 
 						End If %>
@@ -440,19 +440,19 @@ End Sub%>
 					</div>
 					<div>&nbsp;</div>
 					<div Class="Button"><input type="submit" value="Update Event" name="Submit" /></div>
-			<% If CInt(intEventID) = CInt(objEvents(0)) Then %>
+			<%	If CInt(intEventID) = CInt(objEvents(0)) Then %>
 					<div>
 						<div class="Information">Updated</div>
 					</div>
-			<% End If %>
+			<%	End If %>
 					</form>
 				</div>
-         
-      <% End If
-      	objEvents.MoveNext
-      Loop %>
-      </div>
-<% End If 
+			
+		<%	End If
+			objEvents.MoveNext
+		Loop %>
+		</div>
+<%	End If 
 
 End Sub%>
 
@@ -485,7 +485,7 @@ End Sub%>
 			<th>Event Notes</th>
 			</thead>
 			<tbody>
-<% Do Until objEvents.EOF
+<%	Do Until objEvents.EOF
 
 		If objEvents(9) Then
 			strWarrantyInfo = "Yes"
@@ -509,7 +509,7 @@ End Sub%>
 				<td><a href="events.asp?EventSite=<%=objEvents(12)%>&View=Table"><%=objEvents(12)%></a></td>
 				<td><%=ShortenDate(objEvents(3))%></td>
 				<td><%=ShortenDate(objEvents(6))%></td>
-			<% If objEvents(11) <> "" Then 
+			<%	If objEvents(11) <> "" Then 
 			
 					strSQL = "SELECT FirstName,LastName,UserName FROM People WHERE ID=" & objEvents(11) 
 					Set objName = Application("Connection").Execute(strSQL)
@@ -518,56 +518,56 @@ End Sub%>
 						<td>
 							<a href="user.asp?UserName=<%=objName(2)%><%=strBackLink%>"><%=objName(1)%>, <%=objName(0)%></a>
 						</td>
-				<% Else %>		
+				<%	Else %>		
 						<td></td>
 				<%	End If %>
 					
-			<% Else %>
+			<%	Else %>
 					<td></td>
-			<% End If %>
+			<%	End If %>
 				<td id="center"><a href="events.asp?Warranty=<%=strWarrantyInfo%>&View=Table"><%=strWarrantyInfo%></a></td>
 				
-			<% If objEvents(14) <> "" Then 
+			<%	If objEvents(14) <> "" Then 
 			
 					strSQL = "SELECT FirstName,LastName FROM People WHERE UserName='" & objEvents(14) & "'"
 					Set objName = Application("Connection").Execute(strSQL)
 					
 					If Not objName.EOF Then %>
 						<td><%=objName(1)%>, <%=objName(0)%></td>
-				<% Else %>		
+				<%	Else %>		
 						<td></td>
 				<%	End If %>
 					
-			<% Else %>
+			<%	Else %>
 					<td></td>
-			<% End If %>
+			<%	End If %>
 			
-			<% If objEvents(15) <> "" Then 
+			<%	If objEvents(15) <> "" Then 
 			
 					strSQL = "SELECT FirstName,LastName FROM People WHERE UserName='" & objEvents(15) & "'"
 					Set objName = Application("Connection").Execute(strSQL)
 					
 					If Not objName.EOF Then %>
 						<td><%=objName(1)%>, <%=objName(0)%></td>
-				<% Else %>		
+				<%	Else %>		
 						<td></td>
 				<%	End If %>
 					
-			<% Else %>
+			<%	Else %>
 					<td></td>
-			<% End If %>
+			<%	End If %>
 				
 				<td id="center"><a href="events.asp?Complete=<%=strCompleteInfo%>&View=Table"><%=strCompleteInfo%></a></td>
 				<td><%=Replace(objEvents(2),vbCRLF,"<br />")%></td>
 			</tr>
 	<%	objEvents.MoveNext
-   Loop  %> 
+	Loop %>
 			</tbody>
-  	 	</table>	
+		</table>	
 	</div>
 <%End Sub %>
 
-<% Sub UpdateEvent 
+<%	Sub UpdateEvent 
 	
 	Dim strNotes, datDate, datTime, bolResolved, strSQL, strCategory, bolWarranty, strUserName, strOldEventType, objDeviceLookup
 	Dim objUserID, intUserID, objOldValues, strOldNotes, strOldCategory, bolOldWarranty, strEventType, intTag
@@ -580,10 +580,10 @@ End Sub%>
 	strEventType = Request.Form("EventType")
 	
 	If Request.Form("Warranty") = "True" Then
-   	bolWarranty = True
-   Else
-   	bolWarranty = False
-   End If
+		bolWarranty = True
+	Else
+		bolWarranty = False
+	End If
 	
 	datDate = Date()
 	datTime = Time()
@@ -621,7 +621,6 @@ End Sub%>
 	If bolResolved Then
 		strSQL = strSQL & ",Resolved=True,ResolvedDate=#" & datDate & "#,ResolvedTime=#" & datTime & "#," & _
 			"CompletedBy='" & strUser & "'"
-
 		Application("Connection").Execute("UPDATE Devices SET HasEvent=False WHERE LGTag='" & intTag & "'")
 	End If
 	
@@ -667,53 +666,53 @@ End Sub %>
 
 <%Function FilterBar
 
-   If intEventNumber <> "" Then
-   	FilterBar = FilterBar & "Number = <a href=""events.asp?EventNumber=" & intEventNumber & """>" & intEventNumber & "</a> | "
-   End If
-   
-   If strEventType <> "" Then
-   	FilterBar = FilterBar & "Type = <a href=""events.asp?EventType=" & strEventType & """>" & strEventType & "</a> | "
-   End If
-   
-   If strCategory <> "" Then
-   	FilterBar = FilterBar & "Category = <a href=""events.asp?Category=" & strCategory & """>" & strCategory & "</a> | "
-   End If
-   
-   If strModel <> "" Then
-   	FilterBar = FilterBar & "Model = <a href=""events.asp?EventModel=" & strModel & """>" & strModel & "</a> | "
-   End If
-   
-   If strSite <> "" Then
-   	FilterBar = FilterBar & "Site = <a href=""events.asp?EventSite=" & strSite & """>" & strSite & "</a> | "
-   End If
-   
-   If intDeviceYear <> "" Then
-   	FilterBar = FilterBar & "Year = <a href=""devices.asp?Year=" & intDeviceYear & """>" & intDeviceYear & "</a> | "
-   End If
-   
-   If strWarranty <> "" Then
-   	FilterBar = FilterBar & "Warranty = <a href=""events.asp?Warranty=" & strWarranty & """>" & strWarranty & "</a> | "
-   End If
-   
-   If strComplete <> "" Then
-   	FilterBar = FilterBar & "Complete = <a href=""events.asp?Complete=" & strComplete & """>" & strComplete & "</a> | "
-   End If
-   
-   If strNotes <> "" Then
-   	FilterBar = FilterBar & "Notes = <a href=""events.asp?Notes=" & strNotes & """>" & strNotes & "</a> | "
-   End If
-   
-   If datStartDate <> "" Then
-   	FilterBar = FilterBar & "Start Date = <a href=""events.asp?StartDate=" & datStartDate & """>" & datStartDate & "</a> | "
-   End If
-   
-   If datEndDate <> "" Then
-   	FilterBar = FilterBar & "End Date = <a href=""events.asp?EndDate=" & datEndDate & """>" & datEndDate & "</a> | "
-   End If
-   
-   If FilterBar <> "" Then
-   	FilterBar = Left(FilterBar,Len(FilterBar) - 3)
-   End If
+	If intEventNumber <> "" Then
+		FilterBar = FilterBar & "Number = <a href=""events.asp?EventNumber=" & intEventNumber & """>" & intEventNumber & "</a> | "
+	End If
+	
+	If strEventType <> "" Then
+		FilterBar = FilterBar & "Type = <a href=""events.asp?EventType=" & strEventType & """>" & strEventType & "</a> | "
+	End If
+	
+	If strCategory <> "" Then
+		FilterBar = FilterBar & "Category = <a href=""events.asp?Category=" & strCategory & """>" & strCategory & "</a> | "
+	End If
+	
+	If strModel <> "" Then
+		FilterBar = FilterBar & "Model = <a href=""events.asp?EventModel=" & strModel & """>" & strModel & "</a> | "
+	End If
+	
+	If strSite <> "" Then
+		FilterBar = FilterBar & "Site = <a href=""events.asp?EventSite=" & strSite & """>" & strSite & "</a> | "
+	End If
+	
+	If intDeviceYear <> "" Then
+		FilterBar = FilterBar & "Year = <a href=""devices.asp?Year=" & intDeviceYear & """>" & intDeviceYear & "</a> | "
+	End If
+	
+	If strWarranty <> "" Then
+		FilterBar = FilterBar & "Warranty = <a href=""events.asp?Warranty=" & strWarranty & """>" & strWarranty & "</a> | "
+	End If
+	
+	If strComplete <> "" Then
+		FilterBar = FilterBar & "Complete = <a href=""events.asp?Complete=" & strComplete & """>" & strComplete & "</a> | "
+	End If
+	
+	If strNotes <> "" Then
+		FilterBar = FilterBar & "Notes = <a href=""events.asp?Notes=" & strNotes & """>" & strNotes & "</a> | "
+	End If
+	
+	If datStartDate <> "" Then
+		FilterBar = FilterBar & "Start Date = <a href=""events.asp?StartDate=" & datStartDate & """>" & datStartDate & "</a> | "
+	End If
+	
+	If datEndDate <> "" Then
+		FilterBar = FilterBar & "End Date = <a href=""events.asp?EndDate=" & datEndDate & """>" & datEndDate & "</a> | "
+	End If
+	
+	If FilterBar <> "" Then
+		FilterBar = Left(FilterBar,Len(FilterBar) - 3)
+	End If
 
 End Function %>
 
@@ -741,22 +740,22 @@ End Function%>
 	<br />
 	
 	<div class="Card NormalCard">
-      <form method="POST" action="<%=strPage%>">
-     	 	<div class="CardTitle">Save Search</div>
-      	<div Class="CardColumn1">Search Name:</div>
-         <div Class="CardColumn2">
+		<form method="POST" action="<%=strPage%>">
+			<div class="CardTitle">Save Search</div>
+			<div Class="CardColumn1">Search Name:</div>
+			<div Class="CardColumn2">
 				<input class="Card InputWidthLarge" type="text" name="SearchName""/>
 			</div>
-         <div>
-            <div class="Button"><input type="submit" value="Save" name="Submit" /></div>
-         </div>
-      <% If strSearchMessage <> "" Then %>
-   		<div>
-   			<%=strSearchMessage%>
-   		</div>
-   <% End If %> 
-      </form>
-      </div>
+			<div>
+				<div class="Button"><input type="submit" value="Save" name="Submit" /></div>
+			</div>
+		<%	If strSearchMessage <> "" Then %>
+			<div>
+				<%=strSearchMessage%>
+			</div>
+	<%	End If %> 
+		</form>
+		</div>
 
 <%End Sub%>
 
@@ -805,16 +804,16 @@ End Function%>
 
 <%Function GetStartOfFiscalYear(datToday)
 
-   If IsDate(datToday) Then
-      If Month(datToday) >= 7 Then
-         GetStartOfFiscalYear = "7/1/" & Year(datToday)
-      Else
-         GetStartOfFiscalYear = "7/1/" & Year(datToday) - 1
-      End If
-   Else
-      GetStartOfFiscalYear = GetStartOfFiscalYear(Date)
-   End If
-   
+	If IsDate(datToday) Then
+		If Month(datToday) >= 7 Then
+			GetStartOfFiscalYear = "7/1/" & Year(datToday)
+		Else
+			GetStartOfFiscalYear = "7/1/" & Year(datToday) - 1
+		End If
+	Else
+		GetStartOfFiscalYear = GetStartOfFiscalYear(Date)
+	End If
+	
 End Function%>
 
 <%Function SwitchView(strView)
@@ -956,183 +955,183 @@ End Sub%>
 
 <%Sub DenyAccess 
 
-   'If we're not using basic authentication then send them to the login screen
-   If bolShowLogout Then
-      Response.Redirect("login.asp?action=logout")
-   Else
-   
-   SetupSite
-   
-   %>
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-   <html>
-   <head>
-      <title><%=Application("SiteName")%></title>
-      <link rel="stylesheet" type="text/css" href="../style.css" /> 
-      <link rel="apple-touch-icon" href="../images/inventory.png" /> 
-      <link rel="shortcut icon" href="../images/inventory.ico" />
-      <meta name="viewport" content="width=device-width" />
-   </head>
-   <body>
-      <center><b>Access Denied</b></center>
-   </body>
-   </html>
-   
-<% End If
+	'If we're not using basic authentication then send them to the login screen
+	If bolShowLogout Then
+		Response.Redirect("login.asp?action=logout")
+	Else
+	
+	SetupSite
+	
+	%>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+	<head>
+		<title><%=Application("SiteName")%></title>
+		<link rel="stylesheet" type="text/css" href="../style.css" /> 
+		<link rel="apple-touch-icon" href="../images/inventory.png" /> 
+		<link rel="shortcut icon" href="../images/inventory.ico" />
+		<meta name="viewport" content="width=device-width" />
+	</head>
+	<body>
+		<center><b>Access Denied</b></center>
+	</body>
+	</html>
+	
+<%	End If
 
 End Sub%>
 
 <%Function AccessGranted
 
-   Dim objNetwork, strUserAgent, strSQL, strRole, objNameCheckSet
+	Dim objNetwork, strUserAgent, strSQL, strRole, objNameCheckSet
 
-   'Redirect the user the SSL version if required
-   If Application("ForceSSL") Then
-      If Request.ServerVariables("SERVER_PORT")=80 Then
-         If Request.ServerVariables("QUERY_STRING") = "" Then
-            Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL")
-         Else
-            Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL") & "?" & Request.ServerVariables("QUERY_STRING")
-         End If
-      End If
-   End If
+	'Redirect the user the SSL version if required
+	If Application("ForceSSL") Then
+		If Request.ServerVariables("SERVER_PORT")=80 Then
+			If Request.ServerVariables("QUERY_STRING") = "" Then
+				Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL")
+			Else
+				Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL") & "?" & Request.ServerVariables("QUERY_STRING")
+			End If
+		End If
+	End If
 
-   'Get the users logon name
-   Set objNetwork = CreateObject("WSCRIPT.Network")   
-   strUser = objNetwork.UserName
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the users logon name
+	Set objNetwork = CreateObject("WSCRIPT.Network")   
+	strUser = objNetwork.UserName
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check and see if anonymous access is enabled
-   If LCase(Left(strUser,4)) = "iusr" Then
-      strUser = GetUser
-      bolShowLogout = True
-   Else
-      bolShowLogout = False
-   End If
+	'Check and see if anonymous access is enabled
+	If LCase(Left(strUser,4)) = "iusr" Then
+		strUser = GetUser
+		bolShowLogout = True
+	Else
+		bolShowLogout = False
+	End If
 
-   'Build the SQL string, this will check the userlevel of the user.
-   strSQL = "Select Role" & vbCRLF
-   strSQL = strSQL & "From Sessions" & vbCRLF
-   strSQL = strSQL & "WHERE UserName='" & strUser & "' And SessionID='" & Request.Cookies("SessionID") & "'"
-   Set objNameCheckSet = Application("Connection").Execute(strSQL)
-   strRole = objNameCheckSet(0)
+	'Build the SQL string, this will check the userlevel of the user.
+	strSQL = "Select Role" & vbCRLF
+	strSQL = strSQL & "From Sessions" & vbCRLF
+	strSQL = strSQL & "WHERE UserName='" & strUser & "' And SessionID='" & Request.Cookies("SessionID") & "'"
+	Set objNameCheckSet = Application("Connection").Execute(strSQL)
+	strRole = objNameCheckSet(0)
 
-   If strRole = "Admin" Then
-      AccessGranted = True
-   Else
-      AccessGranted = False
-   End If
+	If strRole = "Admin" Then
+		AccessGranted = True
+	Else
+		AccessGranted = False
+	End If
 
 End Function%>
 
 <%Function GetUser
 
-   Const USERNAME = 1
+	Const USERNAME = 1
 
-   Dim strUserAgent, strSessionID, objSessionLookup, strSQL
-   
-   'Get some needed data
-   strSessionID = Request.Cookies("SessionID")
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
-   
-   'Send them to the logon screen if they don't have a Session ID
-   If strSessionID = "" Then
-      SendToLogonScreen
+	Dim strUserAgent, strSessionID, objSessionLookup, strSQL
+	
+	'Get some needed data
+	strSessionID = Request.Cookies("SessionID")
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	
+	'Send them to the logon screen if they don't have a Session ID
+	If strSessionID = "" Then
+		SendToLogonScreen
 
-   'Get the username from the database
-   Else
-   
-      strSQL = "SELECT ID,UserName,SessionID,IPAddress,UserAgent,ExpirationDate FROM Sessions "
-      strSQL = strSQL & "WHERE UserAgent='" & Left(Replace(strUserAgent,"'","''"),250) & "' And SessionID='" & Replace(strSessionID,"'","''") & "'"
-      strSQL = strSQL & " And ExpirationDate > Date()"
-      Set objSessionLookup = Application("Connection").Execute(strSQL)
-      
-      'If a session isn't found for then kick them out
-      If objSessionLookup.EOF Then
-         SendToLogonScreen
-      Else
-         GetUser = objSessionLookup(USERNAME)
-      End If
-   End If  
-   
+	'Get the username from the database
+	Else
+	
+		strSQL = "SELECT ID,UserName,SessionID,IPAddress,UserAgent,ExpirationDate FROM Sessions "
+		strSQL = strSQL & "WHERE UserAgent='" & Left(Replace(strUserAgent,"'","''"),250) & "' And SessionID='" & Replace(strSessionID,"'","''") & "'"
+		strSQL = strSQL & " And ExpirationDate > Date()"
+		Set objSessionLookup = Application("Connection").Execute(strSQL)
+		
+		'If a session isn't found for then kick them out
+		If objSessionLookup.EOF Then
+			SendToLogonScreen
+		Else
+			GetUser = objSessionLookup(USERNAME)
+		End If
+	End If  
+	
 End Function%>
 
 <%Function IsMobile
 
-   Dim strUserAgent
+	Dim strUserAgent
 
-   'Get the User Agent from the client so we know what browser they are using
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the User Agent from the client so we know what browser they are using
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check the user agent for signs they are on a mobile browser
-   If InStr(strUserAgent,"iPhone") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"iPad") Then
-      IsMobile = False
-   ElseIf InStr(strUserAgent,"Android") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"Windows Phone") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"BlackBerry") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"Nintendo") Then
-      IsMobile = True 
-   ElseIf InStr(strUserAgent,"PlayStation Vita") Then
-      IsMobile = True
-   Else
-      IsMobile = False
-   End If 
-   
-   If InStr(strUserAgent,"Nexus 9") Then  
-      IsMobile = False
-   End If
+	'Check the user agent for signs they are on a mobile browser
+	If InStr(strUserAgent,"iPhone") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"iPad") Then
+		IsMobile = False
+	ElseIf InStr(strUserAgent,"Android") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"Windows Phone") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"BlackBerry") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"Nintendo") Then
+		IsMobile = True 
+	ElseIf InStr(strUserAgent,"PlayStation Vita") Then
+		IsMobile = True
+	Else
+		IsMobile = False
+	End If 
+	
+	If InStr(strUserAgent,"Nexus 9") Then  
+		IsMobile = False
+	End If
 End Function %>
 
 <%Function IsiPad
 
-   Dim strUserAgent
+	Dim strUserAgent
 
-   'Get the User Agent from the client so we know what browser they are using
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the User Agent from the client so we know what browser they are using
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check the user agent for signs they are on a mobile browser
-   If InStr(strUserAgent,"iPad") Then
-      IsiPad = True
-   Else
-   	IsiPad = False
-   End If
-   
+	'Check the user agent for signs they are on a mobile browser
+	If InStr(strUserAgent,"iPad") Then
+		IsiPad = True
+	Else
+		IsiPad = False
+	End If
+	
 End Function %>
 
 <%Sub SendToLogonScreen
 
-   Dim strReturnLink, strSourcePage
-      
-   'Build the return link before sending them away.
-   strReturnLink =  "?" & Request.ServerVariables("QUERY_STRING")
-   strSourcePage = Request.ServerVariables("SCRIPT_NAME")
-   strSourcePage = Right(strSourcePage,Len(strSourcePage) - InStrRev(strSourcePage,"/"))
-   If strReturnLink = "?" Then
-      strReturnLink = "?SourcePage=" & strSourcePage
-   Else
-      strReturnLink = strReturnLink & "&SourcePage=" & strSourcePage
-   End If
-   
-   Response.Redirect("login.asp" & strReturnLink)
-   
+	Dim strReturnLink, strSourcePage
+		
+	'Build the return link before sending them away.
+	strReturnLink =  "?" & Request.ServerVariables("QUERY_STRING")
+	strSourcePage = Request.ServerVariables("SCRIPT_NAME")
+	strSourcePage = Right(strSourcePage,Len(strSourcePage) - InStrRev(strSourcePage,"/"))
+	If strReturnLink = "?" Then
+		strReturnLink = "?SourcePage=" & strSourcePage
+	Else
+		strReturnLink = strReturnLink & "&SourcePage=" & strSourcePage
+	End If
+	
+	Response.Redirect("login.asp" & strReturnLink)
+	
 End Sub %>
 
 <%Sub SetupSite
-   
-   If IsMobile Then
-      strSiteVersion = "Mobile"
-   Else
-      strSiteVersion = "Full"
-   End If
-   
-   If Application("MultiColumn") Then
-  		strColumns = "MultiColumn"
-  	End If
-   
+	
+	If IsMobile Then
+		strSiteVersion = "Mobile"
+	Else
+		strSiteVersion = "Full"
+	End If
+	
+	If Application("MultiColumn") Then
+		strColumns = "MultiColumn"
+	End If
+	
 End Sub%>

@@ -14,53 +14,53 @@ Dim objLog
 
 'See if the user has the rights to visit this page
 If AccessGranted Then
-   ProcessSubmissions 
+	ProcessSubmissions 
 Else
-   DenyAccess
+	DenyAccess
 End If %>
 
 <%Sub ProcessSubmissions  
 
 	Dim strSQL
 
-   'Check and see if anything was submitted to the site
-   Select Case Request.Form("Submit")
-   
-   End Select
-   
-   'Get the URL used to submit forms
-   If Request.ServerVariables("QUERY_STRING") = "" Then
-      strSubmitTo = "log.asp"
-   Else   
-      strSubmitTo = "log.asp?" & Request.ServerVariables("QUERY_STRING")
-   End If
-   
-   strSQL = "SELECT TOP 100 LGTag,UserName,EventNumber,Type,OldValue,NewValue,UpdatedBy,LogDate,LogTime,OldNotes,NewNotes" & vbCRLF
-   strSQL = strSQL & "FROM Log WHERE Active=True AND Deleted=False AND ("
-   strSQL = strSQL & "Type <> 'ExternalIPChange' And "
-   strSQL = strSQL & "Type <> 'InternalIPChange')"
-   strSQL = strSQL & "ORDER BY ID DESC"
-   Set objLog = Application("Connection").Execute(strSQL)
-   
-   'Set up the variables needed for the site then load it
-   SetupSite
-   DisplaySite
-   
+	'Check and see if anything was submitted to the site
+	Select Case Request.Form("Submit")
+	
+	End Select
+	
+	'Get the URL used to submit forms
+	If Request.ServerVariables("QUERY_STRING") = "" Then
+		strSubmitTo = "log.asp"
+	Else   
+		strSubmitTo = "log.asp?" & Request.ServerVariables("QUERY_STRING")
+	End If
+	
+	strSQL = "SELECT TOP 100 LGTag,UserName,EventNumber,Type,OldValue,NewValue,UpdatedBy,LogDate,LogTime,OldNotes,NewNotes" & vbCRLF
+	strSQL = strSQL & "FROM Log WHERE Active=True AND Deleted=False AND ("
+	strSQL = strSQL & "Type <> 'ExternalIPChange' And "
+	strSQL = strSQL & "Type <> 'InternalIPChange')"
+	strSQL = strSQL & "ORDER BY ID DESC"
+	Set objLog = Application("Connection").Execute(strSQL)
+	
+	'Set up the variables needed for the site then load it
+	SetupSite
+	DisplaySite
+	
 End Sub%>
 
 <%Sub DisplaySite %>
 
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-   <html>
-   <head>
-      <title><%=Application("SiteName")%></title> 
-      <link rel="stylesheet" type="text/css" href="../style.css" /> 
-      <link rel="apple-touch-icon" href="../images/inventory.png" /> 
-      <link rel="shortcut icon" href="../images/inventory.ico" />
-      <meta name="viewport" content="width=device-width,user-scalable=0" />
-      <meta name="theme-color" content="#333333">
-      <link rel="stylesheet" href="../assets/css/jquery-ui.css">
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+	<head>
+		<title><%=Application("SiteName")%></title> 
+		<link rel="stylesheet" type="text/css" href="../style.css" /> 
+		<link rel="apple-touch-icon" href="../images/inventory.png" /> 
+		<link rel="shortcut icon" href="../images/inventory.ico" />
+		<meta name="viewport" content="width=device-width,user-scalable=0" />
+		<meta name="theme-color" content="#333333">
+		<link rel="stylesheet" href="../assets/css/jquery-ui.css">
 		<script src="../assets/js/jquery.js"></script>
 		<script src="../assets/js/jquery-ui.js"></script>
 		<link rel="stylesheet" href="../assets/css/jquery.dataTables.min.css">
@@ -75,64 +75,64 @@ End Sub%>
 			
 			<%	If Not IsMobile And Not IsiPad Then%>
 					$( document ).tooltip({track: true});
-			<% End If %>
+			<%	End If %>
 			
-    			var table = $('#ListView').DataTable( {
-    				paging: false,
-    				"info": false,
-    				"autoWidth": false,
-    				dom: 'Bfrtip',
-    				"order": [],
-    				// stateSave: true,
-    				buttons: [
+				var table = $('#ListView').DataTable( {
+					paging: false,
+					"info": false,
+					"autoWidth": false,
+					dom: 'Bfrtip',
+					"order": [],
+					// stateSave: true,
+					buttons: [
 						{
 							extend: 'colvis',
 							text: 'Show/Hide Columns'
 						}
-				<% If Not IsMobile Then %>		
+				<%	If Not IsMobile Then %>		
 						,
 						{
 							extend: 'csvHtml5',
 							text: 'Download CSV',
 							title: 'Inventory System Log'
 						}
-				<% End If %>
-        			]
-        		
-    			});
-    	<% If IsMobile Then %>
+				<%	End If %>
+					]
+				
+				});
+		<%	If IsMobile Then %>
 				table.columns([1,3,4,5,7,8]).visible(false);	
-    	<% Else %>		
+		<%	Else %>		
 				table.columns([5,8]).visible(false);
-		<% End If %>
+		<%	End If %>
 
-    		} );
-    	</script>
-   </head>
-   
-   <body class="<%=strSiteVersion%>">
-   
-      <div class="Header"><%=Application("SiteName")%></div>
-      <div>
-         <ul class="NavBar" align="center">
-            <li><a href="index.asp"><img src="../images/home.png" title="Home" height="32" width="32"/></a></li>
-            <li><a href="search.asp"><img src="../images/search.png" title="Search" height="32" width="32"/></a></li>
-            <li><a href="stats.asp"><img src="../images/stats.png" title="Stats" height="32" width="32"/></a></li>
-            <li><a href="log.asp"><img src="../images/log.png" title="System Log" height="32" width="32"/></a></li>
-            <li><a href="add.asp"><img src="../images/add.png" title="Add Person or Device" height="32" width="32"/></a></li>
-            <li><a href="login.asp?action=logout"><img src="../images/logout.png" title="Log Out" height="32" width="32"/></a></li>
-         </ul>
-      </div>   
+			} );
+		</script>
+	</head>
+	
+	<body class="<%=strSiteVersion%>">
+	
+		<div class="Header"><%=Application("SiteName")%></div>
+		<div>
+			<ul class="NavBar" align="center">
+				<li><a href="index.asp"><img src="../images/home.png" title="Home" height="32" width="32"/></a></li>
+				<li><a href="search.asp"><img src="../images/search.png" title="Search" height="32" width="32"/></a></li>
+				<li><a href="stats.asp"><img src="../images/stats.png" title="Stats" height="32" width="32"/></a></li>
+				<li><a href="log.asp"><img src="../images/log.png" title="System Log" height="32" width="32"/></a></li>
+				<li><a href="add.asp"><img src="../images/add.png" title="Add Person or Device" height="32" width="32"/></a></li>
+				<li><a href="login.asp?action=logout"><img src="../images/logout.png" title="Log Out" height="32" width="32"/></a></li>
+			</ul>
+		</div>
 		
-	<% If Not objLog.EOF Then
+	<%	If Not objLog.EOF Then
 			ShowLogTable
 		End If %>
 		
 		<div class="Version">Version <%=Application("Version")%></div>
 		<div class="CopyRight"><%=Application("Copyright")%></div>
-   </body>
+	</body>
 
-   </html>
+	</html>
 
 <%End Sub%>
 
@@ -154,7 +154,7 @@ End Sub%>
 				<th>Old Value</th>
 			</thead>		
 			<tbody>
-	<% Do Until objLog.EOF %>
+	<%	Do Until objLog.EOF %>
 				<tr>
 					<td id="center"><%=ShortenDate(objLog(7))%></td>
 					<td id="center"><%=ShortenTime(objLog(8))%></td>
@@ -164,33 +164,33 @@ End Sub%>
 				
 				<%	If objLog(2) = 0 Then %>
 						<td></td>
-				<% Else %>
+				<%	Else %>
 						<td id="center"><%=objLog(2)%></td>
-				<% End If %>
+				<%	End If %>
 				
 					<td id="center"><%=LCase(objLog(6))%></td>
 					
-				<% If InStr(objLog(3),"Notes") = 0 And InStr(objLog(3),"DeviceReturned") = 0 Then %>
+				<%	If InStr(objLog(3),"Notes") = 0 And InStr(objLog(3),"DeviceReturned") = 0 Then %>
 						<td><%=objLog(5)%></td>
 						<td><%=objLog(4)%></td>
-				<% Else %>
+				<%	Else %>
 				
-					<% If NOT IsNull(objLog(10)) Then %>
+					<%	If NOT IsNull(objLog(10)) Then %>
 							<td <%=strRowClass%>><%=Replace(objLog(10),vbCRLF,"<br />")%></td>
-					<% Else %>
+					<%	Else %>
 							<td <%=strRowClass%>><%=objLog(10)%></td>
-					<% End If%>
+					<%	End If%>
 					
-					<% If NOT IsNull(objLog(9)) Then %>
+					<%	If NOT IsNull(objLog(9)) Then %>
 							<td <%=strRowClass%>><%=Replace(objLog(9),vbCRLF,"<br />")%></td>
-					<% Else %>
+					<%	Else %>
 							<td <%=strRowClass%>><%=objLog(9)%></td>
-					<% End If%>
+					<%	End If%>
 				
-				<% End If %>
+				<%	End If %>
 				
 				</tr>
-		<% objLog.MoveNext
+		<%	objLog.MoveNext
 		Loop %>
 			</tbody>
 		</table>
@@ -431,183 +431,183 @@ End Function%>
 
 <%Sub DenyAccess 
 
-   'If we're not using basic authentication then send them to the login screen
-   If bolShowLogout Then
-      Response.Redirect("login.asp?action=logout")
-   Else
-   
-   SetupSite
-   
-   %>
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-   <html>
-   <head>
-      <title><%=Application("SiteName")%></title>
-      <link rel="stylesheet" type="text/css" href="../style.css" /> 
-      <link rel="apple-touch-icon" href="../images/inventory.png" /> 
-      <link rel="shortcut icon" href="../images/inventory.ico" />
-      <meta name="viewport" content="width=device-width" />
-   </head>
-   <body>
-      <center><b>Access Denied</b></center>
-   </body>
-   </html>
-   
-<% End If
+	'If we're not using basic authentication then send them to the login screen
+	If bolShowLogout Then
+		Response.Redirect("login.asp?action=logout")
+	Else
+	
+	SetupSite
+	
+	%>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html>
+	<head>
+		<title><%=Application("SiteName")%></title>
+		<link rel="stylesheet" type="text/css" href="../style.css" /> 
+		<link rel="apple-touch-icon" href="../images/inventory.png" /> 
+		<link rel="shortcut icon" href="../images/inventory.ico" />
+		<meta name="viewport" content="width=device-width" />
+	</head>
+	<body>
+		<center><b>Access Denied</b></center>
+	</body>
+	</html>
+	
+<%	End If
 
 End Sub%>
 
 <%Function AccessGranted
 
-   Dim objNetwork, strUserAgent, strSQL, strRole, objNameCheckSet
+	Dim objNetwork, strUserAgent, strSQL, strRole, objNameCheckSet
 
-   'Redirect the user the SSL version if required
-   If Application("ForceSSL") Then
-      If Request.ServerVariables("SERVER_PORT")=80 Then
-         If Request.ServerVariables("QUERY_STRING") = "" Then
-            Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL")
-         Else
-            Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL") & "?" & Request.ServerVariables("QUERY_STRING")
-         End If
-      End If
-   End If
+	'Redirect the user the SSL version if required
+	If Application("ForceSSL") Then
+		If Request.ServerVariables("SERVER_PORT")=80 Then
+			If Request.ServerVariables("QUERY_STRING") = "" Then
+				Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL")
+			Else
+				Response.Redirect "https://" & Request.ServerVariables("SERVER_NAME") & Request.ServerVariables("URL") & "?" & Request.ServerVariables("QUERY_STRING")
+			End If
+		End If
+	End If
 
-   'Get the users logon name
-   Set objNetwork = CreateObject("WSCRIPT.Network")   
-   strUser = objNetwork.UserName
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the users logon name
+	Set objNetwork = CreateObject("WSCRIPT.Network")   
+	strUser = objNetwork.UserName
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check and see if anonymous access is enabled
-   If LCase(Left(strUser,4)) = "iusr" Then
-      strUser = GetUser
-      bolShowLogout = True
-   Else
-      bolShowLogout = False
-   End If
+	'Check and see if anonymous access is enabled
+	If LCase(Left(strUser,4)) = "iusr" Then
+		strUser = GetUser
+		bolShowLogout = True
+	Else
+		bolShowLogout = False
+	End If
 
-   'Build the SQL string, this will check the userlevel of the user.
-   strSQL = "Select Role" & vbCRLF
-   strSQL = strSQL & "From Sessions" & vbCRLF
-   strSQL = strSQL & "WHERE UserName='" & strUser & "' And SessionID='" & Request.Cookies("SessionID") & "'"
-   Set objNameCheckSet = Application("Connection").Execute(strSQL)
-   strRole = objNameCheckSet(0)
+	'Build the SQL string, this will check the userlevel of the user.
+	strSQL = "Select Role" & vbCRLF
+	strSQL = strSQL & "From Sessions" & vbCRLF
+	strSQL = strSQL & "WHERE UserName='" & strUser & "' And SessionID='" & Request.Cookies("SessionID") & "'"
+	Set objNameCheckSet = Application("Connection").Execute(strSQL)
+	strRole = objNameCheckSet(0)
 
-   If strRole = "Admin" Then
-      AccessGranted = True
-   Else
-      AccessGranted = False
-   End If
+	If strRole = "Admin" Then
+		AccessGranted = True
+	Else
+		AccessGranted = False
+	End If
 
 End Function%>
 
 <%Function GetUser
 
-   Const USERNAME = 1
+	Const USERNAME = 1
 
-   Dim strUserAgent, strSessionID, objSessionLookup, strSQL
-   
-   'Get some needed data
-   strSessionID = Request.Cookies("SessionID")
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
-   
-   'Send them to the logon screen if they don't have a Session ID
-   If strSessionID = "" Then
-      SendToLogonScreen
+	Dim strUserAgent, strSessionID, objSessionLookup, strSQL
+	
+	'Get some needed data
+	strSessionID = Request.Cookies("SessionID")
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	
+	'Send them to the logon screen if they don't have a Session ID
+	If strSessionID = "" Then
+		SendToLogonScreen
 
-   'Get the username from the database
-   Else
-   
-      strSQL = "SELECT ID,UserName,SessionID,IPAddress,UserAgent,ExpirationDate FROM Sessions "
-      strSQL = strSQL & "WHERE UserAgent='" & Left(Replace(strUserAgent,"'","''"),250) & "' And SessionID='" & Replace(strSessionID,"'","''") & "'"
-      strSQL = strSQL & " And ExpirationDate > Date()"
-      Set objSessionLookup = Application("Connection").Execute(strSQL)
-      
-      'If a session isn't found for then kick them out
-      If objSessionLookup.EOF Then
-         SendToLogonScreen
-      Else
-         GetUser = objSessionLookup(USERNAME)
-      End If
-   End If  
-   
+	'Get the username from the database
+	Else
+	
+		strSQL = "SELECT ID,UserName,SessionID,IPAddress,UserAgent,ExpirationDate FROM Sessions "
+		strSQL = strSQL & "WHERE UserAgent='" & Left(Replace(strUserAgent,"'","''"),250) & "' And SessionID='" & Replace(strSessionID,"'","''") & "'"
+		strSQL = strSQL & " And ExpirationDate > Date()"
+		Set objSessionLookup = Application("Connection").Execute(strSQL)
+		
+		'If a session isn't found for then kick them out
+		If objSessionLookup.EOF Then
+			SendToLogonScreen
+		Else
+			GetUser = objSessionLookup(USERNAME)
+		End If
+	End If  
+	
 End Function%>
 
 <%Function IsMobile
 
-   Dim strUserAgent
+	Dim strUserAgent
 
-   'Get the User Agent from the client so we know what browser they are using
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the User Agent from the client so we know what browser they are using
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check the user agent for signs they are on a mobile browser
-   If InStr(strUserAgent,"iPhone") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"iPad") Then
-      IsMobile = False
-   ElseIf InStr(strUserAgent,"Android") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"Windows Phone") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"BlackBerry") Then
-      IsMobile = True
-   ElseIf InStr(strUserAgent,"Nintendo") Then
-      IsMobile = True 
-   ElseIf InStr(strUserAgent,"PlayStation Vita") Then
-      IsMobile = True
-   Else
-      IsMobile = False
-   End If 
-   
-   If InStr(strUserAgent,"Nexus 9") Then  
-      IsMobile = False
-   End If
+	'Check the user agent for signs they are on a mobile browser
+	If InStr(strUserAgent,"iPhone") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"iPad") Then
+		IsMobile = False
+	ElseIf InStr(strUserAgent,"Android") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"Windows Phone") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"BlackBerry") Then
+		IsMobile = True
+	ElseIf InStr(strUserAgent,"Nintendo") Then
+		IsMobile = True 
+	ElseIf InStr(strUserAgent,"PlayStation Vita") Then
+		IsMobile = True
+	Else
+		IsMobile = False
+	End If 
+	
+	If InStr(strUserAgent,"Nexus 9") Then  
+		IsMobile = False
+	End If
 End Function %>
 
 <%Function IsiPad
 
-   Dim strUserAgent
+	Dim strUserAgent
 
-   'Get the User Agent from the client so we know what browser they are using
-   strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
+	'Get the User Agent from the client so we know what browser they are using
+	strUserAgent = Request.ServerVariables("HTTP_USER_AGENT")
 
-   'Check the user agent for signs they are on a mobile browser
-   If InStr(strUserAgent,"iPad") Then
-      IsiPad = True
-   Else
-   	IsiPad = False
-   End If
-   
+	'Check the user agent for signs they are on a mobile browser
+	If InStr(strUserAgent,"iPad") Then
+		IsiPad = True
+	Else
+		IsiPad = False
+	End If
+	
 End Function %>
 
 <%Sub SendToLogonScreen
 
-   Dim strReturnLink, strSourcePage
-      
-   'Build the return link before sending them away.
-   strReturnLink =  "?" & Request.ServerVariables("QUERY_STRING")
-   strSourcePage = Request.ServerVariables("SCRIPT_NAME")
-   strSourcePage = Right(strSourcePage,Len(strSourcePage) - InStrRev(strSourcePage,"/"))
-   If strReturnLink = "?" Then
-      strReturnLink = "?SourcePage=" & strSourcePage
-   Else
-      strReturnLink = strReturnLink & "&SourcePage=" & strSourcePage
-   End If
-   
-   Response.Redirect("login.asp" & strReturnLink)
-   
+	Dim strReturnLink, strSourcePage
+		
+	'Build the return link before sending them away.
+	strReturnLink =  "?" & Request.ServerVariables("QUERY_STRING")
+	strSourcePage = Request.ServerVariables("SCRIPT_NAME")
+	strSourcePage = Right(strSourcePage,Len(strSourcePage) - InStrRev(strSourcePage,"/"))
+	If strReturnLink = "?" Then
+		strReturnLink = "?SourcePage=" & strSourcePage
+	Else
+		strReturnLink = strReturnLink & "&SourcePage=" & strSourcePage
+	End If
+	
+	Response.Redirect("login.asp" & strReturnLink)
+	
 End Sub %>
 
 <%Sub SetupSite
-   
-   If IsMobile Then
-      strSiteVersion = "Mobile"
-   Else
-      strSiteVersion = "Full"
-   End If
-   
-   If Application("MultiColumn") Then
-  		strColumns = "MultiColumn"
-  	End If
-   
+	
+	If IsMobile Then
+		strSiteVersion = "Mobile"
+	Else
+		strSiteVersion = "Full"
+	End If
+	
+	If Application("MultiColumn") Then
+		strColumns = "MultiColumn"
+	End If
+	
 End Sub%>
